@@ -4,45 +4,1011 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paragon Degree Calculator — BTD6 Tools</title>
+
+```
+<title>Paragon Degree Calculator — BTD6 Tools</title>
 
 <style>
-    body {
+    * {
+        box-sizing: border-box;
         margin: 0;
-        font-family: Arial, sans-serif;
+        padding: 0;
+    }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
         background: #10131a;
         color: white;
+        min-height: 100vh;
+    }
+
+    /* Navigation */
+
+    nav {
+        width: 100%;
+        background: #191d27;
+        border-bottom: 2px solid #292f3d;
+        padding: 16px 30px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: #ffb52e;
+        text-decoration: none;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 24px;
+    }
+
+    .nav-links a {
+        color: #d8dbe2;
+        text-decoration: none;
+        font-size: 15px;
+    }
+
+    .nav-links a:hover {
+        color: #ffb52e;
+    }
+
+    /* Page */
+
+    .page {
+        max-width: 1100px;
+        margin: auto;
+        padding: 45px 20px 60px;
+    }
+
+    .back {
+        display: inline-block;
+        color: #aeb4c0;
+        text-decoration: none;
+        margin-bottom: 25px;
+        font-size: 14px;
+    }
+
+    .back:hover {
+        color: #ffb52e;
+    }
+
+    .title {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .title h1 {
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+
+    .title p {
+        color: #aeb4c0;
+        font-size: 16px;
+    }
+
+    /* Layout */
+
+    .calculator {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+    }
+
+    .panel {
+        background: #191d27;
+        border: 1px solid #292f3d;
+        border-radius: 16px;
+        padding: 25px;
+    }
+
+    .panel h2 {
+        font-size: 21px;
+        margin-bottom: 20px;
+    }
+
+    /* Inputs */
+
+    .input-group {
+        margin-bottom: 18px;
+    }
+
+    .input-group label {
+        display: block;
+        font-size: 14px;
+        color: #c9cdd5;
+        margin-bottom: 7px;
+    }
+
+    input,
+    select {
+        width: 100%;
+        padding: 12px;
+
+        background: #10131a;
+        border: 1px solid #353c4b;
+        border-radius: 8px;
+
+        color: white;
+        font-size: 15px;
+
+        outline: none;
+    }
+
+    input:focus,
+    select:focus {
+        border-color: #ffb52e;
+    }
+
+    .hint {
+        color: #737b8a;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    /* Results */
+
+    .degree-display {
+        text-align: center;
+        padding: 20px;
+        margin-bottom: 20px;
+
+        background: #10131a;
+        border-radius: 12px;
+    }
+
+    .degree-label {
+        color: #aeb4c0;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .degree {
+        font-size: 64px;
+        font-weight: bold;
+        color: #c16cff;
+        line-height: 1;
+    }
+
+    .power-total {
+        margin-top: 10px;
+        color: #aeb4c0;
+        font-size: 14px;
+    }
+
+    /* Breakdown */
+
+    .breakdown {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .power-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        padding: 12px 14px;
+
+        background: #10131a;
+        border-radius: 8px;
+    }
+
+    .power-row span:first-child {
+        color: #c9cdd5;
+    }
+
+    .power-row span:last-child {
+        font-weight: bold;
+    }
+
+    /* Progress */
+
+    .progress-section {
+        margin-top: 20px;
+    }
+
+    .progress-label {
+        display: flex;
+        justify-content: space-between;
+        color: #aeb4c0;
+        font-size: 13px;
+        margin-bottom: 7px;
+    }
+
+    .progress-bar {
+        width: 100%;
+        height: 10px;
+
+        background: #10131a;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        width: 0%;
+
+        background: #c16cff;
+        transition: width 0.2s;
+    }
+
+    /* Next degree */
+
+    .next-degree {
+        margin-top: 20px;
+        padding: 15px;
+
+        background: #10131a;
+        border-radius: 10px;
+
         text-align: center;
     }
 
-    .container {
-        max-width: 800px;
-        margin: 100px auto;
-        padding: 30px;
-    }
-
-    a {
+    .next-degree strong {
         color: #ffb52e;
     }
+
+    /* Footer */
+
+    footer {
+        text-align: center;
+        color: #737b8a;
+        padding: 20px;
+        font-size: 13px;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 750px) {
+
+        nav {
+            padding: 14px 18px;
+        }
+
+        .logo {
+            font-size: 20px;
+        }
+
+        .nav-links {
+            gap: 12px;
+        }
+
+        .nav-links a {
+            font-size: 13px;
+        }
+
+        .calculator {
+            grid-template-columns: 1fr;
+        }
+
+        .title h1 {
+            font-size: 32px;
+        }
+
+        .page {
+            padding-top: 30px;
+        }
+    }
 </style>
+```
 
 </head>
 
 <body>
 
-<div class="container">
+<nav>
 
-<h1>🟣 Paragon Degree Calculator</h1>
+```
+<a href="index.html" class="logo">
+    BTD6 Tools
+</a>
 
-<p>
-    This calculator is coming next!
-</p>
+<div class="nav-links">
+    <a href="index.html">Home</a>
+</div>
+```
 
-<p>
-    <a href="index.html">← Back to BTD6 Tools</a>
-</p>
+</nav>
+
+<main class="page">
+
+```
+<a href="index.html" class="back">
+    ← Back to BTD6 Tools
+</a>
+
+
+<div class="title">
+
+    <h1>🟣 Paragon Degree Calculator</h1>
+
+    <p>
+        Calculate the degree of a Paragon using its sacrificed towers,
+        pops, cash investment, upgrades, and Tier 5s.
+    </p>
 
 </div>
+
+
+<div class="calculator">
+
+    <!-- INPUTS -->
+
+    <section class="panel">
+
+        <h2>Paragon Setup</h2>
+
+        <div class="input-group">
+
+            <label for="paragon">
+                Paragon
+            </label>
+
+            <select id="paragon">
+
+                <option value="150000">
+                    Apex Plasma Master
+                </option>
+
+                <option value="375000">
+                    Glaive Dominus
+                </option>
+
+                <option value="500000">
+                    Ascended Shadow
+                </option>
+
+                <option value="550000">
+                    Navarch of the Seas
+                </option>
+
+                <option value="650000">
+                    Master Builder
+                </option>
+
+                <option value="900000">
+                    Goliath Doomship
+                </option>
+
+                <option value="800000">
+                    Magus Perfectus
+                </option>
+
+                <option value="400000">
+                    Nautic Siege Core
+                </option>
+
+                <option value="200000">
+                    Crucible of Steel and Flame
+                </option>
+
+                <option value="750000">
+                    Mega Massive Munitions Factory
+                </option>
+
+                <option value="600000">
+                    Ballistic Obliteration Missile Bunker
+                </option>
+
+                <option value="300000">
+                    Herald of Everfrost
+                </option>
+
+                <option value="475000">
+                    Root of all Nature
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label for="difficulty">
+                Difficulty
+            </label>
+
+            <select id="difficulty">
+
+                <option value="1">
+                    Easy
+                </option>
+
+                <option value="1.17647" selected>
+                    Medium
+                </option>
+
+                <option value="1.08">
+                    Hard
+                </option>
+
+                <option value="1.2">
+                    Impoppable
+                </option>
+
+            </select>
+
+            <div class="hint">
+                Difficulty is currently informational; Paragon prices are
+                selected automatically below for future expansion.
+            </div>
+
+        </div>
+
+
+        <h2 style="margin-top:30px;">
+            Power Sources
+        </h2>
+
+
+        <div class="input-group">
+
+            <label for="pops">
+                Pops
+            </label>
+
+            <input
+                type="number"
+                id="pops"
+                min="0"
+                value="0"
+            >
+
+            <div class="hint">
+                180 pops = 1 power, up to 90,000 power.
+            </div>
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label for="income">
+                Bonus Income Generated
+            </label>
+
+            <input
+                type="number"
+                id="income"
+                min="0"
+                value="0"
+            >
+
+            <div class="hint">
+                $45 generated = 1 power. Shares the pops power cap.
+            </div>
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label for="tiers">
+                Non-Tier-5 Upgrade Tiers
+            </label>
+
+            <input
+                type="number"
+                id="tiers"
+                min="0"
+                max="100"
+                value="0"
+            >
+
+            <div class="hint">
+                100 power per tier, up to 10,000 power.
+            </div>
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label for="extraT5">
+                Extra Tier 5 Towers
+            </label>
+
+            <input
+                type="number"
+                id="extraT5"
+                min="0"
+                max="9"
+                value="0"
+            >
+
+            <div class="hint">
+                The three required Tier 5s do not count.
+                6,000 power per extra T5, up to 50,000 power.
+            </div>
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label for="cash">
+                Cash Spent on Sacrificed Towers
+            </label>
+
+            <input
+                type="number"
+                id="cash"
+                min="0"
+                value="0"
+            >
+
+            <div class="hint">
+                Cash spent on non-T5 sacrificed towers.
+            </div>
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label for="totems">
+                Geraldo Paragon Power Totems
+            </label>
+
+            <input
+                type="number"
+                id="totems"
+                min="0"
+                value="0"
+            >
+
+            <div class="hint">
+                Each totem contributes 2,000 power.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- RESULTS -->
+
+    <section class="panel">
+
+        <h2>Result</h2>
+
+
+        <div class="degree-display">
+
+            <div class="degree-label">
+                Paragon Degree
+            </div>
+
+            <div class="degree" id="degree">
+                1
+            </div>
+
+            <div class="power-total" id="totalPower">
+                0 / 200,000 Power
+            </div>
+
+        </div>
+
+
+        <div class="breakdown">
+
+            <div class="power-row">
+                <span>Pops + Income</span>
+                <span id="popPower">0</span>
+            </div>
+
+            <div class="power-row">
+                <span>Upgrade Tiers</span>
+                <span id="tierPower">0</span>
+            </div>
+
+            <div class="power-row">
+                <span>Cash Spent</span>
+                <span id="cashPower">0</span>
+            </div>
+
+            <div class="power-row">
+                <span>Extra Tier 5s</span>
+                <span id="t5Power">0</span>
+            </div>
+
+            <div class="power-row">
+                <span>Geraldo Totems</span>
+                <span id="totemPower">0</span>
+            </div>
+
+        </div>
+
+
+        <div class="progress-section">
+
+            <div class="progress-label">
+
+                <span>
+                    Progress to Degree 100
+                </span>
+
+                <span id="percentage">
+                    0%
+                </span>
+
+            </div>
+
+            <div class="progress-bar">
+
+                <div
+                    class="progress-fill"
+                    id="progress"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <div class="next-degree" id="nextDegree">
+
+            Next degree:
+            <strong>2</strong>
+
+            requires
+            <strong>2,000</strong>
+            more power.
+
+        </div>
+
+    </section>
+
+</div>
+```
+
+</main>
+
+<footer>
+    BTD6 Tools • Paragon Degree Calculator
+</footer>
+
+<script>
+
+    /*
+        BTD6 Paragon Power Calculator
+
+        Current post-v39 formula:
+
+        Pops:
+            1 power / 180 pops
+            Maximum 90,000
+
+        Income:
+            1 power / $45 generated
+            Shares the 90,000 cap with pops
+
+        Non-T5 upgrades:
+            100 power / upgrade tier
+            Maximum 10,000
+
+        Extra T5:
+            6,000 power / extra T5
+            Maximum 50,000
+
+        Cash:
+            Paragon price / 20,000 dollars
+            Maximum 60,000
+
+        Totems:
+            2,000 power each
+
+        Total:
+            Maximum 200,000 power
+    */
+
+
+    const paragon = document.getElementById("paragon");
+
+    const pops = document.getElementById("pops");
+    const income = document.getElementById("income");
+    const tiers = document.getElementById("tiers");
+    const extraT5 = document.getElementById("extraT5");
+    const cash = document.getElementById("cash");
+    const totems = document.getElementById("totems");
+
+    const degreeDisplay = document.getElementById("degree");
+    const totalPowerDisplay = document.getElementById("totalPower");
+
+    const popPowerDisplay = document.getElementById("popPower");
+    const tierPowerDisplay = document.getElementById("tierPower");
+    const cashPowerDisplay = document.getElementById("cashPower");
+    const t5PowerDisplay = document.getElementById("t5Power");
+    const totemPowerDisplay = document.getElementById("totemPower");
+
+    const progressDisplay = document.getElementById("progress");
+    const percentageDisplay = document.getElementById("percentage");
+
+    const nextDegreeDisplay = document.getElementById("nextDegree");
+
+
+    /*
+        Power required for a specific degree.
+
+        Degree 1 = 0 power
+
+        Degrees 2-99:
+        round(
+            (50D^3 + 5025D^2 + 168324D + 843000) / 600
+        )
+
+        Degree 100 = 200,000 power
+    */
+
+    function powerForDegree(degree) {
+
+        if (degree <= 1) {
+            return 0;
+        }
+
+        if (degree >= 100) {
+            return 200000;
+        }
+
+        return Math.round(
+            (
+                50 * Math.pow(degree, 3) +
+                5025 * Math.pow(degree, 2) +
+                168324 * degree +
+                843000
+            ) / 600
+        );
+    }
+
+
+    /*
+        Find the highest degree whose power
+        requirement has been reached.
+    */
+
+    function calculateDegree(power) {
+
+        let degree = 1;
+
+        for (let d = 2; d <= 100; d++) {
+
+            if (power >= powerForDegree(d)) {
+                degree = d;
+            } else {
+                break;
+            }
+        }
+
+        return degree;
+    }
+
+
+    function calculate() {
+
+        const paragonPrice = Number(paragon.value);
+
+        const popValue = Math.max(0, Number(pops.value) || 0);
+        const incomeValue = Math.max(0, Number(income.value) || 0);
+        const tierValue = Math.max(0, Number(tiers.value) || 0);
+        const t5Value = Math.max(0, Number(extraT5.value) || 0);
+        const cashValue = Math.max(0, Number(cash.value) || 0);
+        const totemValue = Math.max(0, Number(totems.value) || 0);
+
+
+        /*
+            Pops and income share one power bucket.
+
+            Every $45 income = 180 pops worth of power.
+        */
+
+        const popPower = Math.min(
+            90000,
+            Math.floor(popValue / 180) +
+            Math.floor(incomeValue / 45)
+        );
+
+
+        /*
+            Upgrade tiers
+        */
+
+        const tierPower = Math.min(
+            10000,
+            tierValue * 100
+        );
+
+
+        /*
+            Cash power
+
+            Current formula:
+            every Paragon Price / 20,000 dollars
+            contributes 1 power.
+
+            Example:
+            $500,000 Paragon
+
+            500,000 / 20,000 = 25
+
+            Therefore every $25 spent gives 1 power.
+        */
+
+        let cashPower = 0;
+
+        if (paragonPrice > 0) {
+
+            cashPower = Math.floor(
+                cashValue /
+                (paragonPrice / 20000)
+            );
+
+        }
+
+        cashPower = Math.min(
+            60000,
+            cashPower
+        );
+
+
+        /*
+            Extra Tier 5 power
+        */
+
+        const t5Power = Math.min(
+            50000,
+            t5Value * 6000
+        );
+
+
+        /*
+            Geraldo Totems
+        */
+
+        const totemPower = totemValue * 2000;
+
+
+        /*
+            Total power
+        */
+
+        const totalPower = Math.min(
+            200000,
+            popPower +
+            tierPower +
+            cashPower +
+            t5Power +
+            totemPower
+        );
+
+
+        /*
+            Degree
+        */
+
+        const degree = calculateDegree(totalPower);
+
+
+        /*
+            Update display
+        */
+
+        degreeDisplay.textContent = degree;
+
+        totalPowerDisplay.textContent =
+            totalPower.toLocaleString() +
+            " / 200,000 Power";
+
+
+        popPowerDisplay.textContent =
+            popPower.toLocaleString();
+
+        tierPowerDisplay.textContent =
+            tierPower.toLocaleString();
+
+        cashPowerDisplay.textContent =
+            cashPower.toLocaleString();
+
+        t5PowerDisplay.textContent =
+            t5Power.toLocaleString();
+
+        totemPowerDisplay.textContent =
+            totemPower.toLocaleString();
+
+
+        /*
+            Overall progress
+        */
+
+        const percentage =
+            (totalPower / 200000) * 100;
+
+        progressDisplay.style.width =
+            percentage + "%";
+
+        percentageDisplay.textContent =
+            percentage.toFixed(1) + "%";
+
+
+        /*
+            Next degree information
+        */
+
+        if (degree >= 100) {
+
+            nextDegreeDisplay.innerHTML =
+                "<strong>Maximum Degree 100 reached!</strong>";
+
+        } else {
+
+            const nextDegree = degree + 1;
+
+            const nextPower =
+                powerForDegree(nextDegree);
+
+            const remaining =
+                Math.max(
+                    0,
+                    nextPower - totalPower
+                );
+
+            nextDegreeDisplay.innerHTML =
+                "Next degree: <strong>" +
+                nextDegree +
+                "</strong> requires <strong>" +
+                remaining.toLocaleString() +
+                "</strong> more power.";
+
+        }
+
+    }
+
+
+    /*
+        Recalculate whenever an input changes.
+    */
+
+    [
+        paragon,
+        pops,
+        income,
+        tiers,
+        extraT5,
+        cash,
+        totems
+    ].forEach(element => {
+
+        element.addEventListener(
+            "input",
+            calculate
+        );
+
+        element.addEventListener(
+            "change",
+            calculate
+        );
+
+    });
+
+
+    /*
+        Initial calculation
+    */
+
+    calculate();
+
+</script>
 
 </body>
 </html>

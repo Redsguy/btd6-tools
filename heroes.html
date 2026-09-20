@@ -2,27 +2,281 @@
 
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hero Level Calculator — BTD6 Tools</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2c3e50">
+<title>Hero Level Calculator - BTD6 Tools</title>
 
 <style>
+    * {
+        box-sizing: border-box;
+    }
+
     body {
         margin: 0;
-        font-family: Arial, sans-serif;
-        background: #10131a;
-        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+        background: #111827;
+        color: #f3f4f6;
+    }
+
+    header {
+        background: #1f2937;
+        border-bottom: 2px solid #f59e0b;
+        padding: 18px 20px;
         text-align: center;
     }
 
-    .container {
-        max-width: 800px;
-        margin: 100px auto;
-        padding: 30px;
+    header h1 {
+        margin: 0;
+        color: #fbbf24;
+        font-size: 30px;
     }
 
-    a {
-        color: #ffb52e;
+    header p {
+        margin: 6px 0 0;
+        color: #9ca3af;
+        font-size: 14px;
+    }
+
+    .back {
+        display: inline-block;
+        margin-top: 10px;
+        color: #fbbf24;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .back:hover {
+        text-decoration: underline;
+    }
+
+    main {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 24px 16px 50px;
+    }
+
+    .card {
+        background: #1f2937;
+        border: 1px solid #374151;
+        border-radius: 14px;
+        padding: 20px;
+        margin-bottom: 18px;
+    }
+
+    .card h2 {
+        margin: 0 0 16px;
+        color: #fbbf24;
+        font-size: 21px;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 15px;
+    }
+
+    .field {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+    }
+
+    label {
+        color: #d1d5db;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    select,
+    input[type="number"] {
+        width: 100%;
+        min-height: 44px;
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid #4b5563;
+        background: #111827;
+        color: #f9fafb;
+        font-size: 16px;
+        outline: none;
+    }
+
+    select:focus,
+    input[type="number"]:focus {
+        border-color: #f59e0b;
+    }
+
+    .hero-info {
+        margin-top: 16px;
+        padding: 14px;
+        border-radius: 10px;
+        background: #111827;
+        border: 1px solid #374151;
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .hero-info-item {
+        min-width: 150px;
+    }
+
+    .hero-info-item span {
+        display: block;
+        color: #9ca3af;
+        font-size: 12px;
+        margin-bottom: 4px;
+    }
+
+    .hero-info-item strong {
+        color: #f9fafb;
+        font-size: 17px;
+    }
+
+    .checks {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .check {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 44px;
+        padding: 8px 10px;
+        background: #111827;
+        border: 1px solid #374151;
+        border-radius: 8px;
+    }
+
+    .check input {
+        width: 18px;
+        height: 18px;
+        accent-color: #f59e0b;
+        flex-shrink: 0;
+    }
+
+    .check label {
+        font-weight: normal;
+        cursor: pointer;
+    }
+
+    .small {
+        color: #9ca3af;
+        font-size: 12px;
+        margin-top: 10px;
+        line-height: 1.5;
+    }
+
+    .result {
+        background: #111827;
+        border: 2px solid #f59e0b;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .result .big {
+        font-size: 54px;
+        font-weight: bold;
+        color: #fbbf24;
+        line-height: 1;
+        margin: 8px 0;
+    }
+
+    .result .sub {
+        color: #9ca3af;
+        font-size: 14px;
+    }
+
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 16px;
+    }
+
+    .stat {
+        background: #1f2937;
+        border: 1px solid #374151;
+        border-radius: 9px;
+        padding: 12px;
+    }
+
+    .stat span {
+        display: block;
+        color: #9ca3af;
+        font-size: 12px;
+        margin-bottom: 5px;
+    }
+
+    .stat strong {
+        font-size: 18px;
+        color: #f3f4f6;
+    }
+
+    .table-wrap {
+        overflow-x: auto;
+        border-radius: 10px;
+        border: 1px solid #374151;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 500px;
+    }
+
+    th,
+    td {
+        padding: 11px 12px;
+        border-bottom: 1px solid #374151;
+        text-align: left;
+    }
+
+    th {
+        background: #111827;
+        color: #fbbf24;
+        font-size: 13px;
+    }
+
+    td {
+        color: #e5e7eb;
+        font-size: 14px;
+    }
+
+    tr:last-child td {
+        border-bottom: none;
+    }
+
+    .current-level {
+        color: #fbbf24;
+        font-weight: bold;
+    }
+
+    .not-reached {
+        color: #6b7280;
+    }
+
+    @media (max-width: 650px) {
+        .grid,
+        .checks {
+            grid-template-columns: 1fr;
+        }
+
+        .stats {
+            grid-template-columns: 1fr;
+        }
+
+        header h1 {
+            font-size: 25px;
+        }
+
+        main {
+            padding: 18px 12px 40px;
+        }
     }
 </style>
 
@@ -30,19 +284,457 @@
 
 <body>
 
-<div class="container">
+<header>
+    <h1>BTD6 Tools</h1>
+    <p>Hero Level Calculator</p>
+    <a class="back" href="index.html">← Back to BTD6 Tools</a>
+</header>
 
-<h1>🦸 Hero Level Calculator</h1>
+<main>
 
-<p>
-    This calculator is coming next!
-</p>
+```
+<section class="card">
+    <h2>Hero & Game Settings</h2>
 
-<p>
-    <a href="index.html">← Back to BTD6 Tools</a>
-</p>
+    <div class="grid">
 
-</div>
+        <div class="field">
+            <label for="hero">Hero</label>
+            <select id="hero">
+                <option value="quincy">Quincy</option>
+                <option value="gwendolin">Gwendolin</option>
+                <option value="striker">Striker Jones</option>
+                <option value="obyn">Obyn Greenfoot</option>
+                <option value="churchill">Captain Churchill</option>
+                <option value="benjamin">Benjamin</option>
+                <option value="ezili">Ezili</option>
+                <option value="pat">Pat Fusty</option>
+                <option value="adora">Adora</option>
+                <option value="brickell">Admiral Brickell</option>
+                <option value="etienne">Etienne</option>
+                <option value="sauda">Sauda</option>
+                <option value="psi">Psi</option>
+                <option value="geraldo">Geraldo</option>
+                <option value="corvus">Corvus</option>
+                <option value="rosalia">Rosalia</option>
+                <option value="silas">Silas</option>
+                <option value="dan">Dan D'Monke</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label for="difficulty">Map Difficulty</label>
+            <select id="difficulty">
+                <option value="1">Beginner — 1.00×</option>
+                <option value="1.1">Intermediate — 1.10×</option>
+                <option value="1.2">Advanced — 1.20×</option>
+                <option value="1.3">Expert — 1.30×</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label for="placedRound">Hero Placed On Round</label>
+            <input id="placedRound" type="number" min="1" max="999" value="1">
+        </div>
+
+        <div class="field">
+            <label for="currentRound">Calculate Through Round</label>
+            <input id="currentRound" type="number" min="1" max="999" value="100">
+        </div>
+
+    </div>
+
+    <div class="hero-info">
+        <div class="hero-info-item">
+            <span>Hero XP Ratio</span>
+            <strong id="heroRatio">1.00×</strong>
+        </div>
+
+        <div class="hero-info-item">
+            <span>Base XP to Level 20</span>
+            <strong>213,560</strong>
+        </div>
+
+        <div class="hero-info-item">
+            <span>Hero XP to Level 20</span>
+            <strong id="heroTotalXP">213,560</strong>
+        </div>
+    </div>
+</section>
+
+<section class="card">
+    <h2>XP Modifiers</h2>
+
+    <div class="checks">
+
+        <div class="check">
+            <input type="checkbox" id="monkeyEducation">
+            <label for="monkeyEducation">
+                Monkey Education (+8% XP)
+            </label>
+        </div>
+
+        <div class="check">
+            <input type="checkbox" id="selfTaught">
+            <label for="selfTaught">
+                Self Taught Heroes (+10% XP)
+            </label>
+        </div>
+
+        <div class="check">
+            <input type="checkbox" id="togetherStrong">
+            <label for="togetherStrong">
+                Monkeys Together Strong (+5% XP)
+            </label>
+        </div>
+
+        <div class="check">
+            <input type="checkbox" id="empowered">
+            <label for="empowered">
+                Empowered Heroes (starts at Level 3)
+            </label>
+        </div>
+
+        <div class="check">
+            <input type="checkbox" id="energizer">
+            <label for="energizer">
+                Energizer / Nautic Siege Core (+50% XP)
+            </label>
+        </div>
+
+    </div>
+
+    <div class="small">
+        These bonuses are multiplicative with the normal map XP modifier.
+        Monkeys Together Strong provides +5% in a single-player game.
+    </div>
+</section>
+
+<section class="card">
+    <h2>Result</h2>
+
+    <div class="result">
+        <div class="sub">Hero Level on Round <span id="resultRound">100</span></div>
+        <div class="big" id="resultLevel">20</div>
+        <div class="sub" id="resultText">Your hero reaches Level 20.</div>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <span>XP Earned</span>
+            <strong id="xpEarned">213,560</strong>
+        </div>
+
+        <div class="stat">
+            <span>XP Needed for Next Level</span>
+            <strong id="xpNext">MAX</strong>
+        </div>
+
+        <div class="stat">
+            <span>XP Multiplier</span>
+            <strong id="xpMultiplier">1.00×</strong>
+        </div>
+    </div>
+</section>
+
+<section class="card">
+    <h2>Level Progression</h2>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Level</th>
+                    <th>XP Required</th>
+                    <th>Round Reached</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody id="levelTable"></tbody>
+        </table>
+    </div>
+</section>
+```
+
+</main>
+
+<script>
+const heroes = {
+    quincy:      { name: "Quincy", ratio: 1.0 },
+    gwendolin:   { name: "Gwendolin", ratio: 1.0 },
+    striker:     { name: "Striker Jones", ratio: 1.0 },
+    obyn:        { name: "Obyn Greenfoot", ratio: 1.0 },
+    churchill:   { name: "Captain Churchill", ratio: 1.71 },
+    benjamin:    { name: "Benjamin", ratio: 1.5 },
+    ezili:       { name: "Ezili", ratio: 1.425 },
+    pat:         { name: "Pat Fusty", ratio: 1.425 },
+    adora:       { name: "Adora", ratio: 1.71 },
+    brickell:    { name: "Admiral Brickell", ratio: 1.425 },
+    etienne:     { name: "Etienne", ratio: 1.0 },
+    sauda:       { name: "Sauda", ratio: 1.425 },
+    psi:         { name: "Psi", ratio: 1.5 },
+    geraldo:     { name: "Geraldo", ratio: 1.0 },
+    corvus:      { name: "Corvus", ratio: 1.425 },
+    rosalia:    { name: "Rosalia", ratio: 1.425 },
+    silas:       { name: "Silas", ratio: 1.5 },
+    dan:         { name: "Dan D'Monke", ratio: 1.425 }
+};
+
+/*
+ * Base hero XP required for each individual level.
+ * These are the 1× hero values.
+ */
+const baseLevelXP = [
+    180,
+    460,
+    1000,
+    1860,
+    3280,
+    5180,
+    8320,
+    9380,
+    13620,
+    16380,
+    14400,
+    16650,
+    14940,
+    16380,
+    17820,
+    19260,
+    20700,
+    16470,
+    17280
+];
+
+function roundedHeroXP(base, ratio) {
+    return Math.round(base * ratio);
+}
+
+function getLevelRequirements(ratio) {
+    const requirements = [0];
+
+    for (let i = 0; i < baseLevelXP.length; i++) {
+        requirements.push(
+            requirements[i] + roundedHeroXP(baseLevelXP[i], ratio)
+        );
+    }
+
+    return requirements;
+}
+
+function roundXP(round) {
+    if (round <= 0) {
+        return 0;
+    }
+
+    if (round <= 20) {
+        return 40 + (round - 1) * 20;
+    }
+
+    if (round <= 50) {
+        return 460 + (round - 21) * 40;
+    }
+
+    return 1710 + (round - 51) * 90;
+}
+
+function getSettings() {
+    return {
+        difficulty: Number(document.getElementById("difficulty").value),
+        education: document.getElementById("monkeyEducation").checked,
+        selfTaught: document.getElementById("selfTaught").checked,
+        togetherStrong: document.getElementById("togetherStrong").checked,
+        empowered: document.getElementById("empowered").checked,
+        energizer: document.getElementById("energizer").checked
+    };
+}
+
+function getRoundMultiplier(settings) {
+    let multiplier = settings.difficulty;
+
+    if (settings.education) {
+        multiplier *= 1.08;
+    }
+
+    if (settings.selfTaught) {
+        multiplier *= 1.10;
+    }
+
+    if (settings.togetherStrong) {
+        multiplier *= 1.05;
+    }
+
+    if (settings.energizer) {
+        multiplier *= 1.50;
+    }
+
+    return multiplier;
+}
+
+function getXPThroughRound(startRound, endRound, multiplier) {
+    if (endRound < startRound) {
+        return 0;
+    }
+
+    let total = 0;
+
+    for (let round = startRound; round <= endRound; round++) {
+        total += roundXP(round) * multiplier;
+    }
+
+    return total;
+}
+
+function getLevelFromXP(xp, requirements, startingLevel) {
+    let level = startingLevel;
+
+    for (let i = startingLevel + 1; i <= 20; i++) {
+        if (xp >= requirements[i]) {
+            level = i;
+        } else {
+            break;
+        }
+    }
+
+    return Math.max(1, Math.min(20, level));
+}
+
+function findLevelRound(level, startRound, multiplier, requirements) {
+    if (level <= 1) {
+        return startRound;
+    }
+
+    let xp = 0;
+
+    for (let round = startRound; round <= 999; round++) {
+        xp += roundXP(round) * multiplier;
+
+        if (xp >= requirements[level]) {
+            return round;
+        }
+    }
+
+    return "—";
+}
+
+function formatNumber(value) {
+    return Math.round(value).toLocaleString();
+}
+
+function updateCalculator() {
+    const heroKey = document.getElementById("hero").value;
+    const hero = heroes[heroKey];
+
+    let placedRound = Number(document.getElementById("placedRound").value);
+    let currentRound = Number(document.getElementById("currentRound").value);
+
+    placedRound = Math.max(1, Math.min(999, placedRound || 1));
+    currentRound = Math.max(placedRound, Math.min(999, currentRound || placedRound));
+
+    document.getElementById("placedRound").value = placedRound;
+    document.getElementById("currentRound").value = currentRound;
+
+    const settings = getSettings();
+    const multiplier = getRoundMultiplier(settings);
+    const requirements = getLevelRequirements(hero.ratio);
+
+    const startingLevel = settings.empowered ? 3 : 1;
+
+    const xp = getXPThroughRound(
+        placedRound,
+        currentRound,
+        multiplier
+    );
+
+    const level = getLevelFromXP(
+        xp,
+        requirements,
+        startingLevel
+    );
+
+    document.getElementById("heroRatio").textContent =
+        hero.ratio.toFixed(3).replace(/0+$/, "").replace(/\.$/, "") + "×";
+
+    document.getElementById("heroTotalXP").textContent =
+        formatNumber(requirements[20]);
+
+    document.getElementById("resultRound").textContent =
+        currentRound;
+
+    document.getElementById("resultLevel").textContent =
+        level;
+
+    document.getElementById("xpEarned").textContent =
+        formatNumber(xp);
+
+    document.getElementById("xpMultiplier").textContent =
+        multiplier.toFixed(3) + "×";
+
+    if (level >= 20) {
+        document.getElementById("xpNext").textContent = "MAX";
+        document.getElementById("resultText").textContent =
+            hero.name + " reaches Level 20.";
+    } else {
+        const nextXP = requirements[level + 1];
+        const remaining = Math.max(0, nextXP - xp);
+        document.getElementById("xpNext").textContent =
+            formatNumber(remaining);
+
+        document.getElementById("resultText").textContent =
+            hero.name + " reaches Level " + level + ".";
+    }
+
+    const table = document.getElementById("levelTable");
+    table.innerHTML = "";
+
+    for (let i = 2; i <= 20; i++) {
+        const row = document.createElement("tr");
+
+        const levelCell = document.createElement("td");
+        levelCell.textContent = i;
+
+        const xpCell = document.createElement("td");
+        xpCell.textContent = formatNumber(requirements[i]);
+
+        const roundCell = document.createElement("td");
+        const reachedRound = findLevelRound(
+            i,
+            placedRound,
+            multiplier,
+            requirements
+        );
+
+        roundCell.textContent = reachedRound;
+
+        const statusCell = document.createElement("td");
+
+        if (level >= i) {
+            statusCell.textContent = "Reached";
+            statusCell.className = "current-level";
+        } else {
+            statusCell.textContent = "Not reached";
+            statusCell.className = "not-reached";
+        }
+
+        row.appendChild(levelCell);
+        row.appendChild(xpCell);
+        row.appendChild(roundCell);
+        row.appendChild(statusCell);
+
+        table.appendChild(row);
+    }
+}
+
+document.querySelectorAll(
+    "select, input"
+).forEach(element => {
+    element.addEventListener("input", updateCalculator);
+    element.addEventListener("change", updateCalculator);
+});
+
+updateCalculator();
+</script>
 
 </body>
 </html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>BTD6 Tools</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: #10131a;
+        color: white;
+        min-height: 100vh;
+    }
+
+    /* Navigation */
+
+    nav {
+        width: 100%;
+        background: #191d27;
+        border-bottom: 2px solid #292f3d;
+        padding: 16px 30px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: #ffb52e;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 24px;
+    }
+
+    .nav-links a {
+        color: #d8dbe2;
+        text-decoration: none;
+        font-size: 15px;
+        transition: 0.2s;
+    }
+
+    .nav-links a:hover {
+        color: #ffb52e;
+    }
+
+    /* Hero */
+
+    .hero {
+        text-align: center;
+        padding: 70px 20px 45px;
+    }
+
+    .hero h1 {
+        font-size: 52px;
+        margin-bottom: 12px;
+    }
+
+    .hero h1 span {
+        color: #ffb52e;
+    }
+
+    .hero p {
+        color: #aeb4c0;
+        font-size: 18px;
+        max-width: 650px;
+        margin: auto;
+        line-height: 1.6;
+    }
+
+    /* Tools */
+
+    .tools-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .tools-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+    }
+
+    .tool-card {
+        background: #191d27;
+        border: 1px solid #292f3d;
+        border-radius: 16px;
+        padding: 28px;
+
+        transition:
+            transform 0.2s,
+            border-color 0.2s,
+            box-shadow 0.2s;
+    }
+
+    .tool-card:hover {
+        transform: translateY(-4px);
+        border-color: #ffb52e;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .tool-icon {
+        font-size: 42px;
+        margin-bottom: 16px;
+    }
+
+    .tool-card h2 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .tool-card p {
+        color: #aeb4c0;
+        line-height: 1.5;
+        min-height: 72px;
+    }
+
+    .tool-button {
+        display: inline-block;
+        margin-top: 20px;
+
+        background: #ffb52e;
+        color: #111;
+
+        padding: 11px 20px;
+        border-radius: 8px;
+
+        text-decoration: none;
+        font-weight: bold;
+
+        transition: 0.2s;
+    }
+
+    .tool-button:hover {
+        background: #ffc957;
+        transform: scale(1.03);
+    }
+
+    /* Footer */
+
+    footer {
+        text-align: center;
+        color: #737b8a;
+        padding: 50px 20px 30px;
+        font-size: 14px;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 700px) {
+
+        nav {
+            padding: 14px 18px;
+        }
+
+        .logo {
+            font-size: 20px;
+        }
+
+        .nav-links {
+            gap: 12px;
+        }
+
+        .nav-links a {
+            font-size: 13px;
+        }
+
+        .hero {
+            padding: 50px 20px 35px;
+        }
+
+        .hero h1 {
+            font-size: 38px;
+        }
+
+        .hero p {
+            font-size: 16px;
+        }
+
+        .tools-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .tool-card {
+            padding: 24px;
+        }
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+```
+<nav>
+    <div class="logo">BTD6 Tools</div>
+
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="#tools">Tools</a>
+    </div>
+</nav>
+
+
+<section class="hero">
+
+    <h1>BTD6 <span>Tools</span></h1>
+
+    <p>
+        A collection of calculators and tools to help you plan,
+        optimize, and understand your BTD6 games.
+    </p>
+
+</section>
+
+
+<main class="tools-container" id="tools">
+
+    <div class="tools-grid">
+
+        <!-- Paragon -->
+
+        <div class="tool-card">
+
+            <div class="tool-icon">🟣</div>
+
+            <h2>Paragon Degree Calculator</h2>
+
+            <p>
+                Calculate a Paragon's degree using pops, upgrades,
+                money spent, and Tier 5 towers sacrificed.
+            </p>
+
+            <a class="tool-button" href="paragon.html">
+                Open Calculator
+            </a>
+
+        </div>
+
+
+        <!-- Heroes -->
+
+        <div class="tool-card">
+
+            <div class="tool-icon">🦸</div>
+
+            <h2>Hero Level Calculator</h2>
+
+            <p>
+                Find a hero's level on a specific round, or determine
+                which round your hero will reach a specific level.
+            </p>
+
+            <a class="tool-button" href="heroes.html">
+                Open Calculator
+            </a>
+
+        </div>
+
+
+        <!-- Break Even -->
+
+        <div class="tool-card">
+
+            <div class="tool-icon">💰</div>
+
+            <h2>Break Even Calculator</h2>
+
+            <p>
+                Determine how many rounds it takes for a farming
+                tower or upgrade to pay for itself, with or without selling.
+            </p>
+
+            <a class="tool-button" href="breakeven.html">
+                Open Calculator
+            </a>
+
+        </div>
+
+
+        <!-- Discounts -->
+
+        <div class="tool-card">
+
+            <div class="tool-icon">🏛️</div>
+
+            <h2>Discount Calculator</h2>
+
+            <p>
+                Calculate how much money village discounts save on
+                one or more towers and determine the cost of getting
+                the discounts.
+            </p>
+
+            <a class="tool-button" href="discounts.html">
+                Open Calculator
+            </a>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<footer>
+    BTD6 Tools &nbsp;•&nbsp; Made for BTD6 players
+</footer>
+```
+
+</body>
+</html>

@@ -21,8 +21,6 @@
         min-height: 100vh;
     }
 
-    /* Navigation */
-
     nav {
         width: 100%;
         background: #191d27;
@@ -60,10 +58,8 @@
         color: #ffb52e;
     }
 
-    /* Page */
-
     .page {
-        max-width: 1100px;
+        max-width: 1150px;
         margin: auto;
         padding: 45px 20px 60px;
     }
@@ -95,12 +91,11 @@
         font-size: 16px;
     }
 
-    /* Layout */
-
-    .calculator {
+    .top-settings {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 25px;
+        gap: 20px;
+        margin-bottom: 25px;
     }
 
     .panel {
@@ -115,10 +110,12 @@
         margin-bottom: 20px;
     }
 
-    /* Inputs */
-
     .input-group {
         margin-bottom: 18px;
+    }
+
+    .input-group:last-child {
+        margin-bottom: 0;
     }
 
     .input-group label {
@@ -131,7 +128,7 @@
     input,
     select {
         width: 100%;
-        padding: 12px;
+        padding: 11px 12px;
 
         background: #10131a;
         border: 1px solid #353c4b;
@@ -152,9 +149,130 @@
         color: #737b8a;
         font-size: 12px;
         margin-top: 5px;
+        line-height: 1.4;
     }
 
-    /* Results */
+    /* Sacrifice builder */
+
+    .sacrifice-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 18px;
+    }
+
+    .sacrifice-header h2 {
+        margin-bottom: 0;
+    }
+
+    .add-button {
+        background: #ffb52e;
+        border: none;
+        color: #111;
+        font-weight: bold;
+
+        padding: 11px 17px;
+        border-radius: 8px;
+
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .add-button:hover {
+        background: #ffc957;
+    }
+
+    .tower-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .tower-card {
+        background: #10131a;
+        border: 1px solid #303746;
+        border-radius: 12px;
+        padding: 18px;
+    }
+
+    .tower-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .tower-number {
+        font-weight: bold;
+        color: #ffb52e;
+    }
+
+    .remove-button {
+        background: transparent;
+        border: 1px solid #454d5d;
+        color: #aeb4c0;
+
+        padding: 6px 10px;
+        border-radius: 6px;
+
+        cursor: pointer;
+        font-size: 12px;
+    }
+
+    .remove-button:hover {
+        border-color: #ff6868;
+        color: #ff6868;
+    }
+
+    .tower-grid {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr 1fr 1fr;
+        gap: 12px;
+    }
+
+    .tower-input label {
+        display: block;
+        color: #aeb4c0;
+        font-size: 12px;
+        margin-bottom: 6px;
+    }
+
+    .tower-summary {
+        margin-top: 14px;
+        padding-top: 12px;
+        border-top: 1px solid #292f3d;
+
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+
+        color: #aeb4c0;
+        font-size: 13px;
+    }
+
+    .tower-summary strong {
+        color: white;
+    }
+
+    .empty-message {
+        text-align: center;
+        padding: 30px 10px;
+        color: #737b8a;
+        border: 1px dashed #353c4b;
+        border-radius: 10px;
+    }
+
+    /* Lower layout */
+
+    .bottom-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+        margin-top: 25px;
+    }
+
+    /* Result */
 
     .degree-display {
         text-align: center;
@@ -184,8 +302,6 @@
         font-size: 14px;
     }
 
-    /* Breakdown */
-
     .breakdown {
         display: flex;
         flex-direction: column;
@@ -210,8 +326,6 @@
     .power-row span:last-child {
         font-weight: bold;
     }
-
-    /* Progress */
 
     .progress-section {
         margin-top: 20px;
@@ -242,8 +356,6 @@
         transition: width 0.2s;
     }
 
-    /* Next degree */
-
     .next-degree {
         margin-top: 20px;
         padding: 15px;
@@ -252,13 +364,42 @@
         border-radius: 10px;
 
         text-align: center;
+        color: #c9cdd5;
+        font-size: 14px;
     }
 
     .next-degree strong {
         color: #ffb52e;
     }
 
-    /* Footer */
+    .stats-box {
+        margin-top: 20px;
+        padding: 15px;
+
+        background: #10131a;
+        border-radius: 10px;
+    }
+
+    .stats-box h3 {
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+
+    .stat-line {
+        display: flex;
+        justify-content: space-between;
+        color: #aeb4c0;
+        font-size: 13px;
+        margin-bottom: 7px;
+    }
+
+    .stat-line:last-child {
+        margin-bottom: 0;
+    }
+
+    .stat-line strong {
+        color: white;
+    }
 
     footer {
         text-align: center;
@@ -267,9 +408,23 @@
         font-size: 13px;
     }
 
-    /* Mobile */
+    @media (max-width: 800px) {
 
-    @media (max-width: 750px) {
+        .top-settings,
+        .bottom-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .tower-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .title h1 {
+            font-size: 32px;
+        }
+    }
+
+    @media (max-width: 500px) {
 
         nav {
             padding: 14px 18px;
@@ -287,16 +442,26 @@
             font-size: 13px;
         }
 
-        .calculator {
-            grid-template-columns: 1fr;
-        }
-
-        .title h1 {
-            font-size: 32px;
-        }
-
         .page {
-            padding-top: 30px;
+            padding: 30px 14px 50px;
+        }
+
+        .sacrifice-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .add-button {
+            width: 100%;
+        }
+
+        .tower-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .tower-summary {
+            flex-direction: column;
+            gap: 5px;
         }
     }
 </style>
@@ -329,20 +494,19 @@
     <h1>🟣 Paragon Degree Calculator</h1>
 
     <p>
-        Calculate the degree of a Paragon using its sacrificed towers,
-        pops, cash investment, upgrades, and Tier 5s.
+        Build your sacrifices and calculate the resulting Paragon degree.
     </p>
 
 </div>
 
 
-<div class="calculator">
+<!-- Paragon settings -->
 
-    <!-- INPUTS -->
+<div class="top-settings">
 
     <section class="panel">
 
-        <h2>Paragon Setup</h2>
+        <h2>Paragon</h2>
 
         <div class="input-group">
 
@@ -417,36 +581,32 @@
 
             <select id="difficulty">
 
-                <option value="1">
+                <option value="easy">
                     Easy
                 </option>
 
-                <option value="1.17647" selected>
+                <option value="medium" selected>
                     Medium
                 </option>
 
-                <option value="1.08">
+                <option value="hard">
                     Hard
                 </option>
 
-                <option value="1.2">
+                <option value="impoppable">
                     Impoppable
                 </option>
 
             </select>
 
-            <div class="hint">
-                Difficulty is currently informational; Paragon prices are
-                selected automatically below for future expansion.
-            </div>
-
         </div>
 
+    </section>
 
-        <h2 style="margin-top:30px;">
-            Power Sources
-        </h2>
 
+    <section class="panel">
+
+        <h2>Other Power Sources</h2>
 
         <div class="input-group">
 
@@ -462,7 +622,7 @@
             >
 
             <div class="hint">
-                180 pops = 1 power, up to 90,000 power.
+                180 pops = 1 power. Pops and income share a 90,000 power cap.
             </div>
 
         </div>
@@ -482,28 +642,7 @@
             >
 
             <div class="hint">
-                $45 generated = 1 power. Shares the pops power cap.
-            </div>
-
-        </div>
-
-
-        <div class="input-group">
-
-            <label for="tiers">
-                Non-Tier-5 Upgrade Tiers
-            </label>
-
-            <input
-                type="number"
-                id="tiers"
-                min="0"
-                max="100"
-                value="0"
-            >
-
-            <div class="hint">
-                100 power per tier, up to 10,000 power.
+                $45 generated = 1 power.
             </div>
 
         </div>
@@ -519,33 +658,12 @@
                 type="number"
                 id="extraT5"
                 min="0"
-                max="9"
                 value="0"
             >
 
             <div class="hint">
-                The three required Tier 5s do not count.
-                6,000 power per extra T5, up to 50,000 power.
-            </div>
-
-        </div>
-
-
-        <div class="input-group">
-
-            <label for="cash">
-                Cash Spent on Sacrificed Towers
-            </label>
-
-            <input
-                type="number"
-                id="cash"
-                min="0"
-                value="0"
-            >
-
-            <div class="hint">
-                Cash spent on non-T5 sacrificed towers.
+                Tier 5s beyond the three required T5s.
+                6,000 power each, up to 50,000 power.
             </div>
 
         </div>
@@ -565,39 +683,83 @@
             >
 
             <div class="hint">
-                Each totem contributes 2,000 power.
+                2,000 power each.
             </div>
 
         </div>
 
     </section>
 
+</div>
 
-    <!-- RESULTS -->
+
+<!-- Sacrifice builder -->
+
+<section class="panel">
+
+    <div class="sacrifice-header">
+
+        <h2>
+            Sacrificed Towers
+        </h2>
+
+        <button
+            type="button"
+            class="add-button"
+            id="addTower"
+        >
+            + Add Tower
+        </button>
+
+    </div>
+
+
+    <div id="towerList" class="tower-list">
+
+        <div class="empty-message" id="emptyMessage">
+
+            No sacrificed towers added yet.<br>
+            Click <strong>+ Add Tower</strong> to get started.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- Results -->
+
+<div class="bottom-layout">
 
     <section class="panel">
 
-        <h2>Result</h2>
+        <h2>Power Summary</h2>
 
 
-        <div class="degree-display">
+        <div class="stats-box">
 
-            <div class="degree-label">
-                Paragon Degree
+            <h3>Automatically Calculated Sacrifices</h3>
+
+            <div class="stat-line">
+                <span>Total sacrificed towers</span>
+                <strong id="totalTowers">0</strong>
             </div>
 
-            <div class="degree" id="degree">
-                1
+            <div class="stat-line">
+                <span>Total non-T5 tiers</span>
+                <strong id="totalTiers">0</strong>
             </div>
 
-            <div class="power-total" id="totalPower">
-                0 / 200,000 Power
+            <div class="stat-line">
+                <span>Total cash spent</span>
+                <strong id="totalCash">$0</strong>
             </div>
 
         </div>
 
 
-        <div class="breakdown">
+        <div class="breakdown" style="margin-top:20px;">
 
             <div class="power-row">
                 <span>Pops + Income</span>
@@ -622,6 +784,30 @@
             <div class="power-row">
                 <span>Geraldo Totems</span>
                 <span id="totemPower">0</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>Result</h2>
+
+
+        <div class="degree-display">
+
+            <div class="degree-label">
+                Paragon Degree
+            </div>
+
+            <div class="degree" id="degree">
+                1
+            </div>
+
+            <div class="power-total" id="totalPower">
+                0 / 200,000 Power
             </div>
 
         </div>
@@ -653,15 +839,12 @@
         </div>
 
 
-        <div class="next-degree" id="nextDegree">
-
-            Next degree:
-            <strong>2</strong>
-
-            requires
-            <strong>2,000</strong>
-            more power.
-
+        <div
+            class="next-degree"
+            id="nextDegree"
+        >
+            Next degree: <strong>2</strong>
+            requires <strong>0</strong> more power.
         </div>
 
     </section>
@@ -677,74 +860,625 @@
 <script>
 
     /*
-        BTD6 Paragon Power Calculator
+     * ============================================
+     * BTD6 PARAGON DEGREE CALCULATOR
+     * ============================================
+     *
+     * Sacrifice builder:
+     *
+     * Each tower has:
+     * - Top path
+     * - Middle path
+     * - Bottom path
+     * - Quantity
+     * - Cost of one tower
+     *
+     * The calculator automatically determines:
+     *
+     * Total upgrade tiers
+     * Total cash spent
+     *
+     * A Tier 5 itself is NOT counted as a
+     * non-T5 upgrade tier.
+     *
+     * Example:
+     *
+     * 0-4-2 = 6 non-T5 tiers
+     *
+     * 10 copies:
+     *
+     * 10 × 6 = 60 tiers
+     *
+     * ============================================
+     */
 
-        Current post-v39 formula:
 
-        Pops:
-            1 power / 180 pops
-            Maximum 90,000
+    const towerList = document.getElementById("towerList");
+    const emptyMessage = document.getElementById("emptyMessage");
+    const addTowerButton = document.getElementById("addTower");
 
-        Income:
-            1 power / $45 generated
-            Shares the 90,000 cap with pops
-
-        Non-T5 upgrades:
-            100 power / upgrade tier
-            Maximum 10,000
-
-        Extra T5:
-            6,000 power / extra T5
-            Maximum 50,000
-
-        Cash:
-            Paragon price / 20,000 dollars
-            Maximum 60,000
-
-        Totems:
-            2,000 power each
-
-        Total:
-            Maximum 200,000 power
-    */
-
-
-    const paragon = document.getElementById("paragon");
-
-    const pops = document.getElementById("pops");
-    const income = document.getElementById("income");
-    const tiers = document.getElementById("tiers");
-    const extraT5 = document.getElementById("extraT5");
-    const cash = document.getElementById("cash");
-    const totems = document.getElementById("totems");
-
-    const degreeDisplay = document.getElementById("degree");
-    const totalPowerDisplay = document.getElementById("totalPower");
-
-    const popPowerDisplay = document.getElementById("popPower");
-    const tierPowerDisplay = document.getElementById("tierPower");
-    const cashPowerDisplay = document.getElementById("cashPower");
-    const t5PowerDisplay = document.getElementById("t5Power");
-    const totemPowerDisplay = document.getElementById("totemPower");
-
-    const progressDisplay = document.getElementById("progress");
-    const percentageDisplay = document.getElementById("percentage");
-
-    const nextDegreeDisplay = document.getElementById("nextDegree");
+    let towerId = 0;
 
 
     /*
-        Power required for a specific degree.
+     * Create a path selector.
+     */
 
-        Degree 1 = 0 power
+    function createPathSelect(className) {
 
-        Degrees 2-99:
-        round(
-            (50D^3 + 5025D^2 + 168324D + 843000) / 600
-        )
+        const select = document.createElement("select");
 
-        Degree 100 = 200,000 power
-    */
+        select.className = className;
+
+        for (let i = 0; i <= 5; i++) {
+
+            const option = document.createElement("option");
+
+            option.value = i;
+            option.textContent = i;
+
+            select.appendChild(option);
+
+        }
+
+        return select;
+
+    }
+
+
+    /*
+     * Create a sacrificed tower card.
+     */
+
+    function addTower() {
+
+        towerId++;
+
+        emptyMessage.style.display = "none";
+
+
+        const card = document.createElement("div");
+
+        card.className = "tower-card";
+
+        card.dataset.id = towerId;
+
+
+        /*
+         * Header
+         */
+
+        const header = document.createElement("div");
+
+        header.className = "tower-card-header";
+
+
+        const number = document.createElement("div");
+
+        number.className = "tower-number";
+
+        number.textContent =
+            "Sacrifice " + towerId;
+
+
+        const remove = document.createElement("button");
+
+        remove.type = "button";
+
+        remove.className = "remove-button";
+
+        remove.textContent = "Remove";
+
+
+        remove.addEventListener("click", function() {
+
+            card.remove();
+
+            updateEmptyMessage();
+
+            calculate();
+
+        });
+
+
+        header.appendChild(number);
+
+        header.appendChild(remove);
+
+
+        /*
+         * Inputs
+         */
+
+        const grid = document.createElement("div");
+
+        grid.className = "tower-grid";
+
+
+        /*
+         * Tower name
+         */
+
+        const towerNameGroup = document.createElement("div");
+
+        towerNameGroup.className = "tower-input";
+
+
+        const towerNameLabel = document.createElement("label");
+
+        towerNameLabel.textContent = "Tower";
+
+
+        const towerName = document.createElement("select");
+
+        towerName.className = "tower-name";
+
+
+        const towers = [
+
+            "Dart Monkey",
+            "Boomerang Monkey",
+            "Bomb Shooter",
+            "Tack Shooter",
+            "Ice Monkey",
+            "Glue Storm",
+            "Monkey Buccaneer",
+            "Monkey Ace",
+            "Heli Pilot",
+            "Mortar Monkey",
+            "Dartling Gunner",
+            "Wizard Monkey",
+            "Super Monkey",
+            "Ninja Monkey",
+            "Alchemist",
+            "Druid",
+            "Banana Farm",
+            "Monkey Village",
+            "Engineer Monkey",
+            "Beast Handler",
+            "Mermonkey"
+
+        ];
+
+
+        towers.forEach(function(name) {
+
+            const option = document.createElement("option");
+
+            option.value = name;
+
+            option.textContent = name;
+
+            towerName.appendChild(option);
+
+        });
+
+
+        towerNameGroup.appendChild(towerNameLabel);
+
+        towerNameGroup.appendChild(towerName);
+
+
+        /*
+         * Paths
+         */
+
+        const topGroup = document.createElement("div");
+
+        topGroup.className = "tower-input";
+
+        const topLabel = document.createElement("label");
+
+        topLabel.textContent = "Top Path";
+
+        const topPath = createPathSelect("top-path");
+
+        topGroup.appendChild(topLabel);
+
+        topGroup.appendChild(topPath);
+
+
+        const middleGroup = document.createElement("div");
+
+        middleGroup.className = "tower-input";
+
+        const middleLabel = document.createElement("label");
+
+        middleLabel.textContent = "Middle Path";
+
+        const middlePath = createPathSelect("middle-path");
+
+        middleGroup.appendChild(middleLabel);
+
+        middleGroup.appendChild(middlePath);
+
+
+        const bottomGroup = document.createElement("div");
+
+        bottomGroup.className = "tower-input";
+
+        const bottomLabel = document.createElement("label");
+
+        bottomLabel.textContent = "Bottom Path";
+
+        const bottomPath = createPathSelect("bottom-path");
+
+        bottomGroup.appendChild(bottomLabel);
+
+        bottomGroup.appendChild(bottomPath);
+
+
+        /*
+         * Second row
+         */
+
+        const secondRow = document.createElement("div");
+
+        secondRow.className = "tower-grid";
+
+        secondRow.style.marginTop = "12px";
+
+
+        const quantityGroup = document.createElement("div");
+
+        quantityGroup.className = "tower-input";
+
+        const quantityLabel = document.createElement("label");
+
+        quantityLabel.textContent = "Quantity";
+
+        const quantity = document.createElement("input");
+
+        quantity.type = "number";
+
+        quantity.className = "quantity";
+
+        quantity.min = "1";
+
+        quantity.value = "1";
+
+
+        quantityGroup.appendChild(quantityLabel);
+
+        quantityGroup.appendChild(quantity);
+
+
+        const costGroup = document.createElement("div");
+
+        costGroup.className = "tower-input";
+
+        const costLabel = document.createElement("label");
+
+        costLabel.textContent = "Cost of One";
+
+        const cost = document.createElement("input");
+
+        cost.type = "number";
+
+        cost.className = "tower-cost";
+
+        cost.min = "0";
+
+        cost.step = "1";
+
+        cost.value = "0";
+
+
+        costGroup.appendChild(costLabel);
+
+        costGroup.appendChild(cost);
+
+
+        secondRow.appendChild(quantityGroup);
+
+        secondRow.appendChild(costGroup);
+
+
+        /*
+         * Summary
+         */
+
+        const summary = document.createElement("div");
+
+        summary.className = "tower-summary";
+
+
+        const tierSummary = document.createElement("span");
+
+        tierSummary.innerHTML =
+            "Tiers: <strong class='tower-tier-result'>0</strong>";
+
+
+        const cashSummary = document.createElement("span");
+
+        cashSummary.innerHTML =
+            "Cash: <strong class='tower-cash-result'>$0</strong>";
+
+
+        summary.appendChild(tierSummary);
+
+        summary.appendChild(cashSummary);
+
+
+        /*
+         * Assemble card
+         */
+
+        grid.appendChild(towerNameGroup);
+
+        grid.appendChild(topGroup);
+
+        grid.appendChild(middleGroup);
+
+        grid.appendChild(bottomGroup);
+
+
+        card.appendChild(header);
+
+        card.appendChild(grid);
+
+        card.appendChild(secondRow);
+
+        card.appendChild(summary);
+
+
+        towerList.appendChild(card);
+
+
+        /*
+         * Every input recalculates immediately.
+         */
+
+        card.querySelectorAll("input, select").forEach(function(input) {
+
+            input.addEventListener("input", calculate);
+
+            input.addEventListener("change", calculate);
+
+        });
+
+
+        updatePathRestrictions(card);
+
+        calculate();
+
+    }
+
+
+    /*
+     * Make sure a tower can't have more than
+     * one Tier 5 path.
+     *
+     * BTD6 crosspaths cannot reach Tier 5.
+     */
+
+    function updatePathRestrictions(card) {
+
+        const top = card.querySelector(".top-path");
+
+        const middle = card.querySelector(".middle-path");
+
+        const bottom = card.querySelector(".bottom-path");
+
+
+        const paths = [top, middle, bottom];
+
+
+        paths.forEach(function(path) {
+
+            const currentValue =
+                Number(path.value);
+
+
+            Array.from(path.options).forEach(function(option) {
+
+                option.disabled = false;
+
+            });
+
+
+            /*
+             * If another path is Tier 5,
+             * this path cannot exceed Tier 2.
+             *
+             * This is the normal BTD6
+             * Tier 5 crosspath restriction.
+             */
+
+            const anotherPathIsT5 =
+                paths.some(function(other) {
+
+                    return other !== path &&
+                        Number(other.value) === 5;
+
+                });
+
+
+            if (anotherPathIsT5) {
+
+                Array.from(path.options).forEach(function(option) {
+
+                    if (Number(option.value) > 2) {
+                        option.disabled = true;
+                    }
+
+                });
+
+            }
+
+
+            /*
+             * If this path itself is Tier 5,
+             * the other two paths are restricted.
+             */
+
+            if (currentValue === 5) {
+
+                paths.forEach(function(other) {
+
+                    if (other === path) return;
+
+                    Array.from(other.options).forEach(function(option) {
+
+                        if (Number(option.value) > 2) {
+                            option.disabled = true;
+                        }
+
+                    });
+
+                });
+
+            }
+
+        });
+
+    }
+
+
+    /*
+     * Calculate one tower's contribution.
+     */
+
+    function calculateTower(card) {
+
+        const top =
+            Number(card.querySelector(".top-path").value);
+
+        const middle =
+            Number(card.querySelector(".middle-path").value);
+
+        const bottom =
+            Number(card.querySelector(".bottom-path").value);
+
+        const quantity =
+            Math.max(
+                0,
+                Number(card.querySelector(".quantity").value) || 0
+            );
+
+        const cost =
+            Math.max(
+                0,
+                Number(card.querySelector(".tower-cost").value) || 0
+            );
+
+
+        /*
+         * A Tier 5 itself doesn't count as a
+         * non-T5 tier.
+         *
+         * Therefore:
+         *
+         * 4-2-0 = 6 tiers
+         * 5-2-0 = 7 actual upgrades, but
+         * only 2 non-T5 tiers are relevant
+         * from the T5 path + crosspath.
+         *
+         * More precisely:
+         *
+         * Count every tier below 5.
+         */
+
+        let tiers = 0;
+
+        if (top < 5) {
+            tiers += top;
+        }
+
+        if (middle < 5) {
+            tiers += middle;
+        }
+
+        if (bottom < 5) {
+            tiers += bottom;
+        }
+
+
+        const totalTiers =
+            tiers * quantity;
+
+
+        const totalCash =
+            cost * quantity;
+
+
+        /*
+         * Update the card's visible summary.
+         */
+
+        card.querySelector(
+            ".tower-tier-result"
+        ).textContent =
+            totalTiers.toLocaleString();
+
+
+        card.querySelector(
+            ".tower-cash-result"
+        ).textContent =
+            "$" + totalCash.toLocaleString();
+
+
+        return {
+            tiers: totalTiers,
+            cash: totalCash,
+            quantity: quantity
+        };
+
+    }
+
+
+    /*
+     * Calculate all towers.
+     */
+
+    function calculateSacrifices() {
+
+        let totalTiers = 0;
+
+        let totalCash = 0;
+
+        let totalTowers = 0;
+
+
+        const cards =
+            towerList.querySelectorAll(".tower-card");
+
+
+        cards.forEach(function(card) {
+
+            /*
+             * Reapply path restrictions whenever
+             * a path changes.
+             */
+
+            updatePathRestrictions(card);
+
+
+            const result =
+                calculateTower(card);
+
+
+            totalTiers += result.tiers;
+
+            totalCash += result.cash;
+
+            totalTowers += result.quantity;
+
+        });
+
+
+        return {
+            tiers: totalTiers,
+            cash: totalCash,
+            towers: totalTowers
+        };
+
+    }
+
+
+    /*
+     * Paragon power formula.
+     */
 
     function powerForDegree(degree) {
 
@@ -759,197 +1493,314 @@
         return Math.round(
             (
                 50 * Math.pow(degree, 3) +
-                5025 * Math.pow(degree, 2) +
+                5065 * Math.pow(degree, 2) +
                 168324 * degree +
                 843000
             ) / 600
         );
+
     }
 
 
     /*
-        Find the highest degree whose power
-        requirement has been reached.
-    */
+     * Determine degree from total power.
+     */
 
     function calculateDegree(power) {
 
         let degree = 1;
 
+
         for (let d = 2; d <= 100; d++) {
 
             if (power >= powerForDegree(d)) {
+
                 degree = d;
+
             } else {
+
                 break;
+
             }
+
         }
 
+
         return degree;
+
     }
 
 
+    /*
+     * Main calculation.
+     */
+
     function calculate() {
 
-        const paragonPrice = Number(paragon.value);
+        const paragonPrice =
+            Number(
+                document.getElementById("paragon").value
+            );
 
-        const popValue = Math.max(0, Number(pops.value) || 0);
-        const incomeValue = Math.max(0, Number(income.value) || 0);
-        const tierValue = Math.max(0, Number(tiers.value) || 0);
-        const t5Value = Math.max(0, Number(extraT5.value) || 0);
-        const cashValue = Math.max(0, Number(cash.value) || 0);
-        const totemValue = Math.max(0, Number(totems.value) || 0);
+
+        const popValue =
+            Math.max(
+                0,
+                Number(
+                    document.getElementById("pops").value
+                ) || 0
+            );
+
+
+        const incomeValue =
+            Math.max(
+                0,
+                Number(
+                    document.getElementById("income").value
+                ) || 0
+            );
+
+
+        const extraT5 =
+            Math.max(
+                0,
+                Number(
+                    document.getElementById("extraT5").value
+                ) || 0
+            );
+
+
+        const totems =
+            Math.max(
+                0,
+                Number(
+                    document.getElementById("totems").value
+                ) || 0
+            );
+
+
+        const sacrifices =
+            calculateSacrifices();
 
 
         /*
-            Pops and income share one power bucket.
+         * Pops + income
+         *
+         * 180 pops = 1 power
+         * $45 income = 1 power
+         *
+         * Shared 90,000 cap.
+         */
 
-            Every $45 income = 180 pops worth of power.
-        */
-
-        const popPower = Math.min(
-            90000,
-            Math.floor(popValue / 180) +
-            Math.floor(incomeValue / 45)
-        );
-
-
-        /*
-            Upgrade tiers
-        */
-
-        const tierPower = Math.min(
-            10000,
-            tierValue * 100
-        );
+        const popPower =
+            Math.min(
+                90000,
+                Math.floor(popValue / 180) +
+                Math.floor(incomeValue / 45)
+            );
 
 
         /*
-            Cash power
+         * Upgrade tier power
+         */
 
-            Current formula:
-            every Paragon Price / 20,000 dollars
-            contributes 1 power.
+        const tierPower =
+            Math.min(
+                10000,
+                sacrifices.tiers * 100
+            );
 
-            Example:
-            $500,000 Paragon
 
-            500,000 / 20,000 = 25
-
-            Therefore every $25 spent gives 1 power.
-        */
+        /*
+         * Cash power
+         *
+         * 1 power per
+         * Paragon Price / 20,000
+         * dollars spent.
+         *
+         * 60,000 power maximum.
+         */
 
         let cashPower = 0;
 
+
         if (paragonPrice > 0) {
 
-            cashPower = Math.floor(
-                cashValue /
-                (paragonPrice / 20000)
-            );
+            cashPower =
+                Math.floor(
+                    sacrifices.cash /
+                    (paragonPrice / 20000)
+                );
 
         }
 
-        cashPower = Math.min(
-            60000,
-            cashPower
-        );
+
+        cashPower =
+            Math.min(
+                60000,
+                cashPower
+            );
 
 
         /*
-            Extra Tier 5 power
-        */
+         * Extra T5 power
+         */
 
-        const t5Power = Math.min(
-            50000,
-            t5Value * 6000
-        );
-
-
-        /*
-            Geraldo Totems
-        */
-
-        const totemPower = totemValue * 2000;
+        const t5Power =
+            Math.min(
+                50000,
+                extraT5 * 6000
+            );
 
 
         /*
-            Total power
-        */
+         * Totem power
+         */
 
-        const totalPower = Math.min(
-            200000,
-            popPower +
-            tierPower +
-            cashPower +
-            t5Power +
-            totemPower
-        );
+        const totemPower =
+            totems * 2000;
 
 
         /*
-            Degree
-        */
+         * Total effective power
+         */
 
-        const degree = calculateDegree(totalPower);
+        const totalPower =
+            Math.min(
+                200000,
+                popPower +
+                tierPower +
+                cashPower +
+                t5Power +
+                totemPower
+            );
 
 
         /*
-            Update display
-        */
+         * Degree
+         */
 
-        degreeDisplay.textContent = degree;
-
-        totalPowerDisplay.textContent =
-            totalPower.toLocaleString() +
-            " / 200,000 Power";
+        const degree =
+            calculateDegree(totalPower);
 
 
-        popPowerDisplay.textContent =
+        /*
+         * Update sacrifice totals
+         */
+
+        document.getElementById(
+            "totalTowers"
+        ).textContent =
+            sacrifices.towers.toLocaleString();
+
+
+        document.getElementById(
+            "totalTiers"
+        ).textContent =
+            sacrifices.tiers.toLocaleString();
+
+
+        document.getElementById(
+            "totalCash"
+        ).textContent =
+            "$" + sacrifices.cash.toLocaleString();
+
+
+        /*
+         * Update power breakdown
+         */
+
+        document.getElementById(
+            "popPower"
+        ).textContent =
             popPower.toLocaleString();
 
-        tierPowerDisplay.textContent =
+
+        document.getElementById(
+            "tierPower"
+        ).textContent =
             tierPower.toLocaleString();
 
-        cashPowerDisplay.textContent =
+
+        document.getElementById(
+            "cashPower"
+        ).textContent =
             cashPower.toLocaleString();
 
-        t5PowerDisplay.textContent =
+
+        document.getElementById(
+            "t5Power"
+        ).textContent =
             t5Power.toLocaleString();
 
-        totemPowerDisplay.textContent =
+
+        document.getElementById(
+            "totemPower"
+        ).textContent =
             totemPower.toLocaleString();
 
 
         /*
-            Overall progress
-        */
+         * Degree display
+         */
+
+        document.getElementById(
+            "degree"
+        ).textContent =
+            degree;
+
+
+        document.getElementById(
+            "totalPower"
+        ).textContent =
+            totalPower.toLocaleString() +
+            " / 200,000 Power";
+
+
+        /*
+         * Progress bar
+         */
 
         const percentage =
             (totalPower / 200000) * 100;
 
-        progressDisplay.style.width =
+
+        document.getElementById(
+            "progress"
+        ).style.width =
             percentage + "%";
 
-        percentageDisplay.textContent =
+
+        document.getElementById(
+            "percentage"
+        ).textContent =
             percentage.toFixed(1) + "%";
 
 
         /*
-            Next degree information
-        */
+         * Next degree
+         */
+
+        const nextDegreeElement =
+            document.getElementById(
+                "nextDegree"
+            );
+
 
         if (degree >= 100) {
 
-            nextDegreeDisplay.innerHTML =
+            nextDegreeElement.innerHTML =
                 "<strong>Maximum Degree 100 reached!</strong>";
 
         } else {
 
-            const nextDegree = degree + 1;
+            const nextDegree =
+                degree + 1;
+
 
             const nextPower =
                 powerForDegree(nextDegree);
+
 
             const remaining =
                 Math.max(
@@ -957,7 +1808,8 @@
                     nextPower - totalPower
                 );
 
-            nextDegreeDisplay.innerHTML =
+
+            nextDegreeElement.innerHTML =
                 "Next degree: <strong>" +
                 nextDegree +
                 "</strong> requires <strong>" +
@@ -970,18 +1822,42 @@
 
 
     /*
-        Recalculate whenever an input changes.
-    */
+     * Show/hide empty message.
+     */
 
-    [
-        paragon,
-        pops,
-        income,
-        tiers,
-        extraT5,
-        cash,
-        totems
-    ].forEach(element => {
+    function updateEmptyMessage() {
+
+        const cards =
+            towerList.querySelectorAll(
+                ".tower-card"
+            );
+
+
+        emptyMessage.style.display =
+            cards.length === 0
+                ? "block"
+                : "none";
+
+    }
+
+
+    /*
+     * Add tower button
+     */
+
+    addTowerButton.addEventListener(
+        "click",
+        addTower
+    );
+
+
+    /*
+     * Other inputs
+     */
+
+    document.querySelectorAll(
+        "input, select"
+    ).forEach(function(element) {
 
         element.addEventListener(
             "input",
@@ -997,8 +1873,11 @@
 
 
     /*
-        Initial calculation
-    */
+     * Start with one sacrifice row.
+     */
+
+    addTower();
+
 
     calculate();
 

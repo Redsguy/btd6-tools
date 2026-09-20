@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#2c3e50">
+<meta name="theme-color" content="#191d27">
 <title>Hero Level Calculator - BTD6 Tools</title>
 
 <style>
@@ -12,68 +12,104 @@
         box-sizing: border-box;
     }
 
+    html {
+        scroll-behavior: smooth;
+    }
+
     body {
         margin: 0;
         font-family: Arial, Helvetica, sans-serif;
-        background: #111827;
+        background: #10131a;
         color: #f3f4f6;
     }
 
-    header {
-        background: #1f2937;
-        border-bottom: 2px solid #f59e0b;
-        padding: 18px 20px;
-        text-align: center;
+    /* =========================
+       SITE NAVIGATION
+       ========================= */
+
+    .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        width: 100%;
+        background: #191d27;
+        border-bottom: 2px solid #292f3d;
+        padding: 16px 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
     }
 
-    header h1 {
+    .logo {
+        color: #ffb52e;
+        text-decoration: none;
+        font-size: 24px;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .nav-links a {
+        color: #d8dbe2;
+        text-decoration: none;
+        font-size: 15px;
+        transition: color 0.15s ease;
+    }
+
+    .nav-links a:hover {
+        color: #ffb52e;
+    }
+
+    /* =========================
+       PAGE
+       ========================= */
+
+    main {
+        max-width: 1050px;
+        margin: 0 auto;
+        padding: 32px 20px 60px;
+    }
+
+    .page-title {
+        margin-bottom: 24px;
+    }
+
+    .page-title h1 {
         margin: 0;
-        color: #fbbf24;
+        color: #ffb52e;
         font-size: 30px;
     }
 
-    header p {
-        margin: 6px 0 0;
+    .page-title p {
+        margin: 7px 0 0;
         color: #9ca3af;
-        font-size: 14px;
-    }
-
-    .back {
-        display: inline-block;
-        margin-top: 10px;
-        color: #fbbf24;
-        text-decoration: none;
-        font-size: 14px;
-    }
-
-    .back:hover {
-        text-decoration: underline;
-    }
-
-    main {
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 24px 16px 50px;
+        font-size: 15px;
     }
 
     .card {
-        background: #1f2937;
-        border: 1px solid #374151;
-        border-radius: 14px;
-        padding: 20px;
+        background: #191d27;
+        border: 1px solid #292f3d;
+        border-radius: 12px;
+        padding: 22px;
         margin-bottom: 18px;
     }
 
     .card h2 {
-        margin: 0 0 16px;
-        color: #fbbf24;
-        font-size: 21px;
+        margin: 0 0 18px;
+        color: #ffb52e;
+        font-size: 20px;
     }
 
     .grid {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 15px;
+        gap: 16px;
     }
 
     .field {
@@ -83,7 +119,7 @@
     }
 
     label {
-        color: #d1d5db;
+        color: #d8dbe2;
         font-size: 14px;
         font-weight: bold;
     }
@@ -94,45 +130,47 @@
         min-height: 44px;
         padding: 10px 12px;
         border-radius: 8px;
-        border: 1px solid #4b5563;
-        background: #111827;
-        color: #f9fafb;
+        border: 1px solid #3a4150;
+        background: #10131a;
+        color: #f3f4f6;
         font-size: 16px;
         outline: none;
     }
 
     select:focus,
     input[type="number"]:focus {
-        border-color: #f59e0b;
+        border-color: #ffb52e;
     }
 
     .hero-info {
-        margin-top: 16px;
-        padding: 14px;
-        border-radius: 10px;
-        background: #111827;
-        border: 1px solid #374151;
-        display: flex;
-        justify-content: space-between;
-        gap: 15px;
-        flex-wrap: wrap;
+        margin-top: 18px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
     }
 
-    .hero-info-item {
-        min-width: 150px;
+    .info-box {
+        background: #10131a;
+        border: 1px solid #292f3d;
+        border-radius: 9px;
+        padding: 13px;
     }
 
-    .hero-info-item span {
+    .info-box span {
         display: block;
-        color: #9ca3af;
+        color: #8f96a3;
         font-size: 12px;
-        margin-bottom: 4px;
+        margin-bottom: 5px;
     }
 
-    .hero-info-item strong {
-        color: #f9fafb;
+    .info-box strong {
+        color: #f3f4f6;
         font-size: 17px;
     }
+
+    /* =========================
+       XP MODIFIERS
+       ========================= */
 
     .checks {
         display: grid;
@@ -145,16 +183,16 @@
         align-items: center;
         gap: 10px;
         min-height: 44px;
-        padding: 8px 10px;
-        background: #111827;
-        border: 1px solid #374151;
+        padding: 9px 11px;
+        background: #10131a;
+        border: 1px solid #292f3d;
         border-radius: 8px;
     }
 
     .check input {
         width: 18px;
         height: 18px;
-        accent-color: #f59e0b;
+        accent-color: #ffb52e;
         flex-shrink: 0;
     }
 
@@ -164,30 +202,39 @@
     }
 
     .small {
-        color: #9ca3af;
+        color: #8f96a3;
         font-size: 12px;
-        margin-top: 10px;
         line-height: 1.5;
+        margin-top: 12px;
     }
 
+    /* =========================
+       RESULT
+       ========================= */
+
     .result {
-        background: #111827;
-        border: 2px solid #f59e0b;
-        border-radius: 12px;
-        padding: 20px;
+        background: #10131a;
+        border: 1px solid #ffb52e;
+        border-radius: 10px;
+        padding: 22px;
         text-align: center;
     }
 
-    .result .big {
-        font-size: 54px;
-        font-weight: bold;
-        color: #fbbf24;
+    .result-label {
+        color: #8f96a3;
+        font-size: 14px;
+    }
+
+    .result-level {
+        color: #ffb52e;
+        font-size: 58px;
         line-height: 1;
+        font-weight: bold;
         margin: 8px 0;
     }
 
-    .result .sub {
-        color: #9ca3af;
+    .result-text {
+        color: #d8dbe2;
         font-size: 14px;
     }
 
@@ -195,55 +242,59 @@
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 10px;
-        margin-top: 16px;
+        margin-top: 12px;
     }
 
     .stat {
-        background: #1f2937;
-        border: 1px solid #374151;
+        background: #10131a;
+        border: 1px solid #292f3d;
         border-radius: 9px;
-        padding: 12px;
+        padding: 13px;
     }
 
     .stat span {
         display: block;
-        color: #9ca3af;
+        color: #8f96a3;
         font-size: 12px;
         margin-bottom: 5px;
     }
 
     .stat strong {
-        font-size: 18px;
         color: #f3f4f6;
+        font-size: 17px;
     }
+
+    /* =========================
+       TABLE
+       ========================= */
 
     .table-wrap {
         overflow-x: auto;
-        border-radius: 10px;
-        border: 1px solid #374151;
+        border: 1px solid #292f3d;
+        border-radius: 9px;
     }
 
     table {
         width: 100%;
         border-collapse: collapse;
-        min-width: 500px;
+        min-width: 520px;
     }
 
     th,
     td {
         padding: 11px 12px;
-        border-bottom: 1px solid #374151;
+        border-bottom: 1px solid #292f3d;
         text-align: left;
     }
 
     th {
-        background: #111827;
-        color: #fbbf24;
+        background: #10131a;
+        color: #ffb52e;
         font-size: 13px;
     }
 
     td {
-        color: #e5e7eb;
+        color: #d8dbe2;
         font-size: 14px;
     }
 
@@ -251,31 +302,52 @@
         border-bottom: none;
     }
 
-    .current-level {
-        color: #fbbf24;
+    .reached {
+        color: #ffb52e;
         font-weight: bold;
     }
 
     .not-reached {
-        color: #6b7280;
+        color: #666d7a;
     }
 
+    /* =========================
+       MOBILE
+       ========================= */
+
     @media (max-width: 650px) {
+        .navbar {
+            padding: 14px 18px;
+        }
+
+        .logo {
+            font-size: 20px;
+        }
+
+        .nav-links {
+            gap: 12px;
+        }
+
+        .nav-links a {
+            font-size: 13px;
+        }
+
+        main {
+            padding: 24px 14px 45px;
+        }
+
+        .page-title h1 {
+            font-size: 26px;
+        }
+
         .grid,
         .checks {
             grid-template-columns: 1fr;
         }
 
+        .hero-info,
         .stats {
             grid-template-columns: 1fr;
-        }
-
-        header h1 {
-            font-size: 25px;
-        }
-
-        main {
-            padding: 18px 12px 40px;
         }
     }
 </style>
@@ -284,15 +356,23 @@
 
 <body>
 
-<header>
-    <h1>BTD6 Tools</h1>
-    <p>Hero Level Calculator</p>
-    <a class="back" href="index.html">← Back to BTD6 Tools</a>
-</header>
+<nav class="navbar">
+    <a class="logo" href="index.html">BTD6 Tools</a>
+
+<div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="index.html#tools">Tools</a>
+</div>
+
+</nav>
 
 <main>
 
-```
+<div class="page-title">
+    <h1>Hero Level Calculator</h1>
+    <p>Calculate hero XP, levels, and the round each level is reached.</p>
+</div>
+
 <section class="card">
     <h2>Hero & Game Settings</h2>
 
@@ -300,6 +380,7 @@
 
         <div class="field">
             <label for="hero">Hero</label>
+
             <select id="hero">
                 <option value="quincy">Quincy</option>
                 <option value="gwendolin">Gwendolin</option>
@@ -324,6 +405,7 @@
 
         <div class="field">
             <label for="difficulty">Map Difficulty</label>
+
             <select id="difficulty">
                 <option value="1">Beginner — 1.00×</option>
                 <option value="1.1">Intermediate — 1.10×</option>
@@ -334,31 +416,45 @@
 
         <div class="field">
             <label for="placedRound">Hero Placed On Round</label>
-            <input id="placedRound" type="number" min="1" max="999" value="1">
+            <input
+                id="placedRound"
+                type="number"
+                min="1"
+                max="999"
+                value="1"
+            >
         </div>
 
         <div class="field">
             <label for="currentRound">Calculate Through Round</label>
-            <input id="currentRound" type="number" min="1" max="999" value="100">
+            <input
+                id="currentRound"
+                type="number"
+                min="1"
+                max="999"
+                value="100"
+            >
         </div>
 
     </div>
 
     <div class="hero-info">
-        <div class="hero-info-item">
+
+        <div class="info-box">
             <span>Hero XP Ratio</span>
-            <strong id="heroRatio">1.00×</strong>
+            <strong id="heroRatio">1×</strong>
         </div>
 
-        <div class="hero-info-item">
+        <div class="info-box">
             <span>Base XP to Level 20</span>
             <strong>213,560</strong>
         </div>
 
-        <div class="hero-info-item">
+        <div class="info-box">
             <span>Hero XP to Level 20</span>
             <strong id="heroTotalXP">213,560</strong>
         </div>
+
     </div>
 </section>
 
@@ -405,8 +501,8 @@
     </div>
 
     <div class="small">
-        These bonuses are multiplicative with the normal map XP modifier.
-        Monkeys Together Strong provides +5% in a single-player game.
+        XP modifiers are applied to the XP gained at the end of each
+        round. Empowered Heroes changes the starting level only.
     </div>
 </section>
 
@@ -414,12 +510,19 @@
     <h2>Result</h2>
 
     <div class="result">
-        <div class="sub">Hero Level on Round <span id="resultRound">100</span></div>
-        <div class="big" id="resultLevel">20</div>
-        <div class="sub" id="resultText">Your hero reaches Level 20.</div>
+        <div class="result-label">
+            Hero Level on Round <span id="resultRound">100</span>
+        </div>
+
+        <div class="result-level" id="resultLevel">20</div>
+
+        <div class="result-text" id="resultText">
+            Your hero reaches Level 20.
+        </div>
     </div>
 
     <div class="stats">
+
         <div class="stat">
             <span>XP Earned</span>
             <strong id="xpEarned">213,560</strong>
@@ -432,8 +535,9 @@
 
         <div class="stat">
             <span>XP Multiplier</span>
-            <strong id="xpMultiplier">1.00×</strong>
+            <strong id="xpMultiplier">1×</strong>
         </div>
+
     </div>
 </section>
 
@@ -445,7 +549,7 @@
             <thead>
                 <tr>
                     <th>Level</th>
-                    <th>XP Required</th>
+                    <th>Total XP Required</th>
                     <th>Round Reached</th>
                     <th>Status</th>
                 </tr>
@@ -455,136 +559,221 @@
         </table>
     </div>
 </section>
-```
 
 </main>
 
 <script>
 const heroes = {
-    quincy:      { name: "Quincy", ratio: 1.0 },
-    gwendolin:   { name: "Gwendolin", ratio: 1.0 },
-    striker:     { name: "Striker Jones", ratio: 1.0 },
-    obyn:        { name: "Obyn Greenfoot", ratio: 1.0 },
-    churchill:   { name: "Captain Churchill", ratio: 1.71 },
-    benjamin:    { name: "Benjamin", ratio: 1.5 },
-    ezili:       { name: "Ezili", ratio: 1.425 },
-    pat:         { name: "Pat Fusty", ratio: 1.425 },
-    adora:       { name: "Adora", ratio: 1.71 },
-    brickell:    { name: "Admiral Brickell", ratio: 1.425 },
-    etienne:     { name: "Etienne", ratio: 1.0 },
-    sauda:       { name: "Sauda", ratio: 1.425 },
-    psi:         { name: "Psi", ratio: 1.5 },
-    geraldo:     { name: "Geraldo", ratio: 1.0 },
-    corvus:      { name: "Corvus", ratio: 1.425 },
-    rosalia:    { name: "Rosalia", ratio: 1.425 },
-    silas:       { name: "Silas", ratio: 1.5 },
-    dan:         { name: "Dan D'Monke", ratio: 1.425 }
+    quincy: {
+        name: "Quincy",
+        ratio: 1
+    },
+
+    gwendolin: {
+        name: "Gwendolin",
+        ratio: 1
+    },
+
+    striker: {
+        name: "Striker Jones",
+        ratio: 1
+    },
+
+    obyn: {
+        name: "Obyn Greenfoot",
+        ratio: 1
+    },
+
+    etienne: {
+        name: "Etienne",
+        ratio: 1
+    },
+
+    geraldo: {
+        name: "Geraldo",
+        ratio: 1
+    },
+
+    ezili: {
+        name: "Ezili",
+        ratio: 1.425
+    },
+
+    pat: {
+        name: "Pat Fusty",
+        ratio: 1.425
+    },
+
+    brickell: {
+        name: "Admiral Brickell",
+        ratio: 1.425
+    },
+
+    sauda: {
+        name: "Sauda",
+        ratio: 1.425
+    },
+
+    rosalia: {
+        name: "Rosalia",
+        ratio: 1.425
+    },
+
+    corvus: {
+        name: "Corvus",
+        ratio: 1.425
+    },
+
+    benjamin: {
+        name: "Benjamin",
+        ratio: 1.5
+    },
+
+    psi: {
+        name: "Psi",
+        ratio: 1.5
+    },
+
+    silas: {
+        name: "Silas",
+        ratio: 1.71
+    },
+
+    churchill: {
+        name: "Captain Churchill",
+        ratio: 1.71
+    },
+
+    adora: {
+        name: "Adora",
+        ratio: 1.71
+    },
+
+    dan: {
+        name: "Dan D'Monke",
+        ratio: 1.425
+    }
 };
 
+
 /*
- * Base hero XP required for each individual level.
- * These are the 1× hero values.
- */
-const baseLevelXP = [
+    XP REQUIRED TO REACH EACH LEVEL FOR A 1× HERO.
+
+    Index 0 = Level 0
+    Index 1 = Level 1
+    ...
+    Index 20 = Level 20
+
+    These are cumulative requirements, which prevents
+    the Level 20 value from ever becoming NaN.
+*/
+
+const baseXP = [
+    0,
+    0,
     180,
-    460,
-    1000,
-    1860,
-    3280,
-    5180,
-    8320,
-    9380,
-    13620,
-    16380,
-    14400,
-    16650,
-    14940,
-    16380,
-    17820,
-    19260,
-    20700,
-    16470,
-    17280
+    640,
+    1640,
+    3500,
+    6780,
+    11960,
+    20280,
+    29660,
+    43280,
+    59660,
+    74060,
+    90710,
+    105650,
+    122030,
+    139850,
+    159110,
+    175580,
+    192860,
+    213560
 ];
 
-function roundedHeroXP(base, ratio) {
-    return Math.round(base * ratio);
+
+/*
+    XP awarded at the end of each round on Beginner.
+*/
+
+function xpPerRound(round) {
+    if (round <= 20) {
+        return round * 20 + 20;
+    }
+
+    if (round <= 50) {
+        return round * 40 - 380;
+    }
+
+    return round * 90 - 2880;
 }
 
-function getLevelRequirements(ratio) {
+
+function formatNumber(number) {
+    return Math.round(number).toLocaleString();
+}
+
+
+function formatRatio(number) {
+    if (number === 1) {
+        return "1×";
+    }
+
+    return number.toFixed(3).replace(/0+$/, "").replace(/\.$/, "") + "×";
+}
+
+
+function getHeroRequirements(ratio) {
     const requirements = [0];
 
-    for (let i = 0; i < baseLevelXP.length; i++) {
-        requirements.push(
-            requirements[i] + roundedHeroXP(baseLevelXP[i], ratio)
-        );
+    for (let level = 1; level <= 20; level++) {
+        requirements[level] = Math.round(baseXP[level] * ratio);
     }
 
     return requirements;
 }
 
-function roundXP(round) {
-    if (round <= 0) {
-        return 0;
+
+function getXPModifier() {
+    let modifier = Number(
+        document.getElementById("difficulty").value
+    );
+
+    if (document.getElementById("monkeyEducation").checked) {
+        modifier *= 1.08;
     }
 
-    if (round <= 20) {
-        return 40 + (round - 1) * 20;
+    if (document.getElementById("selfTaught").checked) {
+        modifier *= 1.10;
     }
 
-    if (round <= 50) {
-        return 460 + (round - 21) * 40;
+    if (document.getElementById("togetherStrong").checked) {
+        modifier *= 1.05;
     }
 
-    return 1710 + (round - 51) * 90;
+    if (document.getElementById("energizer").checked) {
+        modifier *= 1.50;
+    }
+
+    return modifier;
 }
 
-function getSettings() {
-    return {
-        difficulty: Number(document.getElementById("difficulty").value),
-        education: document.getElementById("monkeyEducation").checked,
-        selfTaught: document.getElementById("selfTaught").checked,
-        togetherStrong: document.getElementById("togetherStrong").checked,
-        empowered: document.getElementById("empowered").checked,
-        energizer: document.getElementById("energizer").checked
-    };
-}
 
-function getRoundMultiplier(settings) {
-    let multiplier = settings.difficulty;
-
-    if (settings.education) {
-        multiplier *= 1.08;
-    }
-
-    if (settings.selfTaught) {
-        multiplier *= 1.10;
-    }
-
-    if (settings.togetherStrong) {
-        multiplier *= 1.05;
-    }
-
-    if (settings.energizer) {
-        multiplier *= 1.50;
-    }
-
-    return multiplier;
-}
-
-function getXPThroughRound(startRound, endRound, multiplier) {
+function getXPBetweenRounds(startRound, endRound, modifier) {
     if (endRound < startRound) {
         return 0;
     }
 
-    let total = 0;
+    let xp = 0;
 
     for (let round = startRound; round <= endRound; round++) {
-        total += roundXP(round) * multiplier;
+        xp += xpPerRound(round) * modifier;
     }
 
-    return total;
+    return xp;
 }
+
 
 function getLevelFromXP(xp, requirements, startingLevel) {
     let level = startingLevel;
@@ -597,20 +786,26 @@ function getLevelFromXP(xp, requirements, startingLevel) {
         }
     }
 
-    return Math.max(1, Math.min(20, level));
+    return Math.min(20, Math.max(1, level));
 }
 
-function findLevelRound(level, startRound, multiplier, requirements) {
-    if (level <= 1) {
-        return startRound;
+
+function findRoundForLevel(
+    targetLevel,
+    placedRound,
+    modifier,
+    requirements
+) {
+    if (targetLevel <= 1) {
+        return placedRound;
     }
 
     let xp = 0;
 
-    for (let round = startRound; round <= 999; round++) {
-        xp += roundXP(round) * multiplier;
+    for (let round = placedRound; round <= 999; round++) {
+        xp += xpPerRound(round) * modifier;
 
-        if (xp >= requirements[level]) {
+        if (xp >= requirements[targetLevel]) {
             return round;
         }
     }
@@ -618,34 +813,59 @@ function findLevelRound(level, startRound, multiplier, requirements) {
     return "—";
 }
 
-function formatNumber(value) {
-    return Math.round(value).toLocaleString();
-}
 
 function updateCalculator() {
+
     const heroKey = document.getElementById("hero").value;
     const hero = heroes[heroKey];
 
-    let placedRound = Number(document.getElementById("placedRound").value);
-    let currentRound = Number(document.getElementById("currentRound").value);
+    let placedRound = Number(
+        document.getElementById("placedRound").value
+    );
 
-    placedRound = Math.max(1, Math.min(999, placedRound || 1));
-    currentRound = Math.max(placedRound, Math.min(999, currentRound || placedRound));
+    let currentRound = Number(
+        document.getElementById("currentRound").value
+    );
+
+    if (!Number.isFinite(placedRound)) {
+        placedRound = 1;
+    }
+
+    if (!Number.isFinite(currentRound)) {
+        currentRound = 100;
+    }
+
+    placedRound = Math.max(
+        1,
+        Math.min(999, Math.floor(placedRound))
+    );
+
+    currentRound = Math.max(
+        placedRound,
+        Math.min(999, Math.floor(currentRound))
+    );
 
     document.getElementById("placedRound").value = placedRound;
     document.getElementById("currentRound").value = currentRound;
 
-    const settings = getSettings();
-    const multiplier = getRoundMultiplier(settings);
-    const requirements = getLevelRequirements(hero.ratio);
 
-    const startingLevel = settings.empowered ? 3 : 1;
+    const requirements = getHeroRequirements(hero.ratio);
 
-    const xp = getXPThroughRound(
+    const modifier = getXPModifier();
+
+    const empowered = document.getElementById(
+        "empowered"
+    ).checked;
+
+    const startingLevel = empowered ? 3 : 1;
+
+
+    const xp = getXPBetweenRounds(
         placedRound,
         currentRound,
-        multiplier
+        modifier
     );
+
 
     const level = getLevelFromXP(
         xp,
@@ -653,8 +873,9 @@ function updateCalculator() {
         startingLevel
     );
 
+
     document.getElementById("heroRatio").textContent =
-        hero.ratio.toFixed(3).replace(/0+$/, "").replace(/\.$/, "") + "×";
+        formatRatio(hero.ratio);
 
     document.getElementById("heroTotalXP").textContent =
         formatNumber(requirements[20]);
@@ -669,15 +890,25 @@ function updateCalculator() {
         formatNumber(xp);
 
     document.getElementById("xpMultiplier").textContent =
-        multiplier.toFixed(3) + "×";
+        modifier.toFixed(3).replace(/0+$/, "").replace(/\.$/, "") + "×";
+
 
     if (level >= 20) {
-        document.getElementById("xpNext").textContent = "MAX";
+
+        document.getElementById("xpNext").textContent =
+            "MAX";
+
         document.getElementById("resultText").textContent =
             hero.name + " reaches Level 20.";
+
     } else {
-        const nextXP = requirements[level + 1];
-        const remaining = Math.max(0, nextXP - xp);
+
+        const nextLevelXP =
+            requirements[level + 1];
+
+        const remaining =
+            Math.max(0, nextLevelXP - xp);
+
         document.getElementById("xpNext").textContent =
             formatNumber(remaining);
 
@@ -685,37 +916,64 @@ function updateCalculator() {
             hero.name + " reaches Level " + level + ".";
     }
 
-    const table = document.getElementById("levelTable");
+
+    const table =
+        document.getElementById("levelTable");
+
     table.innerHTML = "";
 
-    for (let i = 2; i <= 20; i++) {
+
+    for (let levelNumber = 2; levelNumber <= 20; levelNumber++) {
+
         const row = document.createElement("tr");
 
-        const levelCell = document.createElement("td");
-        levelCell.textContent = i;
+        const levelCell =
+            document.createElement("td");
 
-        const xpCell = document.createElement("td");
-        xpCell.textContent = formatNumber(requirements[i]);
+        levelCell.textContent =
+            levelNumber;
 
-        const roundCell = document.createElement("td");
-        const reachedRound = findLevelRound(
-            i,
-            placedRound,
-            multiplier,
-            requirements
-        );
 
-        roundCell.textContent = reachedRound;
+        const xpCell =
+            document.createElement("td");
 
-        const statusCell = document.createElement("td");
+        xpCell.textContent =
+            formatNumber(requirements[levelNumber]);
 
-        if (level >= i) {
-            statusCell.textContent = "Reached";
-            statusCell.className = "current-level";
+
+        const roundCell =
+            document.createElement("td");
+
+        roundCell.textContent =
+            findRoundForLevel(
+                levelNumber,
+                placedRound,
+                modifier,
+                requirements
+            );
+
+
+        const statusCell =
+            document.createElement("td");
+
+
+        if (level >= levelNumber) {
+
+            statusCell.textContent =
+                "Reached";
+
+            statusCell.className =
+                "reached";
+
         } else {
-            statusCell.textContent = "Not reached";
-            statusCell.className = "not-reached";
+
+            statusCell.textContent =
+                "Not reached";
+
+            statusCell.className =
+                "not-reached";
         }
+
 
         row.appendChild(levelCell);
         row.appendChild(xpCell);
@@ -726,12 +984,22 @@ function updateCalculator() {
     }
 }
 
+
 document.querySelectorAll(
     "select, input"
 ).forEach(element => {
-    element.addEventListener("input", updateCalculator);
-    element.addEventListener("change", updateCalculator);
+
+    element.addEventListener(
+        "input",
+        updateCalculator
+    );
+
+    element.addEventListener(
+        "change",
+        updateCalculator
+    );
 });
+
 
 updateCalculator();
 </script>

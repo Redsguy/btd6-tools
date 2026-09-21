@@ -2,47 +2,1628 @@
 
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discount Calculator — BTD6 Tools</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10131a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="BTD6 Tools">
 
-<style>
+  <title>Discount Calculator - BTD6 Tools</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: #10131a;
-        color: white;
-        text-align: center;
+      margin: 0;
+      background: #10131a;
+      color: #f1f3f7;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
+    /* NAVBAR */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 64px;
+      background: #191d27;
+      border-bottom: 1px solid #292f3d;
+      display: flex;
+      align-items: center;
+      padding: 0 28px;
+    }
+
+    .nav-inner {
+      width: 100%;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      color: #ffb52e;
+      font-size: 24px;
+      font-weight: 800;
+      text-decoration: none;
+      letter-spacing: 0.3px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 26px;
+    }
+
+    .nav-links a {
+      color: #c7ccd6;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 600;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover {
+      color: #ffb52e;
+    }
+
+    /* PAGE */
     .container {
-        max-width: 800px;
-        margin: 100px auto;
-        padding: 30px;
+      width: 100%;
+      max-width: 1050px;
+      margin: 0 auto;
+      padding: 42px 20px 70px;
     }
 
-    a {
-        color: #ffb52e;
+    .page-header {
+      margin-bottom: 28px;
     }
-</style>
+
+    .page-header h1 {
+      margin: 0 0 8px;
+      font-size: 34px;
+      color: #ffffff;
+    }
+
+    .page-header p {
+      margin: 0;
+      color: #9299a8;
+      font-size: 16px;
+    }
+
+    /* CARDS */
+    .card {
+      background: #191d27;
+      border: 1px solid #292f3d;
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .card h2 {
+      margin: 0 0 18px;
+      font-size: 20px;
+      color: #ffffff;
+    }
+
+    .card-description {
+      color: #9299a8;
+      font-size: 14px;
+      line-height: 1.5;
+      margin: -8px 0 20px;
+    }
+
+    /* INPUTS */
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .input-group.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      color: #d7dbe3;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .hint {
+      color: #737b8b;
+      font-size: 12px;
+      font-weight: normal;
+      margin-left: 4px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px 13px;
+      background: #10131a;
+      border: 1px solid #343b4a;
+      border-radius: 9px;
+      color: #ffffff;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    select {
+      cursor: pointer;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #ffb52e;
+      box-shadow: 0 0 0 2px rgba(255, 181, 46, 0.12);
+    }
+
+    /* VILLAGE LIST */
+    .village-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .village-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      padding: 15px;
+      background: #10131a;
+      border: 1px solid #292f3d;
+      border-radius: 10px;
+    }
+
+    .village-row.hidden {
+      display: none;
+    }
+
+    .village-number {
+      color: #ffb52e;
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 7px;
+    }
+
+    .village-cost-display {
+      min-height: 45px;
+      display: flex;
+      align-items: center;
+      padding: 10px 13px;
+      border-radius: 9px;
+      background: #191d27;
+      border: 1px solid #343b4a;
+      color: #ffb52e;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .village-discount-display {
+      min-height: 45px;
+      display: flex;
+      align-items: center;
+      padding: 10px 13px;
+      border-radius: 9px;
+      background: #191d27;
+      border: 1px solid #343b4a;
+      color: #ffffff;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .village-detail {
+      color: #737b8b;
+      font-size: 12px;
+      line-height: 1.4;
+      margin-top: 7px;
+    }
+
+    /* TOWER INPUTS */
+    .tower-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tower-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 12px;
+      align-items: end;
+      padding: 15px;
+      background: #10131a;
+      border: 1px solid #292f3d;
+      border-radius: 10px;
+    }
+
+    .tower-number {
+      grid-column: 1 / -1;
+      color: #ffb52e;
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: -2px;
+    }
+
+    .remove-button {
+      height: 45px;
+      padding: 0 15px;
+      border: 1px solid #343b4a;
+      border-radius: 9px;
+      background: #191d27;
+      color: #c7ccd6;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+
+    .remove-button:hover {
+      border-color: #ffb52e;
+      color: #ffb52e;
+    }
+
+    /* BUTTONS */
+    .button-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .add-button {
+      padding: 11px 17px;
+      border: 1px solid #343b4a;
+      border-radius: 9px;
+      background: #10131a;
+      color: #ffb52e;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .add-button:hover {
+      background: #191d27;
+      border-color: #ffb52e;
+    }
+
+    /* RESULTS */
+    .results {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .result-box {
+      background: #10131a;
+      border: 1px solid #292f3d;
+      border-radius: 12px;
+      padding: 22px;
+      text-align: center;
+    }
+
+    .result-label {
+      color: #9299a8;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 9px;
+    }
+
+    .result-number {
+      color: #ffb52e;
+      font-size: 36px;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    .result-unit {
+      color: #c7ccd6;
+      font-size: 14px;
+      margin-top: 7px;
+    }
+
+    .result-detail {
+      color: #737b8b;
+      font-size: 12px;
+      margin-top: 12px;
+      line-height: 1.4;
+    }
+
+    /* BREAKDOWN */
+    .breakdown {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stat {
+      padding: 15px;
+      background: #10131a;
+      border: 1px solid #292f3d;
+      border-radius: 10px;
+    }
+
+    .stat-label {
+      color: #737b8b;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    /* SUMMARY */
+    .summary {
+      margin-top: 18px;
+      padding: 16px;
+      background: #10131a;
+      border: 1px solid #292f3d;
+      border-radius: 10px;
+    }
+
+    .summary-title {
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .summary-text {
+      color: #9299a8;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .summary-highlight {
+      color: #ffb52e;
+      font-weight: 800;
+    }
+
+    /* INFO */
+    .info {
+      padding: 15px 17px;
+      border-left: 3px solid #ffb52e;
+      background: rgba(255, 181, 46, 0.05);
+      color: #aeb5c2;
+      font-size: 13px;
+      line-height: 1.55;
+      border-radius: 0 8px 8px 0;
+    }
+
+    /* MOBILE */
+    @media (max-width: 700px) {
+      .navbar {
+        padding: 0 16px;
+      }
+
+      .nav-links {
+        gap: 15px;
+      }
+
+      .nav-links a {
+        font-size: 14px;
+      }
+
+      .container {
+        padding: 30px 14px 50px;
+      }
+
+      .page-header h1 {
+        font-size: 28px;
+      }
+
+      .input-grid,
+      .results,
+      .breakdown,
+      .village-row,
+      .tower-row {
+        grid-template-columns: 1fr;
+      }
+
+      .tower-number {
+        grid-column: auto;
+      }
+
+      .card {
+        padding: 19px;
+      }
+
+      .remove-button {
+        width: 100%;
+      }
+    }
+  </style>
 
 </head>
 
 <body>
 
-<div class="container">
+  <nav class="navbar">
+    <div class="nav-inner">
 
-<h1>🏛️ Discount Calculator</h1>
+      <a class="logo" href="index.html">BTD6 Tools</a>
 
-<p>
-    This calculator is coming next!
-</p>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#tools">Tools</a>
+      </div>
 
-<p>
-    <a href="index.html">← Back to BTD6 Tools</a>
-</p>
+    </div>
+  </nav>
 
-</div>
+
+  <main class="container">
+
+    <div class="page-header">
+      <h1>Discount Calculator</h1>
+      <p>Calculate how much money Monkey Village discounts can save you.</p>
+    </div>
+
+
+    <!-- DISCOUNT VILLAGES -->
+    <section class="card">
+
+      <h2>Discount Villages</h2>
+
+      <p class="card-description">
+        Select how many Monkey Commerce villages you are using.
+        Villages can receive discounts from villages that were
+        purchased before them.
+      </p>
+
+
+      <div class="input-grid">
+
+        <div class="input-group">
+
+          <label for="villageCount">
+            Number of Discount Villages
+          </label>
+
+          <select
+            id="villageCount"
+            onchange="updateVillages(); calculate();"
+          >
+            <option value="1">1 Village</option>
+            <option value="2">2 Villages</option>
+            <option value="3">3 Villages</option>
+          </select>
+
+        </div>
+
+
+        <div class="input-group">
+
+          <label for="difficulty">
+            Difficulty
+          </label>
+
+          <select
+            id="difficulty"
+            onchange="calculate()"
+          >
+            <option value="easy">Easy</option>
+            <option value="medium" selected>Medium</option>
+            <option value="hard">Hard</option>
+            <option value="impoppable">Impoppable</option>
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <div class="village-list" style="margin-top: 18px;">
+
+
+        <!-- VILLAGE 1 -->
+        <div class="village-row" id="village1">
+
+          <div>
+
+            <div class="village-number">
+              Discount Village 1
+            </div>
+
+            <div class="input-group">
+
+              <label>
+                Actual Cost
+              </label>
+
+              <div
+                class="village-cost-display"
+                id="village1Cost"
+              >
+                $2,375
+              </div>
+
+            </div>
+
+            <div class="village-detail">
+              The first village receives no discount.
+            </div>
+
+          </div>
+
+
+          <div>
+
+            <div class="village-number">
+              Discount Applied
+            </div>
+
+            <div
+              class="village-discount-display"
+              id="village1Discount"
+            >
+              0%
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- VILLAGE 2 -->
+        <div class="village-row hidden" id="village2">
+
+          <div>
+
+            <div class="village-number">
+              Discount Village 2
+            </div>
+
+            <div class="input-group">
+
+              <label>
+                Actual Cost
+              </label>
+
+              <div
+                class="village-cost-display"
+                id="village2Cost"
+              >
+                $2,019
+              </div>
+
+            </div>
+
+            <div class="village-detail">
+              This village is inside Village 1's discount range.
+            </div>
+
+          </div>
+
+
+          <div>
+
+            <div class="village-number">
+              Discount Applied
+            </div>
+
+            <div
+              class="village-discount-display"
+              id="village2Discount"
+            >
+              15%
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- VILLAGE 3 -->
+        <div class="village-row hidden" id="village3">
+
+          <div>
+
+            <div class="village-number">
+              Discount Village 3
+            </div>
+
+            <div class="input-group">
+
+              <label>
+                Actual Cost
+              </label>
+
+              <div
+                class="village-cost-display"
+                id="village3Cost"
+              >
+                $1,900
+              </div>
+
+            </div>
+
+            <div class="village-detail">
+              This village is inside the first two villages' discount range.
+            </div>
+
+          </div>
+
+
+          <div>
+
+            <div class="village-number">
+              Discount Applied
+            </div>
+
+            <div
+              class="village-discount-display"
+              id="village3Discount"
+            >
+              20%
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="summary">
+
+        <div class="summary-title">
+          Tower Discount
+        </div>
+
+        <div class="summary-text">
+
+          Your towers will receive a
+          <span
+            class="summary-highlight"
+            id="totalDiscount"
+          >
+            15%
+          </span>
+          discount.
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- TOWERS -->
+    <section class="card">
+
+      <h2>Towers</h2>
+
+      <p class="card-description">
+        Add the towers and upgrades you are planning to purchase.
+        Enter the total amount you would have spent without discounts.
+      </p>
+
+
+      <div
+        class="tower-list"
+        id="towerList"
+      >
+
+
+        <!-- TOWER 1 -->
+        <div
+          class="tower-row"
+          id="tower1"
+        >
+
+          <div class="tower-number">
+            Tower 1
+          </div>
+
+
+          <div class="input-group">
+
+            <label for="tower1Name">
+              Tower / Upgrade
+            </label>
+
+            <input
+              id="tower1Name"
+              type="text"
+              placeholder="Example: Banana Farm"
+              oninput="calculate()"
+            >
+
+          </div>
+
+
+          <div class="input-group">
+
+            <label for="tower1Cost">
+              Original Cost
+            </label>
+
+            <input
+              id="tower1Cost"
+              type="number"
+              min="0"
+              step="1"
+              placeholder="10000"
+              oninput="calculate()"
+            >
+
+          </div>
+
+
+          <button
+            class="remove-button"
+            onclick="removeTower(1)"
+            type="button"
+          >
+            Remove
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="button-row">
+
+        <button
+          class="add-button"
+          onclick="addTower()"
+          type="button"
+        >
+          + Add Tower
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- RESULTS -->
+    <section class="card">
+
+      <h2>Discount Results</h2>
+
+
+      <div class="results">
+
+
+        <div class="result-box">
+
+          <div class="result-label">
+            Money Saved
+          </div>
+
+          <div
+            class="result-number"
+            id="moneySaved"
+          >
+            $0
+          </div>
+
+          <div class="result-unit">
+            saved through discounts
+          </div>
+
+          <div
+            class="result-detail"
+            id="savingsDetail"
+          >
+            Enter tower costs to calculate.
+          </div>
+
+        </div>
+
+
+        <div class="result-box">
+
+          <div class="result-label">
+            Discounted Cost
+          </div>
+
+          <div
+            class="result-number"
+            id="discountedCost"
+          >
+            $0
+          </div>
+
+          <div class="result-unit">
+            total cost after discounts
+          </div>
+
+          <div class="result-detail">
+            The amount you actually spend on the towers.
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- BREAKDOWN -->
+    <section class="card">
+
+      <h2>Breakdown</h2>
+
+
+      <div class="breakdown">
+
+
+        <div class="stat">
+
+          <div class="stat-label">
+            Original Tower Cost
+          </div>
+
+          <div
+            class="stat-value"
+            id="displayOriginal"
+          >
+            $0
+          </div>
+
+        </div>
+
+
+        <div class="stat">
+
+          <div class="stat-label">
+            Village Cost
+          </div>
+
+          <div
+            class="stat-value"
+            id="displayVillageCost"
+          >
+            $0
+          </div>
+
+        </div>
+
+
+        <div class="stat">
+
+          <div class="stat-label">
+            Total Investment
+          </div>
+
+          <div
+            class="stat-value"
+            id="displayInvestment"
+          >
+            $0
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="summary">
+
+        <div class="summary-title">
+          Discount Village Break Even
+        </div>
+
+        <div
+          class="summary-text"
+          id="worthItText"
+        >
+          Enter your tower costs to see whether the discounts have
+          paid for the villages.
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- INFO -->
+    <section class="card">
+
+      <div class="info">
+
+        <strong>How it works:</strong>
+        Monkey Commerce gives a 15% discount to towers and
+        Tier 3 and lower upgrades in range. Additional Monkey
+        Commerce villages add another 5% each, for a maximum
+        of 25% with three villages. The calculator also applies
+        those discounts to later discount villages when they are
+        purchased inside the existing villages' ranges.
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <script>
+
+    let towerCount = 1;
+
+
+    /*
+      Base cost of a 0-0-2 Monkey Village
+      by difficulty.
+
+      These are the total costs of the village
+      through Monkey Commerce.
+    */
+
+    const villageCosts = {
+      easy: 2020,
+      medium: 2375,
+      hard: 2565,
+      impoppable: 2850
+    };
+
+
+    /*
+      Get a number safely.
+    */
+
+    function getNumber(id) {
+
+      const element =
+        document.getElementById(id);
+
+      if (!element) {
+        return 0;
+      }
+
+      const value =
+        parseFloat(element.value);
+
+      return Number.isFinite(value)
+        ? Math.max(0, value)
+        : 0;
+
+    }
+
+
+    /*
+      Format money.
+    */
+
+    function formatMoney(value) {
+
+      return "$" +
+        Math.round(value)
+          .toLocaleString("en-US");
+
+    }
+
+
+    /*
+      Number of villages.
+    */
+
+    function getVillageCount() {
+
+      return parseInt(
+        document.getElementById(
+          "villageCount"
+        ).value
+      );
+
+    }
+
+
+    /*
+      Total tower discount.
+
+      1 village = 15%
+      2 villages = 20%
+      3 villages = 25%
+    */
+
+    function getTowerDiscount() {
+
+      const count =
+        getVillageCount();
+
+      if (count === 1) {
+        return 0.15;
+      }
+
+      if (count === 2) {
+        return 0.20;
+      }
+
+      return 0.25;
+
+    }
+
+
+    /*
+      Update which village rows
+      are visible.
+    */
+
+    function updateVillages() {
+
+      const count =
+        getVillageCount();
+
+
+      for (let i = 1; i <= 3; i++) {
+
+        const village =
+          document.getElementById(
+            "village" + i
+          );
+
+        if (i <= count) {
+
+          village.classList.remove(
+            "hidden"
+          );
+
+        } else {
+
+          village.classList.add(
+            "hidden"
+          );
+
+        }
+
+      }
+
+    }
+
+
+    /*
+      Calculate the actual cost of
+      each discount village.
+
+      Village 1:
+        0% discount
+
+      Village 2:
+        15% discount
+
+      Village 3:
+        20% discount
+    */
+
+    function calculateVillageCosts() {
+
+      const difficulty =
+        document.getElementById(
+          "difficulty"
+        ).value;
+
+
+      const baseCost =
+        villageCosts[difficulty];
+
+
+      const villageCount =
+        getVillageCount();
+
+
+      const discounts = [
+        0,
+        0.15,
+        0.20
+      ];
+
+
+      const costs = [];
+
+
+      for (
+        let i = 0;
+        i < villageCount;
+        i++
+      ) {
+
+        const discount =
+          discounts[i];
+
+        const cost =
+          baseCost *
+          (1 - discount);
+
+        costs.push(cost);
+
+      }
+
+
+      /*
+        Update display.
+      */
+
+      for (
+        let i = 1;
+        i <= 3;
+        i++
+      ) {
+
+        const costElement =
+          document.getElementById(
+            "village" + i + "Cost"
+          );
+
+        const discountElement =
+          document.getElementById(
+            "village" + i + "Discount"
+          );
+
+
+        if (i <= villageCount) {
+
+          const cost =
+            costs[i - 1];
+
+          const discount =
+            discounts[i - 1];
+
+
+          costElement.textContent =
+            formatMoney(cost);
+
+
+          discountElement.textContent =
+            Math.round(
+              discount * 100
+            ) + "%";
+
+        }
+
+      }
+
+
+      return costs;
+
+    }
+
+
+    /*
+      Add another tower.
+    */
+
+    function addTower() {
+
+      towerCount++;
+
+
+      const tower =
+        document.createElement(
+          "div"
+        );
+
+
+      tower.className =
+        "tower-row";
+
+
+      tower.id =
+        "tower" +
+        towerCount;
+
+
+      tower.innerHTML = `
+
+        <div class="tower-number">
+          Tower ${towerCount}
+        </div>
+
+        <div class="input-group">
+
+          <label for="tower${towerCount}Name">
+            Tower / Upgrade
+          </label>
+
+          <input
+            id="tower${towerCount}Name"
+            type="text"
+            placeholder="Example: Banana Farm"
+            oninput="calculate()"
+          >
+
+        </div>
+
+
+        <div class="input-group">
+
+          <label for="tower${towerCount}Cost">
+            Original Cost
+          </label>
+
+          <input
+            id="tower${towerCount}Cost"
+            type="number"
+            min="0"
+            step="1"
+            placeholder="10000"
+            oninput="calculate()"
+          >
+
+        </div>
+
+
+        <button
+          class="remove-button"
+          onclick="removeTower(${towerCount})"
+          type="button"
+        >
+          Remove
+        </button>
+
+      `;
+
+
+      document
+        .getElementById(
+          "towerList"
+        )
+        .appendChild(tower);
+
+
+      calculate();
+
+    }
+
+
+    /*
+      Remove a tower.
+    */
+
+    function removeTower(number) {
+
+      const tower =
+        document.getElementById(
+          "tower" + number
+        );
+
+
+      if (!tower) {
+        return;
+      }
+
+
+      const towers =
+        document.querySelectorAll(
+          ".tower-row"
+        );
+
+
+      /*
+        Always keep at least
+        one tower.
+      */
+
+      if (towers.length <= 1) {
+        return;
+      }
+
+
+      tower.remove();
+
+
+      calculate();
+
+    }
+
+
+    /*
+      Main calculator.
+    */
+
+    function calculate() {
+
+      updateVillages();
+
+
+      const villageCount =
+        getVillageCount();
+
+
+      const towerDiscount =
+        getTowerDiscount();
+
+
+      /*
+        Calculate village costs
+        with discounts applied
+        to later villages.
+      */
+
+      const villageCostsActual =
+        calculateVillageCosts();
+
+
+      let totalVillageCost = 0;
+
+
+      villageCostsActual.forEach(
+        cost => {
+          totalVillageCost += cost;
+        }
+      );
+
+
+      /*
+        Calculate tower costs.
+      */
+
+      let originalTowerCost = 0;
+
+
+      const towerRows =
+        document.querySelectorAll(
+          ".tower-row"
+        );
+
+
+      towerRows.forEach(row => {
+
+        const input =
+          row.querySelector(
+            'input[type="number"]'
+          );
+
+
+        if (!input) {
+          return;
+        }
+
+
+        const value =
+          parseFloat(
+            input.value
+          );
+
+
+        if (Number.isFinite(value)) {
+
+          originalTowerCost +=
+            Math.max(0, value);
+
+        }
+
+      });
+
+
+      /*
+        Tower savings.
+      */
+
+      const moneySaved =
+        originalTowerCost *
+        towerDiscount;
+
+
+      const discountedTowerCost =
+        originalTowerCost -
+        moneySaved;
+
+
+      /*
+        Total amount actually
+        spent on everything.
+      */
+
+      const totalInvestment =
+        discountedTowerCost +
+        totalVillageCost;
+
+
+      /*
+        Net savings after paying
+        for the discount villages.
+      */
+
+      const netSavings =
+        moneySaved -
+        totalVillageCost;
+
+
+      /*
+        Update result boxes.
+      */
+
+      document.getElementById(
+        "moneySaved"
+      ).textContent =
+        formatMoney(moneySaved);
+
+
+      document.getElementById(
+        "discountedCost"
+      ).textContent =
+        formatMoney(discountedTowerCost);
+
+
+      document.getElementById(
+        "displayOriginal"
+      ).textContent =
+        formatMoney(originalTowerCost);
+
+
+      document.getElementById(
+        "displayVillageCost"
+      ).textContent =
+        formatMoney(totalVillageCost);
+
+
+      document.getElementById(
+        "displayInvestment"
+      ).textContent =
+        formatMoney(totalInvestment);
+
+
+      document.getElementById(
+        "totalDiscount"
+      ).textContent =
+        Math.round(
+          towerDiscount * 100
+        ) + "%";
+
+
+      /*
+        Savings description.
+      */
+
+      document.getElementById(
+        "savingsDetail"
+      ).textContent =
+        Math.round(
+          towerDiscount * 100
+        ) +
+        "% of " +
+        formatMoney(
+          originalTowerCost
+        ) +
+        " is " +
+        formatMoney(
+          moneySaved
+        ) +
+        ".";
+
+
+      /*
+        Break-even information.
+      */
+
+      const worthItText =
+        document.getElementById(
+          "worthItText"
+        );
+
+
+      if (originalTowerCost <= 0) {
+
+        worthItText.textContent =
+          "Enter your tower costs to see when the discount villages pay for themselves.";
+
+        return;
+
+      }
+
+
+      /*
+        Amount of tower spending
+        required to recover the
+        village investment.
+      */
+
+      const breakEvenTowerCost =
+        totalVillageCost /
+        towerDiscount;
+
+
+      if (netSavings > 0) {
+
+        worthItText.innerHTML =
+          "The villages cost " +
+          "<span class='summary-highlight'>" +
+          formatMoney(
+            totalVillageCost
+          ) +
+          "</span>" +
+          " after discounts. They save " +
+          "<span class='summary-highlight'>" +
+          formatMoney(
+            moneySaved
+          ) +
+          "</span>" +
+          " on your towers, giving you " +
+          "<span class='summary-highlight'>" +
+          formatMoney(
+            netSavings
+          ) +
+          "</span>" +
+          " in net savings.";
+
+
+      } else if (netSavings === 0) {
+
+        worthItText.innerHTML =
+          "The villages cost " +
+          "<span class='summary-highlight'>" +
+          formatMoney(
+            totalVillageCost
+          ) +
+          "</span>" +
+          " after discounts, and the tower discounts save exactly the same amount.";
+
+
+      } else {
+
+        worthItText.innerHTML =
+          "The villages cost " +
+          "<span class='summary-highlight'>" +
+          formatMoney(
+            totalVillageCost
+          ) +
+          "</span>" +
+          " after discounts. Your current tower purchases save " +
+          "<span class='summary-highlight'>" +
+          formatMoney(
+            moneySaved
+          ) +
+          "</span>" +
+          ", so you are " +
+          "<span class='summary-highlight'>" +
+          formatMoney(
+            Math.abs(netSavings)
+          ) +
+          "</span>" +
+          " short of breaking even.";
+
+      }
+
+
+      /*
+        Add the break-even threshold
+        to the detail.
+      */
+
+      worthItText.innerHTML +=
+        "<br><br>" +
+        "You would need approximately " +
+        "<span class='summary-highlight'>" +
+        formatMoney(
+          breakEvenTowerCost
+        ) +
+        "</span>" +
+        " of discounted tower purchases to break even.";
+
+    }
+
+
+    /*
+      Initial setup.
+    */
+
+    updateVillages();
+    calculate();
+
+  </script>
 
 </body>
 </html>

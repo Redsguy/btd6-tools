@@ -2,47 +2,568 @@
 
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Break Even Calculator — BTD6 Tools</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10131a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="BTD6 Tools">
 
-<style>
+  <title>Break Even Calculator - BTD6 Tools</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: #10131a;
-        color: white;
-        text-align: center;
+      margin: 0;
+      background: #10131a;
+      color: #f1f3f7;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
+    /* NAVBAR */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 64px;
+      background: #191d27;
+      border-bottom: 1px solid #292f3d;
+      display: flex;
+      align-items: center;
+      padding: 0 28px;
+    }
+
+    .nav-inner {
+      width: 100%;
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      color: #ffb52e;
+      font-size: 22px;
+      font-weight: 800;
+      text-decoration: none;
+      letter-spacing: 0.3px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 26px;
+    }
+
+    .nav-links a {
+      color: #c7ccd6;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 600;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover {
+      color: #ffb52e;
+    }
+
+    /* PAGE */
     .container {
-        max-width: 800px;
-        margin: 100px auto;
-        padding: 30px;
+      width: 100%;
+      max-width: 1050px;
+      margin: 0 auto;
+      padding: 42px 20px 70px;
     }
 
-    a {
-        color: #ffb52e;
+    .page-header {
+      margin-bottom: 28px;
     }
-</style>
+
+    .page-header h1 {
+      margin: 0 0 8px;
+      font-size: 34px;
+      color: #ffffff;
+    }
+
+    .page-header p {
+      margin: 0;
+      color: #9299a8;
+      font-size: 16px;
+    }
+
+    /* CARDS */
+    .card {
+      background: #191d27;
+      border: 1px solid #292f3d;
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .card h2 {
+      margin: 0 0 18px;
+      font-size: 20px;
+      color: #ffffff;
+    }
+
+    .card-description {
+      color: #9299a8;
+      font-size: 14px;
+      line-height: 1.5;
+      margin: -8px 0 20px;
+    }
+
+    /* INPUTS */
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .input-group.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      color: #d7dbe3;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .hint {
+      color: #737b8b;
+      font-size: 12px;
+      font-weight: normal;
+      margin-left: 4px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 13px;
+      background: #10131a;
+      border: 1px solid #343b4a;
+      border-radius: 9px;
+      color: #ffffff;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    input:focus {
+      border-color: #ffb52e;
+      box-shadow: 0 0 0 2px rgba(255, 181, 46, 0.12);
+    }
+
+    /* SELLBACK HELPER */
+    .sell-helper {
+      margin-top: 18px;
+      padding: 16px;
+      background: #10131a;
+      border: 1px solid #292f3d;
+      border-radius: 10px;
+    }
+
+    .sell-helper-title {
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .sell-helper-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: end;
+    }
+
+    .helper-result {
+      min-height: 45px;
+      display: flex;
+      align-items: center;
+      padding: 10px 13px;
+      border-radius: 9px;
+      background: #191d27;
+      border: 1px solid #343b4a;
+      color: #ffb52e;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    /* RESULTS */
+    .results {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .result-box {
+      background: #10131a;
+      border: 1px solid #292f3d;
+      border-radius: 12px;
+      padding: 22px;
+      text-align: center;
+    }
+
+    .result-label {
+      color: #9299a8;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 9px;
+    }
+
+    .result-number {
+      color: #ffb52e;
+      font-size: 36px;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    .result-unit {
+      color: #c7ccd6;
+      font-size: 14px;
+      margin-top: 7px;
+    }
+
+    .result-detail {
+      color: #737b8b;
+      font-size: 12px;
+      margin-top: 12px;
+      line-height: 1.4;
+    }
+
+    /* BREAKDOWN */
+    .breakdown {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stat {
+      padding: 15px;
+      background: #10131a;
+      border: 1px solid #292f3d;
+      border-radius: 10px;
+    }
+
+    .stat-label {
+      color: #737b8b;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    /* INFO */
+    .info {
+      padding: 15px 17px;
+      border-left: 3px solid #ffb52e;
+      background: rgba(255, 181, 46, 0.05);
+      color: #aeb5c2;
+      font-size: 13px;
+      line-height: 1.55;
+      border-radius: 0 8px 8px 0;
+    }
+
+    /* MOBILE */
+    @media (max-width: 700px) {
+      .navbar {
+        padding: 0 16px;
+      }
+
+      .nav-links {
+        gap: 15px;
+      }
+
+      .nav-links a {
+        font-size: 14px;
+      }
+
+      .container {
+        padding: 30px 14px 50px;
+      }
+
+      .page-header h1 {
+        font-size: 28px;
+      }
+
+      .input-grid,
+      .results,
+      .breakdown,
+      .sell-helper-row {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 19px;
+      }
+    }
+  </style>
 
 </head>
 
 <body>
 
-<div class="container">
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">BTD6 Tools</a>
 
-<h1>💰 Break Even Calculator</h1>
-
-<p>
-    This calculator is coming next!
-</p>
-
-<p>
-    <a href="index.html">← Back to BTD6 Tools</a>
-</p>
-
+```
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="index.html#tools">Tools</a>
+  </div>
 </div>
+```
+
+  </nav>
+
+  <main class="container">
+
+```
+<div class="page-header">
+  <h1>Break Even Calculator</h1>
+  <p>Calculate how many rounds an income source needs to pay for itself.</p>
+</div>
+
+<!-- INPUTS -->
+<section class="card">
+  <h2>Break Even Inputs</h2>
+
+  <p class="card-description">
+    Enter the total amount spent and the income generated each round.
+    The calculator will show break-even both with and without selling the tower.
+  </p>
+
+  <div class="input-grid">
+
+    <div class="input-group">
+      <label for="cost">Total Cost</label>
+      <input
+        id="cost"
+        type="number"
+        min="0"
+        step="1"
+        placeholder="10000"
+        oninput="calculate()"
+      >
+    </div>
+
+    <div class="input-group">
+      <label for="income">Income Per Round</label>
+      <input
+        id="income"
+        type="number"
+        min="0"
+        step="1"
+        placeholder="500"
+        oninput="calculate()"
+      >
+    </div>
+
+    <div class="input-group full">
+      <label for="sellValue">
+        Sell Value
+        <span class="hint">(optional for the calculation)</span>
+      </label>
+
+      <input
+        id="sellValue"
+        type="number"
+        min="0"
+        step="1"
+        placeholder="7000"
+        oninput="calculate()"
+      >
+    </div>
+
+  </div>
+
+  <div class="sell-helper">
+    <div class="sell-helper-title">
+      70% Sellback Helper
+    </div>
+
+    <div class="sell-helper-row">
+
+      <div class="input-group">
+        <label for="sellPercent">Sellback Percentage</label>
+        <input
+          id="sellPercent"
+          type="number"
+          min="0"
+          max="100"
+          step="1"
+          value="70"
+          oninput="calculateSellHelper()"
+        >
+      </div>
+
+      <div>
+        <label>Calculated Sell Value</label>
+        <div class="helper-result" id="helperResult">$0</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="card">
+  <h2>Break Even Results</h2>
+
+  <div class="results">
+
+    <div class="result-box">
+      <div class="result-label">Without Sell Value</div>
+      <div class="result-number" id="withoutSell">—</div>
+      <div class="result-unit">rounds</div>
+      <div class="result-detail">
+        The full cost must be recovered through income.
+      </div>
+    </div>
+
+    <div class="result-box">
+      <div class="result-label">With Sell Value</div>
+      <div class="result-number" id="withSell">—</div>
+      <div class="result-unit">rounds</div>
+      <div class="result-detail" id="withSellDetail">
+        The sell value is counted toward recovering the cost.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- BREAKDOWN -->
+<section class="card">
+  <h2>Breakdown</h2>
+
+  <div class="breakdown">
+
+    <div class="stat">
+      <div class="stat-label">Cost</div>
+      <div class="stat-value" id="displayCost">$0</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">Income / Round</div>
+      <div class="stat-value" id="displayIncome">$0</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">Sell Value</div>
+      <div class="stat-value" id="displaySell">$0</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- INFO -->
+<section class="card">
+  <div class="info">
+    <strong>How it works:</strong>
+    Without selling, the calculator finds the number of rounds needed for
+    your generated income to equal the total cost. With selling, the tower's
+    sell value is added to the income you've generated, so only the remaining
+    amount has to be recovered through income.
+  </div>
+</section>
+```
+
+  </main>
+
+  <script>
+    function formatMoney(value) {
+      return "$" + Math.round(value).toLocaleString("en-US");
+    }
+
+    function getNumber(id) {
+      const value = parseFloat(document.getElementById(id).value);
+      return Number.isFinite(value) ? Math.max(0, value) : 0;
+    }
+
+    function calculate() {
+      const cost = getNumber("cost");
+      const income = getNumber("income");
+      const sellValue = getNumber("sellValue");
+
+      document.getElementById("displayCost").textContent =
+        formatMoney(cost);
+
+      document.getElementById("displayIncome").textContent =
+        formatMoney(income);
+
+      document.getElementById("displaySell").textContent =
+        formatMoney(sellValue);
+
+      const withoutSell = document.getElementById("withoutSell");
+      const withSell = document.getElementById("withSell");
+      const withSellDetail = document.getElementById("withSellDetail");
+
+      if (cost <= 0 || income <= 0) {
+        withoutSell.textContent = "—";
+        withSell.textContent = "—";
+
+        withSellDetail.textContent =
+          "Enter a cost and income per round to calculate.";
+
+        calculateSellHelper();
+        return;
+      }
+
+      // Full cost must be recovered through income.
+      const roundsWithoutSell = Math.ceil(cost / income);
+
+      // Sell value contributes toward recovering the original cost.
+      const remainingCost = Math.max(0, cost - sellValue);
+      const roundsWithSell = Math.ceil(remainingCost / income);
+
+      withoutSell.textContent = roundsWithoutSell.toLocaleString("en-US");
+      withSell.textContent = roundsWithSell.toLocaleString("en-US");
+
+      if (sellValue >= cost) {
+        withSellDetail.textContent =
+          "The sell value already covers the entire cost.";
+      } else {
+        withSellDetail.textContent =
+          formatMoney(remainingCost) +
+          " still needs to be recovered through income.";
+      }
+
+      calculateSellHelper();
+    }
+
+    function calculateSellHelper() {
+      const cost = getNumber("cost");
+      const percent = getNumber("sellPercent");
+
+      const sellValue = cost * (percent / 100);
+
+      document.getElementById("helperResult").textContent =
+        formatMoney(sellValue);
+    }
+
+    calculate();
+    calculateSellHelper();
+  </script>
 
 </body>
 </html>

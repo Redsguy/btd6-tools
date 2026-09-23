@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10131a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="BTD6 Tools">
+
+  <title>Monklish - BTD6 Tools</title>
+
+  <style>
+    @font-face {
+      font-family: "Monklish";
+      src: url("Monklish.ttf") format("truetype");
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: #10131a;
+      color: #f1f3f7;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 64px;
+      background: #191d27;
+      border-bottom: 1px solid #292f3d;
+      display: flex;
+      align-items: center;
+      padding: 0 28px;
+    }
+
+    .nav-inner {
+      width: 100%;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      color: #ffb52e;
+      font-size: 22px;
+      font-weight: 800;
+      text-decoration: none;
+      letter-spacing: 0.3px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 26px;
+    }
+
+    .nav-links a {
+      color: #c7ccd6;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 600;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover {
+      color: #ffb52e;
+    }
+
+    /* PAGE */
+    .container {
+      width: 100%;
+      max-width: 1050px;
+      margin: 0 auto;
+      padding: 42px 20px 70px;
+    }
+
+    .page-header {
+      margin-bottom: 28px;
+    }
+
+    .page-header h1 {
+      margin: 0 0 8px;
+      font-size: 34px;
+      color: #ffffff;
+    }
+
+    .page-header p {
+      margin: 0;
+      color: #9299a8;
+      font-size: 16px;
+    }
+
+    /* CARDS */
+    .card {
+      background: #191d27;
+      border: 1px solid #292f3d;
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .card h2 {
+      margin: 0 0 18px;
+      font-size: 20px;
+      color: #ffffff;
+    }
+
+    .card-description {
+      color: #9299a8;
+      font-size: 14px;
+      line-height: 1.5;
+      margin: -8px 0 20px;
+    }
+
+    /* TRANSLATOR */
+    .translator {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .translator-side {
+      min-width: 0;
+    }
+
+    .translator-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .translator-label span {
+      color: #d7dbe3;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 190px;
+      resize: vertical;
+      padding: 15px;
+      background: #10131a;
+      border: 1px solid #343b4a;
+      border-radius: 10px;
+      color: #ffffff;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 18px;
+      line-height: 1.5;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    textarea:focus {
+      border-color: #ffb52e;
+      box-shadow: 0 0 0 2px rgba(255, 181, 46, 0.12);
+    }
+
+    textarea.monklish {
+      font-family: "Monklish", sans-serif;
+      font-size: 27px;
+      letter-spacing: 1px;
+    }
+
+    .translator-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    button {
+      border: none;
+      border-radius: 9px;
+      padding: 11px 16px;
+      background: #292f3d;
+      color: #f1f3f7;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    button:hover {
+      background: #343b4a;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    button.primary {
+      background: #ffb52e;
+      color: #10131a;
+    }
+
+    button.primary:hover {
+      background: #ffc457;
+    }
+
+    button.large {
+      width: 100%;
+      padding: 13px;
+      font-size: 15px;
+    }
+
+    .swap-button {
+      width: 46px;
+      height: 46px;
+      padding: 0;
+      border-radius: 50%;
+      background: #ffb52e;
+      color: #10131a;
+      font-size: 22px;
+    }
+
+    .swap-button:hover {
+      background: #ffc457;
+    }
+
+    .textarea-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 9px;
+    }
+
+    .textarea-actions button {
+      flex: 1;
+    }
+
+    /* LEARNING MODES */
+    .mode-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .mode-button {
+      text-align: left;
+      padding: 18px;
+      background: #10131a;
+      border: 1px solid #292f3d;
+    }
+
+    .mode-button.active {
+      border-color: #ffb52e;
+      background: rgba(255, 181, 46, 0.07);
+    }
+
+    .mode-title {
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .mode-description {
+      color: #9299a8;
+      font-size: 13px;
+      line-height: 1.4;
+      font-weight: normal;
+    }
+
+    /* PRACTICE */
+    .practice {
+      text-align: center;
+    }
+
+    .practice-symbol {
+      min-height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Monklish", sans-serif;
+      font-size: 90px;
+      color: #ffffff;
+      background: #10131a;
+      border: 1px solid #292f3d;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      padding: 20px;
+    }
+
+    .practice-question {
+      color: #9299a8;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    .answer-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .answer-button {
+      min-height: 58px;
+      font-size: 20px;
+      background: #10131a;
+      border: 1px solid #343b4a;
+    }
+
+    .answer-button:hover {
+      border-color: #ffb52e;
+    }
+
+    .answer-button.correct {
+      border-color: #4fd16b;
+      background: rgba(79, 209, 107, 0.1);
+    }
+
+    .answer-button.incorrect {
+      border-color: #e85b5b;
+      background: rgba(232, 91, 91, 0.1);
+    }
+
+    .type-answer {
+      max-width: 300px;
+      margin: 0 auto;
+    }
+
+    .type-answer input {
+      width: 100%;
+      padding: 14px;
+      background: #10131a;
+      border: 1px solid #343b4a;
+      border-radius: 9px;
+      color: #ffffff;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 700;
+      outline: none;
+    }
+
+    .type-answer input:focus {
+      border-color: #ffb52e;
+    }
+
+    .practice-feedback {
+      min-height: 26px;
+      margin: 14px 0;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .feedback-correct {
+      color: #4fd16b;
+    }
+
+    .feedback-incorrect {
+      color: #e85b5b;
+    }
+
+    /* SENTENCES */
+    .sentence-symbol {
+      font-family: "Monklish", sans-serif;
+      font-size: 36px;
+      line-height: 1.5;
+      text-align: left;
+      min-height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #10131a;
+      border: 1px solid #292f3d;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 18px;
+    }
+
+    .sentence-input {
+      width: 100%;
+      padding: 14px;
+      background: #10131a;
+      border: 1px solid #343b4a;
+      border-radius: 9px;
+      color: #ffffff;
+      font-size: 17px;
+      outline: none;
+      margin-bottom: 10px;
+    }
+
+    .sentence-input:focus {
+      border-color: #ffb52e;
+    }
+
+    /* STATS */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stat {
+      padding: 17px;
+      background: #10131a;
+      border: 1px solid #292f3d;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .stat-label {
+      color: #737b8b;
+      font-size: 12px;
+      margin-bottom: 7px;
+    }
+
+    .stat-value {
+      color: #ffb52e;
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    /* HIDDEN */
+    .hidden {
+      display: none !important;
+    }
+
+    /* INFO */
+    .info {
+      padding: 15px 17px;
+      border-left: 3px solid #ffb52e;
+      background: rgba(255, 181, 46, 0.05);
+      color: #aeb5c2;
+      font-size: 13px;
+      line-height: 1.55;
+      border-radius: 0 8px 8px 0;
+    }
+
+    /* MOBILE */
+    @media (max-width: 750px) {
+      .navbar {
+        padding: 0 16px;
+      }
+
+      .nav-links {
+        gap: 15px;
+      }
+
+      .nav-links a {
+        font-size: 14px;
+      }
+
+      .container {
+        padding: 30px 14px 50px;
+      }
+
+      .page-header h1 {
+        font-size: 28px;
+      }
+
+      .translator {
+        grid-template-columns: 1fr;
+      }
+
+      .translator-buttons {
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      .mode-grid,
+      .stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .swap-button {
+        transform: rotate(90deg);
+      }
+
+      .practice-symbol {
+        font-size: 70px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .mode-grid,
+      .stats,
+      .answer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 19px;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">BTD6 Tools</a>
+
+```
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="index.html#tools">Tools</a>
+  </div>
+</div>
+```
+
+  </nav>
+
+  <main class="container">
+
+```
+<div class="page-header">
+  <h1>Monklish</h1>
+  <p>Translate and learn the language of the monkeys.</p>
+</div>
+
+<!-- TRANSLATOR -->
+<section class="card">
+  <h2>Translator</h2>
+
+  <p class="card-description">
+    Translate between English and Monklish. English input is not case-sensitive.
+  </p>
+
+  <div class="translator">
+
+    <div class="translator-side">
+      <div class="translator-label">
+        <span id="leftLabel">English</span>
+      </div>
+
+      <textarea
+        id="leftText"
+        placeholder="Type English here..."
+        oninput="translate()"
+      ></textarea>
+
+      <div class="textarea-actions">
+        <button onclick="copyText('leftText')">Copy</button>
+        <button onclick="clearText()">Clear</button>
+      </div>
+    </div>
+
+    <div class="translator-buttons">
+      <button class="swap-button" onclick="swapTranslation()" title="Swap">
+        ↔
+      </button>
+    </div>
+
+    <div class="translator-side">
+      <div class="translator-label">
+        <span id="rightLabel">Monklish</span>
+      </div>
+
+      <textarea
+        id="rightText"
+        class="monklish"
+        placeholder="Monklish appears here..."
+        readonly
+      ></textarea>
+
+      <div class="textarea-actions">
+        <button onclick="copyText('rightText')">Copy</button>
+        <button onclick="clearText()">Clear</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- LEARN -->
+<section class="card">
+  <h2>Learn Monklish</h2>
+
+  <p class="card-description">
+    Pick a practice mode and test how well you know the Monklish alphabet.
+  </p>
+
+  <div class="mode-grid">
+
+    <button class="mode-button active" id="modeMultiple" onclick="setMode('multiple')">
+      <div class="mode-title">Multiple Choice</div>
+      <div class="mode-description">
+        See a Monklish symbol and choose the correct English letter.
+      </div>
+    </button>
+
+    <button class="mode-button" id="modeTyping" onclick="setMode('typing')">
+      <div class="mode-title">Type the Letter</div>
+      <div class="mode-description">
+        See a Monklish symbol and type the English letter yourself.
+      </div>
+    </button>
+
+    <button class="mode-button" id="modeSentence" onclick="setMode('sentence')">
+      <div class="mode-title">Sentences</div>
+      <div class="mode-description">
+        Translate complete Monklish sentences into English.
+      </div>
+    </button>
+
+  </div>
+</section>
+
+<!-- PRACTICE -->
+<section class="card practice">
+
+  <!-- MULTIPLE CHOICE -->
+  <div id="multipleMode">
+
+    <h2>Multiple Choice</h2>
+
+    <div class="practice-symbol" id="multipleSymbol">A</div>
+
+    <div class="practice-question">
+      Which English letter does this represent?
+    </div>
+
+    <div class="answer-grid" id="answerGrid"></div>
+
+    <div class="practice-feedback" id="multipleFeedback"></div>
+
+    <button class="primary" onclick="nextQuestion()">
+      Next Symbol
+    </button>
+
+  </div>
+
+  <!-- TYPING -->
+  <div id="typingMode" class="hidden">
+
+    <h2>Type the Letter</h2>
+
+    <div class="practice-symbol" id="typingSymbol">A</div>
+
+    <div class="practice-question">
+      Type the English letter represented by this symbol.
+    </div>
+
+    <div class="type-answer">
+      <input
+        id="typingInput"
+        maxlength="1"
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+        onkeydown="typingKeyDown(event)"
+      >
+
+      <button
+        class="primary large"
+        onclick="checkTyping()"
+        style="margin-top:10px;"
+      >
+        Check Answer
+      </button>
+    </div>
+
+    <div class="practice-feedback" id="typingFeedback"></div>
+
+    <button onclick="nextQuestion()">
+      Next Symbol
+    </button>
+
+  </div>
+
+  <!-- SENTENCES -->
+  <div id="sentenceMode" class="hidden">
+
+    <h2>Sentences</h2>
+
+    <div class="sentence-symbol" id="sentenceSymbol">
+      MONKEYS
+    </div>
+
+    <div class="practice-question">
+      Type the English translation.
+    </div>
+
+    <input
+      id="sentenceInput"
+      class="sentence-input"
+      type="text"
+      autocomplete="off"
+      spellcheck="false"
+      placeholder="Type the English sentence..."
+      onkeydown="sentenceKeyDown(event)"
+    >
+
+    <button class="primary" onclick="checkSentence()">
+      Check Answer
+    </button>
+
+    <div class="practice-feedback" id="sentenceFeedback"></div>
+
+    <button onclick="nextQuestion()">
+      Next Sentence
+    </button>
+
+  </div>
+
+</section>
+
+<!-- STATS -->
+<section class="card">
+  <h2>Practice Stats</h2>
+
+  <div class="stats">
+
+    <div class="stat">
+      <div class="stat-label">Answered</div>
+      <div class="stat-value" id="answeredStat">0</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">Correct</div>
+      <div class="stat-value" id="correctStat">0</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">Accuracy</div>
+      <div class="stat-value" id="accuracyStat">0%</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">Streak</div>
+      <div class="stat-value" id="streakStat">0</div>
+    </div>
+
+  </div>
+</section>
+
+<section class="card">
+  <div class="info">
+    <strong>Monklish:</strong>
+    The practice system treats letters as case-insensitive, so
+    <strong>A</strong>, <strong>a</strong>, and their Monklish glyph
+    representation all correspond to the same letter.
+  </div>
+</section>
+```
+
+  </main>
+
+  <script>
+    /*
+      The custom Monklish font maps normal A-Z characters
+      to the corresponding Monklish glyphs.
+
+      This means the underlying text remains normal English,
+      while the font changes how it looks.
+    */
+
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+    let currentMode = "multiple";
+    let currentLetter = "A";
+    let currentQuestionAnswered = false;
+
+    let answered = 0;
+    let correct = 0;
+    let streak = 0;
+
+    const sentences = [
+      {
+        monklish: "MONKEYS",
+        answers: ["monkeys"]
+      },
+      {
+        monklish: "BANANA",
+        answers: ["banana"]
+      },
+      {
+        monklish: "BLOONS",
+        answers: ["bloons"]
+      },
+      {
+        monklish: "BTD6",
+        answers: ["btd6", "bloons td 6", "bloons tower defense 6"]
+      },
+      {
+        monklish: "MONKEY KNOWS BEST",
+        answers: ["monkey knows best"]
+      }
+    ];
+
+    let currentSentence = sentences[0];
+
+    function normalizeText(text) {
+      return text
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, " ");
+    }
+
+    function randomLetter() {
+      return letters[Math.floor(Math.random() * letters.length)];
+    }
+
+    function randomDifferentLetter(exclude) {
+      let letter;
+
+      do {
+        letter = randomLetter();
+      } while (letter === exclude);
+
+      return letter;
+    }
+
+    function setMode(mode) {
+      currentMode = mode;
+
+      document.getElementById("modeMultiple").classList.remove("active");
+      document.getElementById("modeTyping").classList.remove("active");
+      document.getElementById("modeSentence").classList.remove("active");
+
+      document.getElementById("multipleMode").classList.add("hidden");
+      document.getElementById("typingMode").classList.add("hidden");
+      document.getElementById("sentenceMode").classList.add("hidden");
+
+      if (mode === "multiple") {
+        document.getElementById("modeMultiple").classList.add("active");
+        document.getElementById("multipleMode").classList.remove("hidden");
+        setupMultipleChoice();
+      }
+
+      if (mode === "typing") {
+        document.getElementById("modeTyping").classList.add("active");
+        document.getElementById("typingMode").classList.remove("hidden");
+        setupTyping();
+      }
+
+      if (mode === "sentence") {
+        document.getElementById("modeSentence").classList.add("active");
+        document.getElementById("sentenceMode").classList.remove("hidden");
+        setupSentence();
+      }
+    }
+
+    /* TRANSLATOR */
+
+    let englishToMonklish = true;
+
+    function translate() {
+      const left = document.getElementById("leftText");
+      const right = document.getElementById("rightText");
+
+      if (englishToMonklish) {
+        right.value = left.value.toUpperCase();
+      } else {
+        right.value = left.value.toUpperCase();
+      }
+    }
+
+    function swapTranslation() {
+      const left = document.getElementById("leftText");
+      const right = document.getElementById("rightText");
+
+      const oldLeft = left.value;
+      const oldRight = right.value;
+
+      englishToMonklish = !englishToMonklish;
+
+      if (englishToMonklish) {
+        document.getElementById("leftLabel").textContent = "English";
+        document.getElementById("rightLabel").textContent = "Monklish";
+
+        left.classList.remove("monklish");
+        right.classList.add("monklish");
+
+        left.readOnly = false;
+        right.readOnly = true;
+
+        left.value = oldRight;
+        right.value = oldLeft.toUpperCase();
+      } else {
+        document.getElementById("leftLabel").textContent = "Monklish";
+        document.getElementById("rightLabel").textContent = "English";
+
+        left.classList.add("monklish");
+        right.classList.remove("monklish");
+
+        left.readOnly = false;
+        right.readOnly = true;
+
+        left.value = oldRight;
+        right.value = oldLeft.toUpperCase();
+      }
+    }
+
+    function clearText() {
+      document.getElementById("leftText").value = "";
+      document.getElementById("rightText").value = "";
+    }
+
+    async function copyText(id) {
+      const element = document.getElementById(id);
+
+      try {
+        await navigator.clipboard.writeText(element.value);
+      } catch (error) {
+        element.select();
+        document.execCommand("copy");
+      }
+    }
+
+    /* MULTIPLE CHOICE */
+
+    function setupMultipleChoice() {
+      currentQuestionAnswered = false;
+      currentLetter = randomLetter();
+
+      document.getElementById("multipleSymbol").textContent =
+        currentLetter;
+
+      document.getElementById("multipleFeedback").textContent = "";
+
+      const choices = [currentLetter];
+
+      while (choices.length < 4) {
+        const letter = randomDifferentLetter(currentLetter);
+
+        if (!choices.includes(letter)) {
+          choices.push(letter);
+        }
+      }
+
+      // Shuffle choices.
+      for (let i = choices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [choices[i], choices[j]] = [choices[j], choices[i]];
+      }
+
+      const grid = document.getElementById("answerGrid");
+      grid.innerHTML = "";
+
+      choices.forEach(letter => {
+        const button = document.createElement("button");
+
+        button.className = "answer-button";
+        button.textContent = letter;
+
+        button.onclick = () => {
+          checkMultipleChoice(letter, button);
+        };
+
+        grid.appendChild(button);
+      });
+    }
+
+    function checkMultipleChoice(answer, button) {
+      if (currentQuestionAnswered) {
+        return;
+      }
+
+      currentQuestionAnswered = true;
+      answered++;
+
+      const feedback = document.getElementById("multipleFeedback");
+
+      if (answer.toUpperCase() === currentLetter) {
+        correct++;
+        streak++;
+
+        button.classList.add("correct");
+        feedback.textContent = "Correct!";
+        feedback.className = "practice-feedback feedback-correct";
+      } else {
+        streak = 0;
+
+        button.classList.add("incorrect");
+
+        feedback.textContent =
+          "Incorrect — the answer was " + currentLetter + ".";
+
+        feedback.className =
+          "practice-feedback feedback-incorrect";
+
+        document.querySelectorAll("#answerGrid button").forEach(btn => {
+          if (btn.textContent === currentLetter) {
+            btn.classList.add("correct");
+          }
+        });
+      }
+
+      updateStats();
+    }
+
+    /* TYPING */
+
+    function setupTyping() {
+      currentQuestionAnswered = false;
+      currentLetter = randomLetter();
+
+      document.getElementById("typingSymbol").textContent =
+        currentLetter;
+
+      document.getElementById("typingInput").value = "";
+
+      document.getElementById("typingFeedback").textContent = "";
+      document.getElementById("typingFeedback").className =
+        "practice-feedback";
+
+      setTimeout(() => {
+        document.getElementById("typingInput").focus();
+      }, 50);
+    }
+
+    function typingKeyDown(event) {
+      if (event.key === "Enter") {
+        checkTyping();
+      }
+    }
+
+    function checkTyping() {
+      if (currentQuestionAnswered) {
+        return;
+      }
+
+      const input = document.getElementById("typingInput");
+      const answer = input.value.trim().toUpperCase();
+
+      if (!answer) {
+        return;
+      }
+
+      currentQuestionAnswered = true;
+      answered++;
+
+      const feedback = document.getElementById("typingFeedback");
+
+      if (answer === currentLetter) {
+        correct++;
+        streak++;
+
+        feedback.textContent = "Correct!";
+        feedback.className =
+          "practice-feedback feedback-correct";
+      } else {
+        streak = 0;
+
+        feedback.textContent =
+          "Incorrect — the answer was " + currentLetter + ".";
+
+        feedback.className =
+          "practice-feedback feedback-incorrect";
+      }
+
+      updateStats();
+    }
+
+    /* SENTENCES */
+
+    function setupSentence() {
+      currentQuestionAnswered = false;
+
+      currentSentence =
+        sentences[Math.floor(Math.random() * sentences.length)];
+
+      document.getElementById("sentenceSymbol").textContent =
+        currentSentence.monklish;
+
+      document.getElementById("sentenceInput").value = "";
+
+      document.getElementById("sentenceFeedback").textContent = "";
+      document.getElementById("sentenceFeedback").className =
+        "practice-feedback";
+
+      setTimeout(() => {
+        document.getElementById("sentenceInput").focus();
+      }, 50);
+    }
+
+    function sentenceKeyDown(event) {
+      if (event.key === "Enter") {
+        checkSentence();
+      }
+    }
+
+    function checkSentence() {
+      if (currentQuestionAnswered) {
+        return;
+      }
+
+      const input = document.getElementById("sentenceInput");
+      const answer = normalizeText(input.value);
+
+      if (!answer) {
+        return;
+      }
+
+      currentQuestionAnswered = true;
+      answered++;
+
+      const feedback = document.getElementById("sentenceFeedback");
+
+      const accepted =
+        currentSentence.answers.some(
+          correctAnswer => normalizeText(correctAnswer) === answer
+        );
+
+      if (accepted) {
+        correct++;
+        streak++;
+
+        feedback.textContent = "Correct!";
+        feedback.className =
+          "practice-feedback feedback-correct";
+      } else {
+        streak = 0;
+
+        feedback.textContent =
+          "Not quite — the answer was \"" +
+          currentSentence.answers[0] +
+          "\".";
+
+        feedback.className =
+          "practice-feedback feedback-incorrect";
+      }
+
+      updateStats();
+    }
+
+    /* NEXT QUESTION */
+
+    function nextQuestion() {
+      if (currentMode === "multiple") {
+        setupMultipleChoice();
+      }
+
+      if (currentMode === "typing") {
+        setupTyping();
+      }
+
+      if (currentMode === "sentence") {
+        setupSentence();
+      }
+    }
+
+    /* STATS */
+
+    function updateStats() {
+      const accuracy =
+        answered === 0
+          ? 0
+          : Math.round((correct / answered) * 100);
+
+      document.getElementById("answeredStat").textContent =
+        answered;
+
+      document.getElementById("correctStat").textContent =
+        correct;
+
+      document.getElementById("accuracyStat").textContent =
+        accuracy + "%";
+
+      document.getElementById("streakStat").textContent =
+        streak;
+    }
+
+    /* START */
+
+    setupMultipleChoice();
+    updateStats();
+  </script>
+
+</body>
+</html>

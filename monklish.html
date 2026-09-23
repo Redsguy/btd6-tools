@@ -773,35 +773,97 @@
   let streak = 0;
 
   const sentences = [
-    {
-      monklish: "MONKEYS",
-      answers: ["monkeys"]
-    },
-    {
-      monklish: "BANANA",
-      answers: ["banana"]
-    },
-    {
-      monklish: "BLOONS",
-      answers: ["bloons"]
-    },
-    {
-      monklish: "BTD6",
-      answers: ["btd6", "bloons td 6", "bloons tower defense 6"]
-    },
-    {
-      monklish: "MONKEY KNOWS BEST",
-      answers: ["monkey knows best"]
-    }
+    { monklish: "MONKEYS", answers: ["monkeys"] },
+    { monklish: "BANANA", answers: ["banana"] },
+    { monklish: "BLOONS", answers: ["bloons"] },
+    { monklish: "BTD6", answers: ["btd6", "bloons td 6", "bloons tower defense 6"] },
+    { monklish: "MONKEY KNOWS BEST", answers: ["monkey knows best"] }
   ];
 
   let currentSentence = sentences[0];
+  let englishToMonklish = true;
+
+  // DOM Elements
+  const leftText = document.getElementById("leftText");
+  const rightText = document.getElementById("rightText");
+
+  // Event Listeners for Live Translation
+  leftText.addEventListener("input", () => {
+    if (englishToMonklish) {
+      rightText.value = leftText.value.toUpperCase();
+    }
+  });
+
+  rightText.addEventListener("input", () => {
+    if (!englishToMonklish) {
+      leftText.value = rightText.value.toUpperCase();
+    }
+  });
+
+  function translate() {
+    // Keep function for any inline HTML calls, routing to the active direction
+    if (englishToMonklish) {
+      rightText.value = leftText.value.toUpperCase();
+    } else {
+      leftText.value = rightText.value.toUpperCase();
+    }
+  }
+
+  function swapTranslation() {
+    englishToMonklish = !englishToMonklish;
+
+    const oldLeftVal = leftText.value;
+    const oldRightVal = rightText.value;
+
+    const leftLabel = document.getElementById("leftLabel");
+    const rightLabel = document.getElementById("rightLabel");
+
+    if (englishToMonklish) {
+      leftLabel.textContent = "English";
+      rightLabel.textContent = "Monklish";
+
+      leftText.classList.remove("monklish");
+      rightText.classList.add("monklish");
+
+      leftText.readOnly = false;
+      rightText.readOnly = true;
+
+      leftText.value = oldRightVal;
+      rightText.value = oldRightVal.toUpperCase();
+    } else {
+      leftLabel.textContent = "Monklish";
+      rightLabel.textContent = "English";
+
+      leftText.classList.add("monklish");
+      rightText.classList.remove("monklish");
+
+      leftText.readOnly = true;
+      rightText.readOnly = false;
+
+      rightText.value = oldLeftVal;
+      leftText.value = oldLeftVal.toUpperCase();
+    }
+  }
+
+  function clearText() {
+    leftText.value = "";
+    rightText.value = "";
+  }
+
+  async function copyText(id) {
+    const element = document.getElementById(id);
+    try {
+      await navigator.clipboard.writeText(element.value);
+    } catch (error) {
+      element.select();
+      document.execCommand("copy");
+    }
+  }
+
+  /* PRACTICE & STATS LOGIC */
 
   function normalizeText(text) {
-    return text
-      .toLowerCase()
-      .trim()
-      .replace(/\s+/g, " ");
+    return text.toLowerCase().trim().replace(/\s+/g, " ");
   }
 
   function randomLetter() {
@@ -831,104 +893,16 @@
       document.getElementById("modeMultiple").classList.add("active");
       document.getElementById("multipleMode").classList.remove("hidden");
       setupMultipleChoice();
-    }
-
-    if (mode === "typing") {
+    } else if (mode === "typing") {
       document.getElementById("modeTyping").classList.add("active");
       document.getElementById("typingMode").classList.remove("hidden");
       setupTyping();
-    }
-
-    if (mode === "sentence") {
+    } else if (mode === "sentence") {
       document.getElementById("modeSentence").classList.add("active");
       document.getElementById("sentenceMode").classList.remove("hidden");
       setupSentence();
     }
   }
-
-  /* FIXED TRANSLATOR LOGIC */
-
-  let englishToMonklish = true;
-
-  function translate() {
-    const left = document.getElementById("leftText");
-    const right = document.getElementById("rightText");
-
-    if (englishToMonklish) {
-      right.value = left.value.toUpperCase();
-    } else {
-      right.value = left.value.toUpperCase();
-    }
-  }
-
-  function swapTranslation() {
-    const left = document.getElementById("leftText");
-    const right = document.getElementById("rightText");
-
-    const oldLeft = left.value;
-    const oldRight = right.value;
-
-    englishToMonklish = !englishToMonklish;
-
-    if (englishToMonklish) {
-      document.getElementById("leftLabel").textContent = "English";
-      document.getElementById("rightLabel").textContent = "Monklish";
-
-      left.classList.remove("monklish");
-      right.classList.add("monklish");
-
-      left.readOnly = false;
-      right.readOnly = true;
-
-      // Update event handlers
-      left.setAttribute("oninput", "translate()");
-      right.removeAttribute("oninput");
-
-      left.value = oldRight;
-      right.value = oldLeft.toUpperCase();
-    } else {
-      document.getElementById("leftLabel").textContent = "Monklish";
-      document.getElementById("rightLabel").textContent = "English";
-
-      left.classList.remove("monklish");
-      left.classList.add("monklish");
-      right.classList.remove("monklish");
-
-      left.readOnly = true;
-      right.readOnly = false;
-
-      // Swap input event to right side when Monklish is on the right/active input
-      right.setAttribute("oninput", "translateFromRight()");
-      left.removeAttribute("oninput");
-
-      right.value = oldLeft;
-      left.value = oldRight.toUpperCase();
-    }
-  }
-
-  function translateFromRight() {
-    const left = document.getElementById("leftText");
-    const right = document.getElementById("rightText");
-    left.value = right.value.toUpperCase();
-  }
-
-  function clearText() {
-    document.getElementById("leftText").value = "";
-    document.getElementById("rightText").value = "";
-  }
-
-  async function copyText(id) {
-    const element = document.getElementById(id);
-
-    try {
-      await navigator.clipboard.writeText(element.value);
-    } catch (error) {
-      element.select();
-      document.execCommand("copy");
-    }
-  }
-
-  /* MULTIPLE CHOICE */
 
   function setupMultipleChoice() {
     currentQuestionAnswered = false;
@@ -938,12 +912,9 @@
     document.getElementById("multipleFeedback").textContent = "";
 
     const choices = [currentLetter];
-
     while (choices.length < 4) {
       const letter = randomDifferentLetter(currentLetter);
-      if (!choices.includes(letter)) {
-        choices.push(letter);
-      }
+      if (!choices.includes(letter)) choices.push(letter);
     }
 
     for (let i = choices.length - 1; i > 0; i--) {
@@ -958,16 +929,13 @@
       const button = document.createElement("button");
       button.className = "answer-button";
       button.textContent = letter;
-      button.onclick = () => {
-        checkMultipleChoice(letter, button);
-      };
+      button.onclick = () => checkMultipleChoice(letter, button);
       grid.appendChild(button);
     });
   }
 
   function checkMultipleChoice(answer, button) {
     if (currentQuestionAnswered) return;
-
     currentQuestionAnswered = true;
     answered++;
 
@@ -986,16 +954,11 @@
       feedback.className = "practice-feedback feedback-incorrect";
 
       document.querySelectorAll("#answerGrid button").forEach(btn => {
-        if (btn.textContent === currentLetter) {
-          btn.classList.add("correct");
-        }
+        if (btn.textContent === currentLetter) btn.classList.add("correct");
       });
     }
-
     updateStats();
   }
-
-  /* TYPING */
 
   function setupTyping() {
     currentQuestionAnswered = false;
@@ -1006,15 +969,11 @@
     document.getElementById("typingFeedback").textContent = "";
     document.getElementById("typingFeedback").className = "practice-feedback";
 
-    setTimeout(() => {
-      document.getElementById("typingInput").focus();
-    }, 50);
+    setTimeout(() => document.getElementById("typingInput").focus(), 50);
   }
 
   function typingKeyDown(event) {
-    if (event.key === "Enter") {
-      checkTyping();
-    }
+    if (event.key === "Enter") checkTyping();
   }
 
   function checkTyping() {
@@ -1022,7 +981,6 @@
 
     const input = document.getElementById("typingInput");
     const answer = input.value.trim().toUpperCase();
-
     if (!answer) return;
 
     currentQuestionAnswered = true;
@@ -1040,34 +998,23 @@
       feedback.textContent = "Incorrect — the answer was " + currentLetter + ".";
       feedback.className = "practice-feedback feedback-incorrect";
     }
-
     updateStats();
   }
 
-  /* SENTENCES */
-
   function setupSentence() {
     currentQuestionAnswered = false;
+    currentSentence = sentences[Math.floor(Math.random() * sentences.length)];
 
-    currentSentence =
-      sentences[Math.floor(Math.random() * sentences.length)];
-
-    document.getElementById("sentenceSymbol").textContent =
-      currentSentence.monklish;
-
+    document.getElementById("sentenceSymbol").textContent = currentSentence.monklish;
     document.getElementById("sentenceInput").value = "";
     document.getElementById("sentenceFeedback").textContent = "";
     document.getElementById("sentenceFeedback").className = "practice-feedback";
 
-    setTimeout(() => {
-      document.getElementById("sentenceInput").focus();
-    }, 50);
+    setTimeout(() => document.getElementById("sentenceInput").focus(), 50);
   }
 
   function sentenceKeyDown(event) {
-    if (event.key === "Enter") {
-      checkSentence();
-    }
+    if (event.key === "Enter") checkSentence();
   }
 
   function checkSentence() {
@@ -1075,7 +1022,6 @@
 
     const input = document.getElementById("sentenceInput");
     const answer = normalizeText(input.value);
-
     if (!answer) return;
 
     currentQuestionAnswered = true;
@@ -1094,15 +1040,11 @@
       feedback.className = "practice-feedback feedback-correct";
     } else {
       streak = 0;
-      feedback.textContent =
-        'Not quite — the answer was "' + currentSentence.answers[0] + '".';
+      feedback.textContent = 'Not quite — the answer was "' + currentSentence.answers[0] + '".';
       feedback.className = "practice-feedback feedback-incorrect";
     }
-
     updateStats();
   }
-
-  /* NEXT QUESTION */
 
   function nextQuestion() {
     if (currentMode === "multiple") setupMultipleChoice();
@@ -1110,11 +1052,8 @@
     if (currentMode === "sentence") setupSentence();
   }
 
-  /* STATS */
-
   function updateStats() {
-    const accuracy =
-      answered === 0 ? 0 : Math.round((correct / answered) * 100);
+    const accuracy = answered === 0 ? 0 : Math.round((correct / answered) * 100);
 
     document.getElementById("answeredStat").textContent = answered;
     document.getElementById("correctStat").textContent = correct;

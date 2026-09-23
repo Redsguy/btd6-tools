@@ -766,418 +766,369 @@
       while the font changes how it looks.
     */
 
-    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
-    let currentMode = "multiple";
-    let currentLetter = "A";
-    let currentQuestionAnswered = false;
+  let currentMode = "multiple";
+  let currentLetter = "A";
+  let currentQuestionAnswered = false;
 
-    let answered = 0;
-    let correct = 0;
-    let streak = 0;
+  let answered = 0;
+  let correct = 0;
+  let streak = 0;
 
-    const sentences = [
-      {
-        monklish: "MONKEYS",
-        answers: ["monkeys"]
-      },
-      {
-        monklish: "BANANA",
-        answers: ["banana"]
-      },
-      {
-        monklish: "BLOONS",
-        answers: ["bloons"]
-      },
-      {
-        monklish: "BTD6",
-        answers: ["btd6", "bloons td 6", "bloons tower defense 6"]
-      },
-      {
-        monklish: "MONKEY KNOWS BEST",
-        answers: ["monkey knows best"]
+  const sentences = [
+    {
+      monklish: "MONKEYS",
+      answers: ["monkeys"]
+    },
+    {
+      monklish: "BANANA",
+      answers: ["banana"]
+    },
+    {
+      monklish: "BLOONS",
+      answers: ["bloons"]
+    },
+    {
+      monklish: "BTD6",
+      answers: ["btd6", "bloons td 6", "bloons tower defense 6"]
+    },
+    {
+      monklish: "MONKEY KNOWS BEST",
+      answers: ["monkey knows best"]
+    }
+  ];
+
+  let currentSentence = sentences[0];
+
+  function normalizeText(text) {
+    return text
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, " ");
+  }
+
+  function randomLetter() {
+    return letters[Math.floor(Math.random() * letters.length)];
+  }
+
+  function randomDifferentLetter(exclude) {
+    let letter;
+    do {
+      letter = randomLetter();
+    } while (letter === exclude);
+    return letter;
+  }
+
+  function setMode(mode) {
+    currentMode = mode;
+
+    document.getElementById("modeMultiple").classList.remove("active");
+    document.getElementById("modeTyping").classList.remove("active");
+    document.getElementById("modeSentence").classList.remove("active");
+
+    document.getElementById("multipleMode").classList.add("hidden");
+    document.getElementById("typingMode").classList.add("hidden");
+    document.getElementById("sentenceMode").classList.add("hidden");
+
+    if (mode === "multiple") {
+      document.getElementById("modeMultiple").classList.add("active");
+      document.getElementById("multipleMode").classList.remove("hidden");
+      setupMultipleChoice();
+    }
+
+    if (mode === "typing") {
+      document.getElementById("modeTyping").classList.add("active");
+      document.getElementById("typingMode").classList.remove("hidden");
+      setupTyping();
+    }
+
+    if (mode === "sentence") {
+      document.getElementById("modeSentence").classList.add("active");
+      document.getElementById("sentenceMode").classList.remove("hidden");
+      setupSentence();
+    }
+  }
+
+  /* FIXED TRANSLATOR LOGIC */
+
+  let englishToMonklish = true;
+
+  function translate() {
+    const left = document.getElementById("leftText");
+    const right = document.getElementById("rightText");
+
+    if (englishToMonklish) {
+      right.value = left.value.toUpperCase();
+    } else {
+      right.value = left.value.toUpperCase();
+    }
+  }
+
+  function swapTranslation() {
+    const left = document.getElementById("leftText");
+    const right = document.getElementById("rightText");
+
+    const oldLeft = left.value;
+    const oldRight = right.value;
+
+    englishToMonklish = !englishToMonklish;
+
+    if (englishToMonklish) {
+      document.getElementById("leftLabel").textContent = "English";
+      document.getElementById("rightLabel").textContent = "Monklish";
+
+      left.classList.remove("monklish");
+      right.classList.add("monklish");
+
+      left.readOnly = false;
+      right.readOnly = true;
+
+      // Update event handlers
+      left.setAttribute("oninput", "translate()");
+      right.removeAttribute("oninput");
+
+      left.value = oldRight;
+      right.value = oldLeft.toUpperCase();
+    } else {
+      document.getElementById("leftLabel").textContent = "Monklish";
+      document.getElementById("rightLabel").textContent = "English";
+
+      left.classList.remove("monklish");
+      left.classList.add("monklish");
+      right.classList.remove("monklish");
+
+      left.readOnly = true;
+      right.readOnly = false;
+
+      // Swap input event to right side when Monklish is on the right/active input
+      right.setAttribute("oninput", "translateFromRight()");
+      left.removeAttribute("oninput");
+
+      right.value = oldLeft;
+      left.value = oldRight.toUpperCase();
+    }
+  }
+
+  function translateFromRight() {
+    const left = document.getElementById("leftText");
+    const right = document.getElementById("rightText");
+    left.value = right.value.toUpperCase();
+  }
+
+  function clearText() {
+    document.getElementById("leftText").value = "";
+    document.getElementById("rightText").value = "";
+  }
+
+  async function copyText(id) {
+    const element = document.getElementById(id);
+
+    try {
+      await navigator.clipboard.writeText(element.value);
+    } catch (error) {
+      element.select();
+      document.execCommand("copy");
+    }
+  }
+
+  /* MULTIPLE CHOICE */
+
+  function setupMultipleChoice() {
+    currentQuestionAnswered = false;
+    currentLetter = randomLetter();
+
+    document.getElementById("multipleSymbol").textContent = currentLetter;
+    document.getElementById("multipleFeedback").textContent = "";
+
+    const choices = [currentLetter];
+
+    while (choices.length < 4) {
+      const letter = randomDifferentLetter(currentLetter);
+      if (!choices.includes(letter)) {
+        choices.push(letter);
       }
-    ];
-
-    let currentSentence = sentences[0];
-
-    function normalizeText(text) {
-      return text
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, " ");
     }
 
-    function randomLetter() {
-      return letters[Math.floor(Math.random() * letters.length)];
+    for (let i = choices.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [choices[i], choices[j]] = [choices[j], choices[i]];
     }
 
-    function randomDifferentLetter(exclude) {
-      let letter;
+    const grid = document.getElementById("answerGrid");
+    grid.innerHTML = "";
 
-      do {
-        letter = randomLetter();
-      } while (letter === exclude);
+    choices.forEach(letter => {
+      const button = document.createElement("button");
+      button.className = "answer-button";
+      button.textContent = letter;
+      button.onclick = () => {
+        checkMultipleChoice(letter, button);
+      };
+      grid.appendChild(button);
+    });
+  }
 
-      return letter;
-    }
+  function checkMultipleChoice(answer, button) {
+    if (currentQuestionAnswered) return;
 
-    function setMode(mode) {
-      currentMode = mode;
+    currentQuestionAnswered = true;
+    answered++;
 
-      document.getElementById("modeMultiple").classList.remove("active");
-      document.getElementById("modeTyping").classList.remove("active");
-      document.getElementById("modeSentence").classList.remove("active");
+    const feedback = document.getElementById("multipleFeedback");
 
-      document.getElementById("multipleMode").classList.add("hidden");
-      document.getElementById("typingMode").classList.add("hidden");
-      document.getElementById("sentenceMode").classList.add("hidden");
+    if (answer.toUpperCase() === currentLetter) {
+      correct++;
+      streak++;
+      button.classList.add("correct");
+      feedback.textContent = "Correct!";
+      feedback.className = "practice-feedback feedback-correct";
+    } else {
+      streak = 0;
+      button.classList.add("incorrect");
+      feedback.textContent = "Incorrect — the answer was " + currentLetter + ".";
+      feedback.className = "practice-feedback feedback-incorrect";
 
-      if (mode === "multiple") {
-        document.getElementById("modeMultiple").classList.add("active");
-        document.getElementById("multipleMode").classList.remove("hidden");
-        setupMultipleChoice();
-      }
-
-      if (mode === "typing") {
-        document.getElementById("modeTyping").classList.add("active");
-        document.getElementById("typingMode").classList.remove("hidden");
-        setupTyping();
-      }
-
-      if (mode === "sentence") {
-        document.getElementById("modeSentence").classList.add("active");
-        document.getElementById("sentenceMode").classList.remove("hidden");
-        setupSentence();
-      }
-    }
-
-    /* TRANSLATOR */
-
-    let englishToMonklish = true;
-
-    function translate() {
-      const left = document.getElementById("leftText");
-      const right = document.getElementById("rightText");
-
-      if (englishToMonklish) {
-        right.value = left.value.toUpperCase();
-      } else {
-        right.value = left.value.toUpperCase();
-      }
-    }
-
-    function swapTranslation() {
-      const left = document.getElementById("leftText");
-      const right = document.getElementById("rightText");
-
-      const oldLeft = left.value;
-      const oldRight = right.value;
-
-      englishToMonklish = !englishToMonklish;
-
-      if (englishToMonklish) {
-        document.getElementById("leftLabel").textContent = "English";
-        document.getElementById("rightLabel").textContent = "Monklish";
-
-        left.classList.remove("monklish");
-        right.classList.add("monklish");
-
-        left.readOnly = false;
-        right.readOnly = true;
-
-        left.value = oldRight;
-        right.value = oldLeft.toUpperCase();
-      } else {
-        document.getElementById("leftLabel").textContent = "Monklish";
-        document.getElementById("rightLabel").textContent = "English";
-
-        left.classList.add("monklish");
-        right.classList.remove("monklish");
-
-        left.readOnly = false;
-        right.readOnly = true;
-
-        left.value = oldRight;
-        right.value = oldLeft.toUpperCase();
-      }
-    }
-
-    function clearText() {
-      document.getElementById("leftText").value = "";
-      document.getElementById("rightText").value = "";
-    }
-
-    async function copyText(id) {
-      const element = document.getElementById(id);
-
-      try {
-        await navigator.clipboard.writeText(element.value);
-      } catch (error) {
-        element.select();
-        document.execCommand("copy");
-      }
-    }
-
-    /* MULTIPLE CHOICE */
-
-    function setupMultipleChoice() {
-      currentQuestionAnswered = false;
-      currentLetter = randomLetter();
-
-      document.getElementById("multipleSymbol").textContent =
-        currentLetter;
-
-      document.getElementById("multipleFeedback").textContent = "";
-
-      const choices = [currentLetter];
-
-      while (choices.length < 4) {
-        const letter = randomDifferentLetter(currentLetter);
-
-        if (!choices.includes(letter)) {
-          choices.push(letter);
+      document.querySelectorAll("#answerGrid button").forEach(btn => {
+        if (btn.textContent === currentLetter) {
+          btn.classList.add("correct");
         }
-      }
-
-      // Shuffle choices.
-      for (let i = choices.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [choices[i], choices[j]] = [choices[j], choices[i]];
-      }
-
-      const grid = document.getElementById("answerGrid");
-      grid.innerHTML = "";
-
-      choices.forEach(letter => {
-        const button = document.createElement("button");
-
-        button.className = "answer-button";
-        button.textContent = letter;
-
-        button.onclick = () => {
-          checkMultipleChoice(letter, button);
-        };
-
-        grid.appendChild(button);
       });
     }
 
-    function checkMultipleChoice(answer, button) {
-      if (currentQuestionAnswered) {
-        return;
-      }
-
-      currentQuestionAnswered = true;
-      answered++;
-
-      const feedback = document.getElementById("multipleFeedback");
-
-      if (answer.toUpperCase() === currentLetter) {
-        correct++;
-        streak++;
-
-        button.classList.add("correct");
-        feedback.textContent = "Correct!";
-        feedback.className = "practice-feedback feedback-correct";
-      } else {
-        streak = 0;
-
-        button.classList.add("incorrect");
-
-        feedback.textContent =
-          "Incorrect — the answer was " + currentLetter + ".";
-
-        feedback.className =
-          "practice-feedback feedback-incorrect";
-
-        document.querySelectorAll("#answerGrid button").forEach(btn => {
-          if (btn.textContent === currentLetter) {
-            btn.classList.add("correct");
-          }
-        });
-      }
-
-      updateStats();
-    }
-
-    /* TYPING */
-
-    function setupTyping() {
-      currentQuestionAnswered = false;
-      currentLetter = randomLetter();
-
-      document.getElementById("typingSymbol").textContent =
-        currentLetter;
-
-      document.getElementById("typingInput").value = "";
-
-      document.getElementById("typingFeedback").textContent = "";
-      document.getElementById("typingFeedback").className =
-        "practice-feedback";
-
-      setTimeout(() => {
-        document.getElementById("typingInput").focus();
-      }, 50);
-    }
-
-    function typingKeyDown(event) {
-      if (event.key === "Enter") {
-        checkTyping();
-      }
-    }
-
-    function checkTyping() {
-      if (currentQuestionAnswered) {
-        return;
-      }
-
-      const input = document.getElementById("typingInput");
-      const answer = input.value.trim().toUpperCase();
-
-      if (!answer) {
-        return;
-      }
-
-      currentQuestionAnswered = true;
-      answered++;
-
-      const feedback = document.getElementById("typingFeedback");
-
-      if (answer === currentLetter) {
-        correct++;
-        streak++;
-
-        feedback.textContent = "Correct!";
-        feedback.className =
-          "practice-feedback feedback-correct";
-      } else {
-        streak = 0;
-
-        feedback.textContent =
-          "Incorrect — the answer was " + currentLetter + ".";
-
-        feedback.className =
-          "practice-feedback feedback-incorrect";
-      }
-
-      updateStats();
-    }
-
-    /* SENTENCES */
-
-    function setupSentence() {
-      currentQuestionAnswered = false;
-
-      currentSentence =
-        sentences[Math.floor(Math.random() * sentences.length)];
-
-      document.getElementById("sentenceSymbol").textContent =
-        currentSentence.monklish;
-
-      document.getElementById("sentenceInput").value = "";
-
-      document.getElementById("sentenceFeedback").textContent = "";
-      document.getElementById("sentenceFeedback").className =
-        "practice-feedback";
-
-      setTimeout(() => {
-        document.getElementById("sentenceInput").focus();
-      }, 50);
-    }
-
-    function sentenceKeyDown(event) {
-      if (event.key === "Enter") {
-        checkSentence();
-      }
-    }
-
-    function checkSentence() {
-      if (currentQuestionAnswered) {
-        return;
-      }
-
-      const input = document.getElementById("sentenceInput");
-      const answer = normalizeText(input.value);
-
-      if (!answer) {
-        return;
-      }
-
-      currentQuestionAnswered = true;
-      answered++;
-
-      const feedback = document.getElementById("sentenceFeedback");
-
-      const accepted =
-        currentSentence.answers.some(
-          correctAnswer => normalizeText(correctAnswer) === answer
-        );
-
-      if (accepted) {
-        correct++;
-        streak++;
-
-        feedback.textContent = "Correct!";
-        feedback.className =
-          "practice-feedback feedback-correct";
-      } else {
-        streak = 0;
-
-        feedback.textContent =
-          "Not quite — the answer was \"" +
-          currentSentence.answers[0] +
-          "\".";
-
-        feedback.className =
-          "practice-feedback feedback-incorrect";
-      }
-
-      updateStats();
-    }
-
-    /* NEXT QUESTION */
-
-    function nextQuestion() {
-      if (currentMode === "multiple") {
-        setupMultipleChoice();
-      }
-
-      if (currentMode === "typing") {
-        setupTyping();
-      }
-
-      if (currentMode === "sentence") {
-        setupSentence();
-      }
-    }
-
-    /* STATS */
-
-    function updateStats() {
-      const accuracy =
-        answered === 0
-          ? 0
-          : Math.round((correct / answered) * 100);
-
-      document.getElementById("answeredStat").textContent =
-        answered;
-
-      document.getElementById("correctStat").textContent =
-        correct;
-
-      document.getElementById("accuracyStat").textContent =
-        accuracy + "%";
-
-      document.getElementById("streakStat").textContent =
-        streak;
-    }
-
-    /* START */
-
-    setupMultipleChoice();
     updateStats();
-  </script>
+  }
+
+  /* TYPING */
+
+  function setupTyping() {
+    currentQuestionAnswered = false;
+    currentLetter = randomLetter();
+
+    document.getElementById("typingSymbol").textContent = currentLetter;
+    document.getElementById("typingInput").value = "";
+    document.getElementById("typingFeedback").textContent = "";
+    document.getElementById("typingFeedback").className = "practice-feedback";
+
+    setTimeout(() => {
+      document.getElementById("typingInput").focus();
+    }, 50);
+  }
+
+  function typingKeyDown(event) {
+    if (event.key === "Enter") {
+      checkTyping();
+    }
+  }
+
+  function checkTyping() {
+    if (currentQuestionAnswered) return;
+
+    const input = document.getElementById("typingInput");
+    const answer = input.value.trim().toUpperCase();
+
+    if (!answer) return;
+
+    currentQuestionAnswered = true;
+    answered++;
+
+    const feedback = document.getElementById("typingFeedback");
+
+    if (answer === currentLetter) {
+      correct++;
+      streak++;
+      feedback.textContent = "Correct!";
+      feedback.className = "practice-feedback feedback-correct";
+    } else {
+      streak = 0;
+      feedback.textContent = "Incorrect — the answer was " + currentLetter + ".";
+      feedback.className = "practice-feedback feedback-incorrect";
+    }
+
+    updateStats();
+  }
+
+  /* SENTENCES */
+
+  function setupSentence() {
+    currentQuestionAnswered = false;
+
+    currentSentence =
+      sentences[Math.floor(Math.random() * sentences.length)];
+
+    document.getElementById("sentenceSymbol").textContent =
+      currentSentence.monklish;
+
+    document.getElementById("sentenceInput").value = "";
+    document.getElementById("sentenceFeedback").textContent = "";
+    document.getElementById("sentenceFeedback").className = "practice-feedback";
+
+    setTimeout(() => {
+      document.getElementById("sentenceInput").focus();
+    }, 50);
+  }
+
+  function sentenceKeyDown(event) {
+    if (event.key === "Enter") {
+      checkSentence();
+    }
+  }
+
+  function checkSentence() {
+    if (currentQuestionAnswered) return;
+
+    const input = document.getElementById("sentenceInput");
+    const answer = normalizeText(input.value);
+
+    if (!answer) return;
+
+    currentQuestionAnswered = true;
+    answered++;
+
+    const feedback = document.getElementById("sentenceFeedback");
+
+    const accepted = currentSentence.answers.some(
+      correctAnswer => normalizeText(correctAnswer) === answer
+    );
+
+    if (accepted) {
+      correct++;
+      streak++;
+      feedback.textContent = "Correct!";
+      feedback.className = "practice-feedback feedback-correct";
+    } else {
+      streak = 0;
+      feedback.textContent =
+        'Not quite — the answer was "' + currentSentence.answers[0] + '".';
+      feedback.className = "practice-feedback feedback-incorrect";
+    }
+
+    updateStats();
+  }
+
+  /* NEXT QUESTION */
+
+  function nextQuestion() {
+    if (currentMode === "multiple") setupMultipleChoice();
+    if (currentMode === "typing") setupTyping();
+    if (currentMode === "sentence") setupSentence();
+  }
+
+  /* STATS */
+
+  function updateStats() {
+    const accuracy =
+      answered === 0 ? 0 : Math.round((correct / answered) * 100);
+
+    document.getElementById("answeredStat").textContent = answered;
+    document.getElementById("correctStat").textContent = correct;
+    document.getElementById("accuracyStat").textContent = accuracy + "%";
+    document.getElementById("streakStat").textContent = streak;
+  }
+
+  setupMultipleChoice();
+  updateStats();
+</script>
 
 </body>
 </html>

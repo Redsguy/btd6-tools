@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10131a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>BTD6 API - BTD6 Tools</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #10131a;
+  color: #f2f2f2;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* NAVBAR */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #191d27;
+  border-bottom: 1px solid #292f3d;
+}
+
+.nav-inner {
+  width: 100%;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  min-height: 64px;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 800;
+  color: #ffb52e;
+  white-space: nowrap;
+}
+
+.nav-links {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.nav-links a {
+  color: #d9dce3;
+  font-weight: 600;
+  transition: color 0.15s;
+}
+
+.nav-links a:hover {
+  color: #ffb52e;
+}
+
+/* PAGE */
+
+.container {
+  width: min(1200px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 34px 0 60px;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 32px;
+}
+
+.subtitle {
+  color: #9da4b3;
+  margin: 0 0 28px;
+  line-height: 1.5;
+}
+
+/* CARDS */
+
+.card {
+  background: #191d27;
+  border: 1px solid #292f3d;
+  border-radius: 14px;
+  padding: 22px;
+  margin-bottom: 20px;
+}
+
+.card h2 {
+  margin: 0 0 8px;
+  font-size: 21px;
+}
+
+.card-description {
+  color: #9da4b3;
+  margin: 0 0 18px;
+  line-height: 1.5;
+}
+
+/* API KEY */
+
+.key-row {
+  display: flex;
+  gap: 10px;
+}
+
+.key-input-wrap {
+  position: relative;
+  flex: 1;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  background: #10131a;
+  color: #f2f2f2;
+  border: 1px solid #343b4b;
+  border-radius: 9px;
+  padding: 12px 13px;
+  font-size: 15px;
+  outline: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #ffb52e;
+}
+
+.key-input {
+  padding-right: 90px;
+}
+
+.show-key {
+  position: absolute;
+  right: 7px;
+  top: 7px;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 7px;
+  background: #292f3d;
+  color: #d9dce3;
+  border: 0;
+  cursor: pointer;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 12px;
+}
+
+button {
+  border: 0;
+  border-radius: 9px;
+  padding: 11px 15px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  background: #ffb52e;
+  color: #17130b;
+  transition: transform 0.1s, filter 0.1s;
+}
+
+button:hover {
+  filter: brightness(1.08);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+button.secondary {
+  background: #292f3d;
+  color: #f2f2f2;
+}
+
+button.danger {
+  background: #612b2b;
+  color: #ffdede;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  color: #9da4b3;
+  font-size: 14px;
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #737985;
+}
+
+.status-dot.saved {
+  background: #63d471;
+}
+
+.status-dot.error {
+  background: #ff5d5d;
+}
+
+/* ENDPOINT SECTIONS */
+
+.endpoint-section {
+  margin-top: 20px;
+}
+
+.endpoint-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.endpoint-card {
+  background: #151922;
+  border: 1px solid #292f3d;
+  border-radius: 11px;
+  padding: 17px;
+}
+
+.endpoint-card h3 {
+  margin: 0 0 7px;
+  font-size: 17px;
+}
+
+.endpoint-path {
+  display: block;
+  color: #ffb52e;
+  font-family: monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  margin-bottom: 14px;
+  overflow-wrap: anywhere;
+}
+
+.fields {
+  display: grid;
+  gap: 9px;
+}
+
+.field label {
+  display: block;
+  color: #aeb5c3;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.endpoint-card .button-row {
+  margin-top: 11px;
+}
+
+/* RESPONSE */
+
+.response-card {
+  display: none;
+}
+
+.response-card.visible {
+  display: block;
+}
+
+.response-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.response-header h2 {
+  margin: 0;
+}
+
+.response-meta {
+  color: #858c9b;
+  font-size: 12px;
+  font-family: monospace;
+}
+
+pre {
+  margin: 0;
+  background: #0b0d12;
+  border: 1px solid #292f3d;
+  border-radius: 10px;
+  padding: 16px;
+  overflow: auto;
+  max-height: 600px;
+  color: #dce2eb;
+  font-family: Consolas, Monaco, monospace;
+  font-size: 13px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.loading {
+  color: #ffb52e;
+}
+
+.error-text {
+  color: #ff7272;
+}
+
+/* QUICK INFO */
+
+.info-box {
+  background: #151922;
+  border-left: 3px solid #ffb52e;
+  border-radius: 7px;
+  padding: 12px 14px;
+  color: #b9bfca;
+  line-height: 1.5;
+  font-size: 13px;
+  margin-top: 14px;
+}
+
+.info-box strong {
+  color: #f2f2f2;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 760px) {
+  .nav-inner {
+    padding: 0 15px;
+  }
+
+  .nav-links {
+    gap: 14px;
+    font-size: 14px;
+  }
+
+  .container {
+    width: min(100% - 20px, 1200px);
+    padding-top: 24px;
+  }
+
+  h1 {
+    font-size: 27px;
+  }
+
+  .endpoint-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .key-row {
+    flex-direction: column;
+  }
+
+  .button-row {
+    width: 100%;
+  }
+
+  button {
+    flex: 1;
+  }
+}
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">BTD6 Tools</a>
+
+```
+<div class="nav-links">
+  <a href="index.html">Home</a>
+  <a href="index.html#tools">Tools</a>
+</div>
+```
+
+  </div>
+</nav>
+
+<main class="container">
+
+  <h1>BTD6 API</h1>
+  <p class="subtitle">
+    Access Ninja Kiwi's BTD6 Open Data API directly from BTD6 Tools.
+    Your OAK/API key is saved locally on this device.
+  </p>
+
+  <!-- API KEY -->
+
+  <section class="card">
+    <h2>🔑 API Key</h2>
+    <p class="card-description">
+      Enter your Ninja Kiwi Open Access Key (OAK). The key is stored only
+      in this browser's local storage and is shared between the API tools.
+    </p>
+
+```
+<div class="key-row">
+  <div class="key-input-wrap">
+    <input
+      id="apiKey"
+      class="key-input"
+      type="password"
+      placeholder="Enter your OAK/API key"
+      autocomplete="off"
+      spellcheck="false"
+    >
+    <button class="show-key" id="showKeyButton" type="button">
+      Show
+    </button>
+  </div>
+</div>
+
+<div class="button-row">
+  <button type="button" onclick="saveApiKey()">Save Key</button>
+  <button type="button" class="secondary" onclick="testApiKey()">
+    Test Connection
+  </button>
+  <button type="button" class="danger" onclick="clearApiKey()">
+    Clear Key
+  </button>
+</div>
+
+<div class="status">
+  <span id="statusDot" class="status-dot"></span>
+  <span id="keyStatus">No key saved</span>
+</div>
+
+<div class="info-box">
+  <strong>Privacy:</strong>
+  BTD6 Tools does not send your API key anywhere except Ninja Kiwi's
+  API requests. It is stored using your browser's localStorage so it
+  remains available when you reopen the PWA.
+</div>
+```
+
+  </section>
+
+  <!-- PLAYERS -->
+
+  <section class="card endpoint-section">
+    <h2>👤 Players</h2>
+    <p class="card-description">
+      Look up player information and retrieve save data associated with an OAK.
+    </p>
+
+```
+<div class="endpoint-grid">
+
+  <div class="endpoint-card">
+    <h3>Player Lookup</h3>
+    <span class="endpoint-path">GET /btd6/users/:userID</span>
+
+    <div class="fields">
+      <div class="field">
+        <label for="userID">User ID</label>
+        <input id="userID" placeholder="Enter player/user ID">
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button onclick="callEndpoint('/btd6/users/' + encodeURIComponent(value('userID')))">
+        Look Up Player
+      </button>
+    </div>
+  </div>
+
+
+  <div class="endpoint-card">
+    <h3>Save Data</h3>
+    <span class="endpoint-path">GET /btd6/save/:oakID</span>
+
+    <div class="fields">
+      <div class="field">
+        <label for="saveOakID">OAK ID</label>
+        <input id="saveOakID" placeholder="Enter OAK ID">
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button onclick="callEndpoint('/btd6/save/' + encodeURIComponent(value('saveOakID')))">
+        Get Save Data
+      </button>
+    </div>
+  </div>
+
+</div>
+```
+
+  </section>
+
+  <!-- RACES -->
+
+  <section class="card endpoint-section">
+    <h2>🏁 Races</h2>
+    <p class="card-description">
+      View races, race metadata, and race leaderboards.
+    </p>
+
+```
+<div class="endpoint-grid">
+
+  <div class="endpoint-card">
+    <h3>All Races</h3>
+    <span class="endpoint-path">GET /btd6/races</span>
+
+    <div class="button-row">
+      <button onclick="callEndpoint('/btd6/races')">
+        Get Races
+      </button>
+    </div>
+  </div>
+
+
+  <div class="endpoint-card">
+    <h3>Race Metadata</h3>
+    <span class="endpoint-path">GET /btd6/races/:raceID/metadata</span>
+
+    <div class="fields">
+      <div class="field">
+        <label for="raceMetadataID">Race ID</label>
+        <input id="raceMetadataID" placeholder="Race ID">
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button onclick="callEndpoint('/btd6/races/' + encodeURIComponent(value('raceMetadataID')) + '/metadata')">
+        Get Metadata
+      </button>
+    </div>
+  </div>
+
+
+  <div class="endpoint-card">
+    <h3>Race Leaderboard</h3>
+    <span class="endpoint-path">GET /btd6/races/:raceID/leaderboard</span>
+
+    <div class="fields">
+      <div class="field">
+        <label for="raceLeaderboardID">Race ID</label>
+        <input id="raceLeaderboardID" placeholder="Race ID">
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button onclick="callEndpoint('/btd6/races/' + encodeURIComponent(value('raceLeaderboardID')) + '/leaderboard')">
+        Get Leaderboard
+      </button>
+    </div>
+  </div>
+
+</div>
+```
+
+  </section>
+
+  <!-- BOSSES -->
+
+  <section class="card endpoint-section">
+    <h2>👹 Bosses</h2>
+    <p class="card-description">
+      Access boss events, metadata, and boss leaderboards.
+    </p>
+
+```
+<div class="endpoint-grid">
+
+  <div class="endpoint-card">
+    <h3>All Bosses</h3>
+    <span class="endpoint-path">GET /btd6/bosses</span>
+
+    <div class="button-row">
+      <button onclick="callEndpoint('/btd6/bosses')">
+        Get Bosses
+      </button>
+    </div>
+  </div>
+
+
+  <div class="endpoint-card">
+    <h3>Boss Metadata</h3>
+    <span class="endpoint-path">
+      GET /btd6/bosses/:bossID/metadata/:difficulty
+    </span>
+
+    <div class="fields">
+      <div class="field">
+        <label for="bossMetadataID">Boss ID</label>
+        <input id="bossMetadataID" placeholder="Boss ID">
+      </div>
+
+      <div class="field">
+        <label for="bossDifficulty">Difficulty</label>
+        <select id="bossDifficulty">
+          <option value="normal">Normal</option>
+          <option value="elite">Elite</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button onclick="callEndpoint(
+        '/btd6/bosses/' +
+        encodeURIComponent(value('bossMetadataID')) +
+        '/metadata/' +
+        encodeURIComponent(value('bossDifficulty'))
+      )">
+        Get Metadata
+      </button>
+    </div>
+  </div>
+
+
+  <div class="endpoint-card">
+    <h3>Boss Leaderboard</h3>
+    <span class="endpoint-path">
+      GET /btd6/bosses/:bossID/leaderboard/:type/:teamSize
+    </span>
+
+    <div class="fields">
+      <div class="field">
+        <label for="bossLeaderboardID">Boss ID</label>
+        <input id="bossLeaderboardID" placeholder="Boss ID">
+      </div>
+
+      <div class="field">
+        <label for="bossLeaderboardType">Type</label>
+        <input id="bossLeaderboardType" placeholder="Leaderboard type">
+      </div>
+
+      <div class="field">
+        <label for="bossTeamSize">Team Size</label>
+        <input id="bossTeamSize" placeholder="Team size">
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button onclick="callEndpoint(
+        '/btd6/bosses/' +
+        encodeURIComponent(value('bossLeaderboardID')) +
+        '/leaderboard/' +
+        encodeURIComponent(value('bossLeaderboardType')) +
+        '/' +
+        encodeURIComponent(value('bossTeamSize'))
+      )">
+        Get Leaderboard
+      </button>
+    </div>
+  </div>
+
+</div>
+```
+
+  </section>
+
+  <!-- MAPS -->
+
+  <section class="card endpoint-section">
+    <h2>🗺️ Maps</h2>
+    <p class="card-description">
+      Browse BTD6 maps, filter maps, or retrieve a specific map.
+    </p>
+
+```
+<div class="endpoint-grid">
+
+  <div class="endpoint-card">
+    <h3>All Maps</h3>
+    <span class="endpoint-path">GET /btd6/maps</span>
+
+    <div class="button-row">
+      <button onclick="callEndpoint('/btd6/maps')">
+        Get Maps
+      </button>
+    </div>
+  </div>
+
+
+  <div class="endpoint-card">
+    <h3>Filter Maps</h3>
+    <span class="endpoint-path">GET /btd6/maps/filter/:mapFilter</span>
+
+    <div class="fields">
+      <div class="field">
+        <label for="mapFilter">Map Filter</label>
+        <input id="mapFilter" placeholder="Map filter">
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button onclick="callEndpoint(
+        '/btd6/maps/filter/' +
+        encodeURIComponent(value('mapFilter'))
+      )">
+        Filter Maps
+      </button>
+    </div>
+  </div>
+
+
+  <div class="endpoint-card">
+    <h3>Specific Map</h3>
+    <span class="endpoint-path">GET /btd6/maps/map/:mapID</span>
+
+    <div class="fields">
+      <div class="field">
+        <label for="mapID">Map ID</label>
+        <input id="mapID" placeholder="Map ID">
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button onclick="callEndpoint(
+        '/btd6/maps/map/' +
+        encodeURIComponent(value('mapID'))
+      )">
+        Get Map
+      </button>
+    </div>
+  </div>
+
+</div>
+```
+
+  </section>
+
+  <!-- CHALLENGES -->
+
+  <section class="card endpoint-section">
+    <h2>🎯 Challenges</h2>
+    <p class="card-description">
+      Browse challenges, filter them, or retrieve an individual challenge.
+    </p>
+
+```
+<div class="endpoint-grid">
+
+  <div class="endpoint-card">
+    <h3>All Challenges</h3>
+    <span class="endpoint-path">GET /btd6/challenges</span>
+
+    <div class="button-row">
+      <button onclick="callEndpoint('/btd6/challenges')">
+        Get Challenges
+      </button>
+    </div>
+  </div>
+
+
+  <div class="endpoint-card">
+    <h3>Filter Challenges</h3>
+    <span class="endpoint-path">
+      GET /btd6/challenges/filter/:challengeFilter
+    </span>
+
+    <div class="fields">
+      <div class="field">
+        <label for="challengeFilter">Challenge Filter</label>
+        <input id="challengeFilter" placeholder="Challenge filter">
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button onclick="callEndpoint(
+        '/btd6/challenges/filter/' +
+        encodeURIComponent(value('challengeFilter'))
+      )">
+        Filter Challenges
+      </button>
+    </div>
+  </div>
+
+
+  <div class="endpoint-card">
+    <h3>Specific Challenge</h3>
+    <span class="endpoint-path">
+      GET /btd6/challenges/challenge/:challengeID
+    </span>
+
+    <div class="fields">
+      <div class="field">
+        <label for="challengeID">Challenge ID</label>
+        <input id="challengeID" placeholder="Challenge ID">
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button onclick="callEndpoint(
+        '/btd6/challenges/challenge/' +
+        encodeURIComponent(value('challengeID'))
+      )">
+        Get Challenge
+      </button>
+    </div>
+  </div>
+
+</div>
+```
+
+  </section>
+
+  <!-- CONTESTED TERRITORY -->
+
+  <section class="card endpoint-section">
+    <h2>🌎 Contested Territory</h2>
+    <p class="card-description">
+      View CT information, tiles, and the different CT leaderboards.
+    </p>
+
+```
+<div class="endpoint-grid">
+
+  <div class="endpoint-card">
+    <h3>Current CT</h3>
+    <span class="endpoint-path">GET /btd6/ct</span>
+
+    <div class="button-row">
+      <button onclick="callEndpoint('/btd6/ct')">
+        Get CT
+      </button>
+    </div>
+  </div>
+
+
+  <div class="endpoint-card">
+    <h3>CT Tiles</h3>
+    <span class="endpoint-path">GET /btd6/ct/:ctID/tiles</span>
+
+    <div class="fields">
+      <div class="field">
+        <label for="ctTilesID">CT ID</label>
+        <input id="ctTilesID" placeholder="CT ID">
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button onclick="callEndpoint(
+        '/btd6/ct/' +
+        encodeURIComponent(value('ctTilesID')) +
+        '/tiles'
+      )">
+        Get Tiles
+      </button>
+    </div>
+  </div>
+
+
+  <div class="endpoint-card">
+    <h3>Player Leaderboard</h3>
+    <span class="endpoint-path">
+      GET /btd6/ct/:ctID/leaderboard/player
+    </span>
+
+    <div class="fields">
+      <div class="field">
+        <label for="ctPlayerID">CT ID</label>
+        <input id="ctPlayerID" placeholder="CT ID">
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button onclick="callEndpoint(
+        '/btd6/ct/' +
+        encodeURIComponent(value('ctPlayerID')) +
+        '/leaderboard/player'
+      )">
+        Get Leaderboard
+      </button>
+    </div>
+  </div>
+
+
+  <div class="endpoint-card">
+    <h3>Team Leaderboard</h3>
+    <span class="endpoint-path">
+      GET /btd6/ct/:ctID/leaderboard/team
+    </span>
+
+    <div class="fields">
+      <div class="field">
+        <label for="ctTeamID">CT ID</label>
+        <input id="ctTeamID" placeholder="CT ID">
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button onclick="callEndpoint(
+        '/btd6/ct/' +
+        encodeURIComponent(value('ctTeamID')) +
+        '/leaderboard/team'
+      )">
+        Get Leaderboard
+      </button>
+    </div>
+  </div>
+
+
+  <div class="endpoint-card">
+    <h3>Group Leaderboard</h3>
+    <span class="endpoint-path">
+      GET /btd6/ct/:ctID/leaderboard/group/:groupID
+    </span>
+
+    <div class="fields">
+      <div class="field">
+        <label for="ctGroupCTID">CT ID</label>
+        <input id="ctGroupCTID" placeholder="CT ID">
+      </div>
+
+      <div class="field">
+        <label for="ctGroupID">Group ID</label>
+        <input id="ctGroupID" placeholder="Group ID">
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button onclick="callEndpoint(
+        '/btd6/ct/' +
+        encodeURIComponent(value('ctGroupCTID')) +
+        '/leaderboard/group/' +
+        encodeURIComponent(value('ctGroupID'))
+      )">
+        Get Leaderboard
+      </button>
+    </div>
+  </div>
+
+</div>
+```
+
+  </section>
+
+  <!-- GUILDS -->
+
+  <section class="card endpoint-section">
+    <h2>👥 Guild</h2>
+    <p class="card-description">
+      Retrieve information about a BTD6 guild.
+    </p>
+
+```
+<div class="endpoint-grid">
+
+  <div class="endpoint-card">
+    <h3>Guild Lookup</h3>
+    <span class="endpoint-path">GET /btd6/guild/:guildID</span>
+
+    <div class="fields">
+      <div class="field">
+        <label for="guildID">Guild ID</label>
+        <input id="guildID" placeholder="Guild ID">
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button onclick="callEndpoint(
+        '/btd6/guild/' +
+        encodeURIComponent(value('guildID'))
+      )">
+        Get Guild
+      </button>
+    </div>
+  </div>
+
+</div>
+```
+
+  </section>
+
+  <!-- ODYSSEY -->
+
+  <section class="card endpoint-section">
+    <h2>🚢 Odyssey</h2>
+    <p class="card-description">
+      Access Odyssey information, difficulty data, and Odyssey maps.
+    </p>
+
+```
+<div class="endpoint-grid">
+
+  <div class="endpoint-card">
+    <h3>Current Odyssey</h3>
+    <span class="endpoint-path">GET /btd6/odyssey</span>
+
+    <div class="button-row">
+      <button onclick="callEndpoint('/btd6/odyssey')">
+        Get Odyssey
+      </button>
+    </div>
+  </div>
+
+
+  <div class="endpoint-card">
+    <h3>Odyssey Difficulty</h3>
+    <span class="endpoint-path">
+      GET /btd6/odyssey/:odysseyID/:difficulty
+    </span>
+
+    <div class="fields">
+      <div class="field">
+        <label for="odysseyID">Odyssey ID</label>
+        <input id="odysseyID" placeholder="Odyssey ID">
+      </div>
+
+      <div class="field">
+        <label for="odysseyDifficulty">Difficulty</label>
+        <input id="odysseyDifficulty" placeholder="Difficulty">
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button onclick="callEndpoint(
+        '/btd6/odyssey/' +
+        encodeURIComponent(value('odysseyID')) +
+        '/' +
+        encodeURIComponent(value('odysseyDifficulty'))
+      )">
+        Get Data
+      </button>
+    </div>
+  </div>
+
+
+  <div class="endpoint-card">
+    <h3>Odyssey Maps</h3>
+    <span class="endpoint-path">
+      GET /btd6/odyssey/:odysseyID/:difficulty/maps
+    </span>
+
+    <div class="fields">
+      <div class="field">
+        <label for="odysseyMapsID">Odyssey ID</label>
+        <input id="odysseyMapsID" placeholder="Odyssey ID">
+      </div>
+
+      <div class="field">
+        <label for="odysseyMapsDifficulty">Difficulty</label>
+        <input id="odysseyMapsDifficulty" placeholder="Difficulty">
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button onclick="callEndpoint(
+        '/btd6/odyssey/' +
+        encodeURIComponent(value('odysseyMapsID')) +
+        '/' +
+        encodeURIComponent(value('odysseyMapsDifficulty')) +
+        '/maps'
+      )">
+        Get Maps
+      </button>
+    </div>
+  </div>
+
+</div>
+```
+
+  </section>
+
+  <!-- EVENTS -->
+
+  <section class="card endpoint-section">
+    <h2>📅 Events</h2>
+    <p class="card-description">
+      Retrieve the current BTD6 event information.
+    </p>
+
+```
+<div class="endpoint-grid">
+
+  <div class="endpoint-card">
+    <h3>Events</h3>
+    <span class="endpoint-path">GET /btd6/events</span>
+
+    <div class="button-row">
+      <button onclick="callEndpoint('/btd6/events')">
+        Get Events
+      </button>
+    </div>
+  </div>
+
+</div>
+```
+
+  </section>
+
+  <!-- RESPONSE -->
+
+  <section id="responseCard" class="card response-card">
+
+```
+<div class="response-header">
+  <div>
+    <h2>API Response</h2>
+    <div id="responseMeta" class="response-meta"></div>
+  </div>
+
+  <button class="secondary" onclick="copyResponse()">
+    Copy JSON
+  </button>
+</div>
+
+<pre id="responseOutput"></pre>
+```
+
+  </section>
+
+</main>
+
+<script>
+const API_BASE = "https://data.ninjakiwi.com";
+const STORAGE_KEY = "btd6ToolsApiKey";
+
+const apiKeyInput = document.getElementById("apiKey");
+const keyStatus = document.getElementById("keyStatus");
+const statusDot = document.getElementById("statusDot");
+const showKeyButton = document.getElementById("showKeyButton");
+
+let lastResponseText = "";
+
+
+/* -------------------------
+   GENERAL HELPERS
+------------------------- */
+
+function value(id) {
+  return document.getElementById(id).value.trim();
+}
+
+
+function getApiKey() {
+  return apiKeyInput.value.trim();
+}
+
+
+function displayResponse(data, statusText = "") {
+  const card = document.getElementById("responseCard");
+  const output = document.getElementById("responseOutput");
+  const meta = document.getElementById("responseMeta");
+
+  card.classList.add("visible");
+
+  if (typeof data === "string") {
+    lastResponseText = data;
+    output.textContent = data;
+  } else {
+    lastResponseText = JSON.stringify(data, null, 2);
+    output.textContent = lastResponseText;
+  }
+
+  meta.textContent = statusText;
+
+  card.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}
+
+
+/* -------------------------
+   API KEY STORAGE
+------------------------- */
+
+function saveApiKey() {
+  const key = getApiKey();
+
+  if (!key) {
+    keyStatus.textContent = "Enter an API key first.";
+    statusDot.className = "status-dot error";
+    return;
+  }
+
+  localStorage.setItem(STORAGE_KEY, key);
+
+  keyStatus.textContent = "API key saved locally.";
+  statusDot.className = "status-dot saved";
+}
+
+
+function clearApiKey() {
+  localStorage.removeItem(STORAGE_KEY);
+  apiKeyInput.value = "";
+
+  keyStatus.textContent = "No key saved.";
+  statusDot.className = "status-dot";
+}
+
+
+function loadApiKey() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+
+  if (saved) {
+    apiKeyInput.value = saved;
+    keyStatus.textContent = "API key loaded from local storage.";
+    statusDot.className = "status-dot saved";
+  }
+}
+
+
+showKeyButton.addEventListener("click", () => {
+  if (apiKeyInput.type === "password") {
+    apiKeyInput.type = "text";
+    showKeyButton.textContent = "Hide";
+  } else {
+    apiKeyInput.type = "password";
+    showKeyButton.textContent = "Show";
+  }
+});
+
+
+/* -------------------------
+   API REQUEST
+------------------------- */
+
+async function callEndpoint(path) {
+
+  if (path.includes("undefined") || path.endsWith("/")) {
+    displayResponse(
+      "Please fill in the required endpoint information.",
+      "Invalid request"
+    );
+    return;
+  }
+
+  const key = getApiKey();
+
+  if (!key) {
+    displayResponse(
+      "No API key entered. Enter your Ninja Kiwi OAK/API key above first.",
+      "Missing API key"
+    );
+    return;
+  }
+
+  displayResponse(
+    "Loading...",
+    "Requesting " + path
+  );
+
+  const output = document.getElementById("responseOutput");
+  output.className = "loading";
+
+  try {
+
+    const response = await fetch(API_BASE + path, {
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer " + key,
+        "Accept": "application/json"
+      }
+    });
+
+    const contentType = response.headers.get("content-type") || "";
+
+    let data;
+
+    if (contentType.includes("application/json")) {
+      data = await response.json();
+    } else {
+      data = await response.text();
+    }
+
+    output.className = "";
+
+    displayResponse(
+      data,
+      response.status + " " + response.statusText +
+      " • " + path
+    );
+
+  } catch (error) {
+
+    output.className = "error-text";
+
+    displayResponse(
+      "Request failed.\n\n" +
+      error.message +
+      "\n\nPossible causes:\n" +
+      "• Your API key may be invalid or expired.\n" +
+      "• The endpoint may require a different parameter.\n" +
+      "• Your browser may be blocking the request because of CORS.\n" +
+      "• Ninja Kiwi's API may temporarily be unavailable.",
+      "Request error"
+    );
+  }
+}
+
+
+/* -------------------------
+   CONNECTION TEST
+------------------------- */
+
+async function testApiKey() {
+
+  const key = getApiKey();
+
+  if (!key) {
+    keyStatus.textContent = "Enter an API key first.";
+    statusDot.className = "status-dot error";
+    return;
+  }
+
+  keyStatus.textContent = "Testing API connection...";
+  statusDot.className = "status-dot";
+
+  try {
+
+    const response = await fetch(API_BASE + "/btd6/races", {
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer " + key,
+        "Accept": "application/json"
+      }
+    });
+
+    if (response.ok) {
+      keyStatus.textContent = "API key works!";
+      statusDot.className = "status-dot saved";
+    } else {
+      keyStatus.textContent =
+        "API responded with HTTP " + response.status + ".";
+      statusDot.className = "status-dot error";
+    }
+
+  } catch (error) {
+
+    keyStatus.textContent =
+      "Connection failed: " + error.message;
+
+    statusDot.className = "status-dot error";
+  }
+}
+
+
+/* -------------------------
+   COPY RESPONSE
+------------------------- */
+
+async function copyResponse() {
+
+  if (!lastResponseText) {
+    return;
+  }
+
+  try {
+
+    await navigator.clipboard.writeText(lastResponseText);
+
+    const button =
+      document.querySelector(".response-header button");
+
+    const oldText = button.textContent;
+
+    button.textContent = "Copied!";
+
+    setTimeout(() => {
+      button.textContent = oldText;
+    }, 1200);
+
+  } catch (error) {
+
+    alert("Could not copy the response.");
+  }
+}
+
+
+/* -------------------------
+   LOAD SAVED KEY
+------------------------- */
+
+loadApiKey();
+</script>
+
+</body>
+</html>
